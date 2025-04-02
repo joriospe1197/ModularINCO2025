@@ -1,0 +1,54 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.barra {
+    background-color: v.$blanco;
+    padding: 1rem 2rem;
+    box-shadow: 1px 12px 15px -30px rgba(0, 0, 0, .3);
+    
+    @include m.tablet {
+        display: flex;                /* Convierte .barra en un contenedor flex */
+        justify-content: space-between; /* Distribuye los elementos entre los extremos */
+        align-items: center;          /* Centra los elementos verticalmente */
+        
+    }
+
+    /* Añadimos estos estilos para asegurarnos que los enlaces estén alineados correctamente */
+     .mi_perfil {
+        margin-left: auto;  /* Empuja "Mi perfil" hacia la derecha */
+        margin-right: 2rem; /* Agrega espacio entre "Mi perfil" y "Cerrar sesión" */
+    }
+
+    p{
+        margin: 0;
+        font-size: 1.4rem;
+
+        span{
+            font-weight: 700;
+            color: v.$negro;
+        }
+    }
+
+    .cerrar-sesion{
+        @include m.boton(v.$azul, v.$grisClaro);
+        
+    }
+    .cerrar-sesion{
+        font-size: 1.2rem;
+        padding: 1rem;
+        border-radius: .5rem;
+    }
+
+    .mi_perfil{
+        @include m.boton(v.$azul, v.$grisClaro);
+    }
+
+    .mi_perfil{
+        font-size: 1.2rem;
+        padding: 1rem;
+        border-radius: .5rem;
+    }
+
+    
+
+}
