@@ -4,51 +4,56 @@ namespace Controllers;
 
 use Classes\Email;
 use Model\Usuario;
+use Model\Chofer;
 use MVC\Router;
 
 class UserController {
     
-    public static function register(Router $router){
+    public static function register(Router $router) {
         session_start();
         isAuth();
-        $alertas = []; 
+        $alertas = [];
         $usuario = new Usuario;
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Sincronizar los datos del formulario con el objeto Usuario
             $usuario->sincronizar($_POST);
+
+            // Validar que no falte el puesto
             $alertas = $usuario->validarNuevaCuenta();
-            
-            if(empty($alertas)){
+
+            // Si no hay alertas, proceder con el registro
+            if (empty($alertas)) {
                 // Verificar si el email ya existe
                 $existeUsuario = Usuario::where('email', $usuario->email);
-                if($existeUsuario){
+                if ($existeUsuario) {
                     Usuario::setAlerta('error', 'El email ya está registrado');
                     $alertas = Usuario::getAlertas();
                 }
 
                 // Verificar si el nombre ya está registrado
                 $existeNombre = Usuario::where('nombre', $usuario->nombre);
-                if($existeNombre){
+                if ($existeNombre) {
                     Usuario::setAlerta('error', 'El nombre ya está registrado');
                     $alertas = Usuario::getAlertas();
                 }
 
                 // Verificar si la dirección ya está registrada
                 $existeDireccion = Usuario::where('direccion', $usuario->direccion);
-                if($existeDireccion){
+                if ($existeDireccion) {
                     Usuario::setAlerta('error', 'La dirección ya está registrada');
                     $alertas = Usuario::getAlertas();
                 }
 
                 // Verificar si el teléfono ya está registrado
                 $existeTelefono = Usuario::where('telefono', $usuario->telefono);
-                if($existeTelefono){
+                if ($existeTelefono) {
                     Usuario::setAlerta('error', 'El teléfono ya está registrado');
                     $alertas = Usuario::getAlertas();
                 }
 
                 // Si no hay alertas, procesar el registro
-                if(empty($alertas)){
+                if (empty($alertas)) {
                     // Encriptar contraseña
                     $usuario->hashPassword();
 
@@ -61,18 +66,18 @@ class UserController {
                     // Crear un nuevo usuario
                     $resultado = $usuario->guardar();
 
-                    //Enviar email
+                    // Enviar email de confirmación
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
                     $email->enviarConfirmacion();
 
-                    if($resultado){
+                    if ($resultado) {
                         header('Location: /message');
                     }
                 }
             }
         }
 
-        // Render a la vista
+        // Renderizar la vista
         $router->render('auth/register', [
             'titulo' => 'Agregar empleado',
             'usuario' => $usuario,

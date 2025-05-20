@@ -2,7 +2,11 @@
 
 namespace Controllers;
 
+use Model\Unidad_de_transporte;
+use Model\Productos;
+use Model\Usuario;
 use MVC\Router;
+
 
 class DashboardController{
 
@@ -24,26 +28,34 @@ class DashboardController{
         ]);
     }
 
-    public static function empleados(Router $router){
+    public static function empleados(Router $router) {
         session_start();
-
         isAuth();
-
-        $router->render('dashboard/empleados', [
-            'titulo' => 'Empleados'
+    
+        // Obtener todos los empleados
+        $empleados = Usuario::all();  // Usamos el método all() de ActiveRecord para obtener todos los empleados
+    
+        // Renderizar la vista pasando los empleados
+        $router->render('Dashboard/empleados', [
+            'titulo' => 'Empleados',
+            'empleados' => $empleados
         ]);
     }
 
 
-    public static function productos(Router $router){
+    public static function productos(Router $router) {
         session_start();
-
         isAuth();
-
-        $router->render('dashboard/productos', [
-            'titulo' => 'Productos'
+    
+        // Obtener todos los productos
+        $productos = Productos::all();  // Usamos el método all() de ActiveRecord para obtener todos los productos
+    
+        // Renderizamos la vista pasando los productos
+        $router->render('Dashboard/productos', [
+            'titulo' => 'Productos',
+            'productos' => $productos
         ]);
-    }
+    }    
 
     public static function pedidos(Router $router){
         session_start();
@@ -65,16 +77,23 @@ class DashboardController{
         ]);
     }
 
-
-    public static function choferes(Router $router){
+    public static function unidades_de_transporte(Router $router) {
         session_start();
-
         isAuth();
-
-        $router->render('dashboard/choferes', [
-            'titulo' => 'Choferes'
+    
+        // Obtener las unidades de transporte y los choferes asociados
+        $unidades = Unidad_de_transporte::all();  // Obtiene todas las unidades
+        foreach ($unidades as $unidad) {
+            // Obtener el chofer por su idempleado (usamos el id del chofer para obtener el nombre)
+            $unidad->chofer_nombre = Usuario::find($unidad->chofer)->nombre;
+        }
+    
+        $router->render('dashboard/unidades_de_transporte', [
+            'titulo' => 'Unidades de transporte',
+            'unidades' => $unidades  // Pasamos las unidades junto con los nombres de chofer
         ]);
     }
+    
    
     public static function servicios_de_unidades(Router $router){
         session_start();
