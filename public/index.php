@@ -1,0 +1,100 @@
+<?php 
+
+require_once __DIR__ . '/../includes/app.php';
+
+use Controllers\LoginController;
+use Controllers\UserController;
+use MVC\Router;
+use Controllers\DashboardController;
+use Controllers\UnidadController;
+use Controllers\ProductsController;
+
+$router = new Router();
+
+// Crear Cuenta
+$router->get('/register',[UserController::class, 'register']);
+$router->post('/register',[UserController::class, 'register']);
+
+// Editar usuario
+$router->get('/search_user',[UserController::class, 'search_user']);
+$router->post('/search_user',[UserController::class, 'search_user']);
+$router->get('/edit_user',[UserController::class, 'edit_user']);
+$router->post('/edit_user',[UserController::class, 'edit_user']);
+$router->get('/message_update_user',[UserController::class, 'message_update_user']);
+$router->post('/message_update_user',[UserController::class, 'message_update_user']);
+
+//Eliminar usuario
+$router->get('/remove_user',[UserController::class, 'remove_user']);
+$router->post('/remove_user',[UserController::class, 'remove_user']);
+
+
+// Confirmación de cuenta
+$router->get('/message',[UserController::class, 'message']);
+$router->get('/confirm',[UserController::class, 'confirm']);
+
+//Iniciar sesion
+$router->get('/',[LoginController::class, 'login']);
+$router->post('/',[LoginController::class, 'login']);
+
+//Cerrar sesion
+$router->get('/logout',[LoginController::class, 'logout']);
+
+//Recuperar Password
+$router->get('/forgot_my_password',[LoginController::class, 'forgot_my_password']);
+$router->post('/forgot_my_password',[LoginController::class, 'forgot_my_password']);
+
+//Colocar el nuevo password
+$router->get('/recover',[LoginController::class, 'recover']);
+$router->post('/recover',[LoginController::class, 'recover']);
+
+//Dashboard
+$router->get('/mi_perfil',[DashboardController::class, 'mi_perfil']);
+$router->get('/inicio',[DashboardController::class, 'inicio']);
+$router->get('/empleados',[DashboardController::class, 'empleados']);
+$router->get('/productos',[DashboardController::class, 'productos']);
+$router->get('/pedidos',[DashboardController::class, 'pedidos']);
+$router->get('/historial_de_pedidos',[DashboardController::class, 'historial_de_pedidos']);
+$router->get('/unidades_de_transporte',[DashboardController::class, 'unidades_de_transporte']);
+$router->get('/servicios_de_unidades',[DashboardController::class, 'servicios_de_unidades']);
+$router->get('/rastreo_de_unidades',[DashboardController::class, 'rastreo_de_unidades']);
+$router->get('/manifiestos',[DashboardController::class, 'manifiestos']);
+$router->get('/chat',[DashboardController::class, 'chat']);
+
+// Asignar unidad a chofer
+$router->get('/asignar_unidades_a_choferes',[UnidadController::class, 'asignar_unidades_a_choferes']);
+$router->post('/asignar_unidades_a_choferes',[UnidadController::class, 'asignar_unidades_a_choferes']);
+
+// Mensaje de exito se asigno la unidad
+$router->get('/message_exit_unidad',[UnidadController::class, 'message_exit_unidad']);
+
+// Editar unidad
+$router->get('/search_unidad',[UnidadController::class, 'search_unidad']);
+$router->post('/search_unidad',[UnidadController::class, 'search_unidad']);
+$router->get('/edit_unidad',[UnidadController::class, 'edit_unidad']);
+$router->post('/edit_unidad',[UnidadController::class, 'edit_unidad']);
+$router->get('/message_update_unidad',[UnidadController::class, 'message_update_unidad']);
+$router->post('/message_update_unidad',[UnidadController::class, 'message_update_unidad']);
+$router->get('/remove_unidad',[UnidadController::class, 'remove_unidad']);
+$router->post('/remove_unidad',[UnidadController::class, 'remove_unidad']);
+
+// Agregar producto
+$router->get('/register_product',[ProductsController::class, 'register_product']);
+$router->post('/register_product',[ProductsController::class, 'register_product']);
+
+// Mensaje de exito se registro el producto
+$router->get('/product_success_message',[ProductsController::class, 'product_success_message']);
+
+// Editar producto
+$router->get('/search_product',[ProductsController::class, 'search_product']);
+$router->post('/search_product',[ProductsController::class, 'search_product']);
+$router->get('/edit_product',[ProductsController::class, 'edit_product']);
+$router->post('/edit_product',[ProductsController::class, 'edit_product']);
+$router->get('/message_update_product',[ProductsController::class, 'message_update_product']);
+$router->post('/message_update_product',[ProductsController::class, 'message_update_product']);
+
+//Eliminar producto
+$router->get('/remove_product',[ProductsController::class, 'remove_product']);
+$router->post('/remove_product',[ProductsController::class, 'remove_product']);
+
+// Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
+$router->comprobarRutas();

@@ -1,0 +1,35 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+/* Aseguramos que los enlaces dentro de .barra estén alineados a la izquierda */
+.barra {
+    display: flex;
+    justify-content: flex-start; /* Alinea todos los elementos a la izquierda */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+/* Estilos comunes para los enlaces */
+.barra a {
+    font-size: 1.5rem;
+    padding: 1rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    align-content: left;
+    margin-right: 1rem;
+}
+
+/* Estilos para los botones */
+.register {
+    @include m.boton(v.$azul, v.$grisClaro);
+}
+
+.search_user{
+    @include m.boton(v.$azul, v.$grisClaro);
+}
+.remove_user {
+    @include m.boton(v.$rojo, v.$grisClaro);
+}
+
+.buscar_otro_empleado{
+    @include m.boton(v.$azul, v.$grisClaro);
+}

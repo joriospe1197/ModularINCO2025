@@ -1,0 +1,34 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.descripcion-pagina {
+    color: v.$negro;
+}
+
+.mision {
+    font-size: 5rem; /* Tamaño de fuente para el título de la misión */
+    font-weight: bold;
+    color: v.$azul; /* Cambia el color según tu paleta de colores */
+    margin-bottom: 0.5rem;
+}
+
+.descripcion-mision {
+    font-size: 2rem; /* Tamaño de fuente para la descripción de la misión */
+    color: v.$gris; /* Color gris para el texto */
+    line-height: 1.6; /* Espaciado entre líneas para mayor legibilidad */
+    margin-bottom: 1.5rem;
+}
+
+.vision {
+    font-size: 5rem; /* Tamaño de fuente para el título de la visión */
+    font-weight: bold;
+    color: v.$verde; /* Cambia el color según tu paleta de colores */
+    margin-bottom: 0.5rem;
+}
+
+.descripcion-vision {
+    font-size: 2rem; /* Tamaño de fuente para la descripción de la visión */
+    color: v.$gris; /* Color gris para el texto */
+    line-height: 1.6; /* Espaciado entre líneas para mayor legibilidad */
+    margin-bottom: 1.5rem;
+}
