@@ -1,8 +1,7 @@
 <?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?> 
 
 <div class="barra">
-    <a href="/register" class="register">Agregar empleado</a>
-    <a href="/search_user" class="search_user">Editar empleado</a>
+    <a href="/empleados" class="register">Regresar a la vista empleados</a>
 </div>
 
 <!-- Mostrar alertas -->

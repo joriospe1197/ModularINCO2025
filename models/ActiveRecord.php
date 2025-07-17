@@ -34,17 +34,21 @@ class ActiveRecord {
     // Registros - CRUD
     public function guardar() {
         $resultado = '';
-        if (!is_null($this->idempleado) && $this->idempleado > 0) {
-            // Si el objeto tiene un idempleado, se debe actualizar
-            $resultado = $this->actualizar();
+    
+        // Detectar cuál es el campo ID primario de este modelo
+        $idCampo = property_exists($this, 'idproducto') ? 'idproducto' : (property_exists($this, 'idunidad') ? 'idunidad' : 'idempleado');
+    
+        if (!is_null($this->$idCampo) && $this->$idCampo > 0) {
+            $resultado = $this->actualizar($idCampo);
         } else {
-            // Si no tiene idempleado, se crea un nuevo registro
             $resultado = $this->register();
         }
+    
         return $resultado;
     }
     
-
+    
+    
     public static function all() {
         $query = "SELECT * FROM " . static::$tabla;
         $resultado = self::consultarSQL($query);
@@ -53,21 +57,21 @@ class ActiveRecord {
 
     // Busca un registro por su id
     public static function find($idempleado) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE idempleado = {$idempleado}";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE idempleado = ${idempleado}";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
 
     // Obtener Registro
     public static function get($limite) {
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT {$limite}";
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT ${limite}";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
@@ -85,7 +89,8 @@ class ActiveRecord {
         $atributos = $this->sanitizarAtributos();
     
         // Asegurarse de que 'idempleado' no esté presente si es autoincremental
-        unset($atributos['idempleado']); // Eliminar 'idempleado' si es autoincremental
+         // Eliminar cualquier ID auto-incremental que no deba insertarse
+        unset($atributos['idempleado'], $atributos['idunidad'], $atributos['idproducto']);// Eliminar 'idempleado' si es autoincremental
     
         // Insertar en la base de datos
         $query = "INSERT INTO " . static::$tabla . " (";  
@@ -103,32 +108,36 @@ class ActiveRecord {
         ];
     }
 
-    public function actualizar() {
-        // Sanitizar los datos
+    public function actualizar($idCampo = 'idempleado') {
         $atributos = $this->sanitizarAtributos();
-
-        // Iterar para ir agregando cada campo de la BD
+    
         $valores = [];
         foreach ($atributos as $key => $value) {
             $valores[] = "{$key}='{$value}'";
         }
-
+    
         $query = "UPDATE " . static::$tabla . " SET ";
         $query .= join(', ', $valores);
-        $query .= " WHERE idempleado = '" . self::$db->escape_string($this->idempleado) . "' ";
-        $query .= "LIMIT 1"; 
-
-        // Ejecutar la consulta
+        $query .= " WHERE {$idCampo} = '" . self::$db->escape_string($this->$idCampo) . "' ";
+        $query .= "LIMIT 1";
+    
         $resultado = self::$db->query($query);
-        return $resultado;
+        return [
+            'resultado' => $resultado
+        ];
     }
+    
 
     // Eliminar un registro - Toma el ID de Active Record
     public function eliminar() {
-        $query = "DELETE FROM " . static::$tabla . " WHERE idempleado = " . self::$db->escape_string($this->idempleado) . " LIMIT 1";
+        // Detectar el campo ID según el modelo (idunidad o idempleado)
+        $idCampo = property_exists($this, 'idunidad') ? 'idunidad' : (property_exists($this, 'idempleado') ? 'idempleado' : 'idproducto');
+    
+        $query = "DELETE FROM " . static::$tabla . " WHERE {$idCampo} = " . self::$db->escape_string($this->$idCampo) . " LIMIT 1";
         $resultado = self::$db->query($query);
         return $resultado;
     }
+    
 
     public static function consultarSQL($query) {
         // Consultar la base de datos

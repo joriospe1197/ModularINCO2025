@@ -229,6 +229,9 @@
             "time": "2024-03-31T07:05:07+00:00"
         },
         {
+    "content-hash": "9d511517b05df8a62c4c6ac157676281",
+    "packages": [
+        {
             "name": "phpmailer/phpmailer",
             "version": "v6.9.3",
             "source": {
@@ -379,10 +382,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
-    "platform-dev": {},
+    "platform": [],
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

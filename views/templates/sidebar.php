@@ -10,9 +10,9 @@
         <a class="<?php echo ($titulo === 'Productos') ? 'activo' : ''; ?>" href="/productos">Productos</a>
         <a class="<?php echo ($titulo === 'Pedidos') ? 'activo' : ''; ?>" href="/pedidos">Pedidos</a>
         <a class="<?php echo ($titulo === 'Historial de pedidos') ? 'activo' : ''; ?>" href="/historial_de_pedidos">Historial de pedidos</a>
-        <a class="<?php echo ($titulo === 'Choferes') ? 'activo' : ''; ?>" href="/choferes">Choferes</a>
+        <a class="<?php echo ($titulo === 'Unidades de transporte') ? 'activo' : ''; ?>" href="/unidades_de_transporte">Unidades de transporte</a>
         <a class="<?php echo ($titulo === 'Servicios de unidades') ? 'activo' : ''; ?>" href="/servicios_de_unidades">Servicios de unidades</a>
-        <a class="<?php echo ($titulo === 'Rastreo de unidades') ? 'activo' : ''; ?>" href="/rastreo_de_unidades">Rastreo de unidades</a>
+        <!--  <a class="<?php echo ($titulo === 'Rastreo de unidades') ? 'activo' : ''; ?>" href="/rastreo_de_unidades">Rastreo de unidades</a> -->
         <a class="<?php echo ($titulo === 'Manifiestos') ? 'activo' : ''; ?>" href="/manifiestos">Manifiestos</a>
         <a class="<?php echo ($titulo === 'Chat') ? 'activo' : ''; ?>" href="/chat">Chat</a>
     </nav>

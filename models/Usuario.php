@@ -4,8 +4,15 @@ namespace Model;
 
 class Usuario extends ActiveRecord {
     protected static $tabla = 'empleados';
-    protected static $columnasDB = ['idempleado','nombre', 'direccion', 'telefono', 'contrasena', 'email', 'token', 'confirmado', 'tipo_usuario']; // Eliminar 'idempleado'
+    protected static $columnasDB = ['idempleado','nombre', 'direccion', 'telefono', 'contrasena', 'email', 'token', 'confirmado', 'tipo_usuario','tipo_puesto']; // Eliminar 'idempleado'
 
+    // Método para obtener todos los choferes
+    public static function allChoferes() {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE tipo_puesto = 'chofer'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+    
     public function __construct($args = []) {
         // Ya no necesitamos pasar 'idempleado' porque es autoincremental
         $this->idempleado = $args['idempleado'] ?? '';
@@ -18,6 +25,7 @@ class Usuario extends ActiveRecord {
         $this->token = $args['token'] ?? '';
         $this->confirmado = $args['confirmado'] ?? 0;
         $this->tipo_usuario = $args['tipo_usuario'] ?? 0;
+        $this->tipo_puesto = $args['tipo_puesto'] ?? '';
     }
 
     //Validar Login
@@ -53,7 +61,7 @@ class Usuario extends ActiveRecord {
             self::$alertas['error'][] = 'La dirección es obligatorio';
         }
         if (!$this->telefono) {
-            self::$alertas['error'][] = 'El telefono es obligatorio';
+            self::$alertas['error'][] = 'El teléfono es obligatorio';
         }
         if (!$this->contrasena) {
             self::$alertas['error'][] = 'La contraseña es obligatoria';
@@ -64,8 +72,16 @@ class Usuario extends ActiveRecord {
         if ($this->contrasena !== $this->contrasena2) {
             self::$alertas['error'][] = 'Las contraseñas deben coincidir';
         }
+    
+        // Validación para tipo_puesto (puesto)
+        if (empty($this->tipo_puesto)) {
+            self::$alertas['error'][] = 'El puesto es obligatorio';
+        }
+    
+    
         return self::$alertas;
     }
+    
 
     //Valida un email
     public function validarEmail(){
