@@ -8,7 +8,8 @@ use MVC\Router;
 
 class LoginController {
     public static function login(Router $router){
-
+        $nuevoHash = password_hash("veliz1234", PASSWORD_DEFAULT);
+        echo $nuevoHash;
         $alertas = [];
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para el inicio de sesión
