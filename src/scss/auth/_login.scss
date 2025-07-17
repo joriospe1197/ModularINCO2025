@@ -1,0 +1,45 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.login {
+    margin-top: 0;
+    min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+    height: 100%; /* Asegura que el contenedor ocupe todo el espacio disponible */
+    
+    /* Imagen de fondo */
+    background-image: url('fondo.jpg'); /* Reemplaza con la ruta de tu imagen */
+    background-repeat: no-repeat;
+    background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: fixed; /* Hace que la imagen se quede fija al hacer scroll */
+    
+    /* Fallback para dispositivos móviles donde background-attachment no funciona bien */
+    @media (max-width: 768px) {
+        background-attachment: scroll; /* En pantallas más pequeñas se habilita el desplazamiento */
+    }
+    
+
+    @media (max-width: 768px) {
+        background-attachment: scroll; /* Elimina 'fixed' en pantallas más pequeñas */
+    }
+
+    .Constructora {
+        @include m.textoDegradado(v.$grisClaro);
+    }
+
+    input[type="submit"]{
+        @include m.boton(v.$azul, v.$grisClaro);
+    }
+
+    .boton{
+        font-size: 1.4rem;
+        padding: 1rem;
+        border-radius: .5rem;
+    }
+    
+    .acciones {
+        a {
+            color: v.$blanco;
+        }
+    }
+}

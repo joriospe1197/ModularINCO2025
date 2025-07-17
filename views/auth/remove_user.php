@@ -1,0 +1,45 @@
+<?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?> 
+
+<div class="barra">
+    <a href="/register" class="register">Agregar empleado</a>
+    <a href="/search_user" class="search_user">Editar empleado</a>
+</div>
+
+<!-- Mostrar alertas -->
+<?php foreach ($alertas as $tipo => $mensajes): ?>
+    <?php foreach ($mensajes as $mensaje): ?>
+        <div class="alerta <?php echo $tipo; ?>"><?php echo $mensaje; ?></div>
+    <?php endforeach; ?>
+<?php endforeach; ?>
+
+<!-- Tabla con los empleados -->
+<table class="tabla-empleados">
+    <thead>
+        <tr>
+            <th>Id Empleado</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($empleados as $empleado): ?>
+            <tr>
+                <td><?php echo $empleado->idempleado; ?></td>
+                <td><?php echo $empleado->nombre; ?></td>
+                <td><?php echo $empleado->email; ?></td>
+                <td><?php echo $empleado->telefono; ?></td>
+                <td>
+                    <!-- Enlace para eliminar con confirmación -->
+                    <a href="/remove_user?idempleado=<?php echo $empleado->idempleado; ?>" class="boton_eliminar_empleado_tabla" 
+                    onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php include_once __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

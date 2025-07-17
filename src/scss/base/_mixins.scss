@@ -1,0 +1,68 @@
+@use 'base/variables' as v;
+
+/** Media Queries **/
+@mixin telefono {
+    @media (min-width: v.$telefono) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: v.$tablet) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: v.$desktop) {
+        @content;
+    }
+}
+
+/** Mixin para el botón **/
+@mixin boton($bgColor, $colorTexto, $borderRadius: 0.5rem) {
+    background-color: $bgColor;
+    padding: 1.5rem 4rem;
+    color: $colorTexto;
+    font-size: 1.6rem;
+    display: inline-block;
+    font-weight: 700;
+    border: none;
+    border-radius: $borderRadius; /* Redondeo de bordes con valor por defecto */
+    transition-property: background-color;
+    transition-duration: .3s;
+    text-align: center;
+    display: block;
+    width: 100%;
+    /* Agregar sombreado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9); /* Sombra alrededor del botón */
+    
+    @include tablet {
+        width: auto;
+    }
+
+    &:hover {
+        background-color: darken($bgColor, 10%);
+        cursor: pointer;
+    }
+}
+
+/** Mixin para Grid **/
+@mixin grid($columnas, $espaciado) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: repeat($columnas, 1fr);
+}
+
+/** Mixin para texto degradado **/
+@mixin textoDegradado($color) {
+    background: linear-gradient(to right, $color 0%, darken($color, 30%) 100%);
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+    font-size: 7rem;
+
+    @include tablet {
+        font-size: 10rem;
+    }
+}
