@@ -10,7 +10,7 @@ class UnidadController {
 
     public static function asignar_unidades_a_choferes(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $alertas = [];
     
         // Obtener los choferes desde la base de datos
@@ -69,7 +69,7 @@ class UnidadController {
     
     public static function message_exit_unidad(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $router->render('Unidades/message_exit_unidad', [
             'titulo' => 'Unidad registrada exitosamente'
         ]);
@@ -77,7 +77,7 @@ class UnidadController {
     
     public static function search_unidad(Router $router){
         session_start();
-        isAuth(); // Asegúrate de que el usuario esté autenticado
+        //isAuth(); // Asegúrate de que el usuario esté autenticado
         $alertas = [];
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -113,7 +113,7 @@ class UnidadController {
 
     public static function edit_unidad(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $alertas = [];
     
         // Obtener la unidad a editar
@@ -173,7 +173,7 @@ class UnidadController {
     
     public static function remove_unidad(Router $router) {
         session_start();
-        isAuth(); 
+        //isAuth(); 
         $alertas = [];
     
         // Si se recibe el idunidad por POST, proceder a eliminar la unidad
@@ -216,7 +216,7 @@ class UnidadController {
       
     public static function message_update_unidad(Router $router){
         session_start();
-        isAuth();
+        //isAuth();
         $router->render('Unidades/message_update_unidad', [
             'titulo' => 'Unidad actualizada exitosamente'
         ]);

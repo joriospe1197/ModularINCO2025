@@ -27,6 +27,10 @@ $router->post('/crear_manifiesto',[ManifiestosController::class, 'crear_manifies
 // Crear Registro Semanal
 $router->get('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
 $router->post('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
+
+$router->get('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+$router->post('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+
 //Editar registro semanal
 $router->get('/edit_week', [WeeklyController::class,'edit_week_pr']);
 $router->post('/edit_week', [WeeklyController::class,'edit_week_pr']);
@@ -97,7 +101,7 @@ $router->get('/pedidos',[DashboardController::class, 'pedidos']);
 $router->get('/unidades_de_transporte',[DashboardController::class, 'unidades_de_transporte']);
 $router->get('/servicios_de_unidades',[DashboardController::class, 'servicios_de_unidades']);
 $router->get('/rastreo_de_unidades',[DashboardController::class, 'rastreo_de_unidades']);
-$router->get('/manifiestos',[DashboardController::class, 'manifiestos']);
+$router->get('/manifiestos',[ManifiestosController::class, 'manifiestos']);
 $router->get('/chat',[DashboardController::class, 'chat']);
 
 // Asignar unidad a chofer

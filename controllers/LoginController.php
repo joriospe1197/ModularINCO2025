@@ -8,8 +8,7 @@ use MVC\Router;
 
 class LoginController {
     public static function login(Router $router){
-        $nuevoHash = password_hash("veliz1234", PASSWORD_DEFAULT);
-        echo $nuevoHash;
+        session_start();
         $alertas = [];
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para el inicio de sesión
@@ -28,7 +27,7 @@ class LoginController {
                     if(password_verify($_POST['contrasena'], $usuario->contrasena)){
                         
                         // Inicio de sesión
-                        session_start();
+                        
                         $_SESSION['idempleado'] = $usuario->idempleado;  // ID de empleado
                         $_SESSION['nombre'] = $usuario->nombre;
                         $_SESSION['email'] = $usuario->email;
@@ -61,6 +60,9 @@ class LoginController {
     }
 
     public static function forgot_my_password(Router $router){
+        $password = "veliz4";
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+        echo "Hash: " . $hashed;
         $alertas = [];//Arreglo vacio
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para recuperación de contraseña

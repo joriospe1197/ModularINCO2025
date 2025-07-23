@@ -20,6 +20,9 @@ class ManifiestosRecord {
     public $cliente;
     public $anio;
     public $total_m3;
+    public $obra;
+    public $tipo_residuo;
+
     
 
     public static function setDB($database) {
@@ -142,9 +145,9 @@ class ManifiestosRecord {
             }
         }
     }
-    public static function registrar($cliente,$mes,$anio,$totalm3){
-        $query = "INSERT INTO manifiestos (cliente, mes, anio, total_m3)
-        VALUES ('{$cliente}','{$mes}','{$anio}','{$totalm3}')";
+    public static function registrar($cliente,$obra,$tipo_residuo,$mes,$anio,$totalm3){
+        $query = "INSERT INTO manifiestos (cliente, obra, tipo_residuo, mes, anio, total_m3)
+        VALUES ('{$cliente}','{$obra}','{$tipo_residuo}','{$mes}','{$anio}','{$totalm3}')";
         $resultado = self::$db->query($query);
         return [
             'resultado' => $resultado,
@@ -153,7 +156,27 @@ class ManifiestosRecord {
     }
     public static function obtenerHistorialManifiestos(){
         $query = "SELECT * FROM manifiestos";
-        $resultado = self::consultarSQL($query);      
+        $resultado = self::consultarSQL($query);
+
         return $resultado;
     }
+    public static function buscarRegistro($cliente,$obra,$tipo_residuo,$mes,$anio){
+        $query = "SELECT * FROM manifiestos WHERE cliente = '{$cliente}'
+        AND obra = '{$obra}' AND tipo_residuo = '{$tipo_residuo}'
+        AND mes = '{$mes}' AND anio = '{$anio}'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+    public static function busquedaSec($cliente,$obra,$mes,$anio){
+        $query = "SELECT * FROM manifiestos WHERE cliente = '{$cliente}'
+        AND obra = '{$obra}'AND mes = '{$mes}' AND anio = '{$anio}'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+    public static function busquedaPorNombre($nombre){
+        $query = "SELECT * FROM clientes WHERE razon_social = '{$nombre}'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;  
+    }
+    
 }

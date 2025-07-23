@@ -100,7 +100,14 @@ class ManifiestosController{
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $dompdf = new Dompdf($options);
-        $registro_manifiestos = ManifiestosRecord::registrar($nombre,$mes,$anio,$totalm3);
+        $busqueda = ManifiestosRecord::buscarRegistro($nombre,$dirObra,$tipoResiduo,$mes,$anio);
+
+        if($busqueda[0]->cliente == $nombre AND $busqueda[0]->obra == $dirObra AND  $busqueda[0]->mes == $mes AND $busqueda[0]->anio == $anio){
+            ManifiestosRecord::setAlerta('error', 'Ya existe un manifiesto con estos datos');
+            $alertas = ManifiestosRecord::getAlertas();
+        }else{
+            $registro_manifiestos = ManifiestosRecord::registrar($nombre,$dirObra,$tipoResiduo,$mes,$anio,$totalm3);
+        }
         $html = '
 <style>
     body { font-family: Arial, sans-serif; font-size: 12px; }
@@ -153,11 +160,57 @@ class ManifiestosController{
         
         $datos_para_vista = [
             'titulo' => 'Manifiestos',
-            'manifiestos' => $manifiestos
+            'manifiestos' => $manifiestos,
+            'alertas' => ManifiestosRecord::getAlertas()
                
         ];
         
         
         $router->render('dashboard/manifiestos', $datos_para_vista);
+    }
+    public static function vista_manifiesto(Router $router){
+        session_start();
+        $alertas = [];
+        $cliente = $_GET['cliente'] ?? '';
+        $mes = $_GET['mes'] ?? '';
+        $anio = $_GET['anio'] ?? '';
+        $dirObra = $_GET['dirObra'] ?? '';
+        $tipo_residuo = $_GET['tipo_residuo'] ?? '';
+        $busqueda = ManifiestosRecord::busquedaSec($cliente,$dirObra,$mes,$anio);
+        $viajes = ManifiestosRecord::calcularM3($cliente,$anio,$mes,$tipo_residuo); 
+        $totalm3=$viajes*7;
+        $datos_cliente = ManifiestosRecord::busquedaPorNombre($cliente);
+        $meses = [
+            '01' => 'Enero',
+            '02' => 'Febrero',
+            '03' => 'Marzo',
+            '04' => 'Abril',
+            '05' => 'Mayo',
+            '06' => 'Junio',
+            '07' => 'Julio',
+            '08' => 'Agosto',
+            '09' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre'
+        ];
+        $router->render('auth/vista_previa_manifiesto',[
+            'titulo' => 'Manifiesto Creado Correctamente',
+            'alertas' => $alertas,
+            'clienteM' => $cliente,
+            'mesM' => $meses[$mes] ?? $mes,
+            'anio' => $anio,
+            'dirObra' => $dirObra,
+            'direccion' => $datos_cliente[0]->domicilio,
+            'correo' => $datos_cliente[0]->correo_electronico,
+            'tipoResiduo' => $tipo_residuo,
+            'totalm3' => $totalm3,
+            'codigo' => $datos_cliente[0]->codigo_postal,
+            'estado' => $datos_cliente[0]->estado,
+            'municipio' => $datos_cliente[0]->municipio,
+            'telefono' => $datos_cliente[0]->telefono,
+            'nombre' => $cliente
+        ]);
+
     }
 }

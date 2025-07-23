@@ -11,7 +11,7 @@ class UserController {
     
     public static function register(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $alertas = [];
         $usuario = new Usuario;
 

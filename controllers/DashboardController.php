@@ -20,7 +20,7 @@ class DashboardController{
     public static function inicio(Router $router){
 
         session_start();
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/inicio', [
             'titulo' => 'Inicio'
@@ -29,7 +29,7 @@ class DashboardController{
 
     public static function empleados(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
     
         // Obtener todos los empleados
         $empleados = Usuario::all();  // Usamos el método all() de ActiveRecord para obtener todos los empleados
@@ -44,7 +44,7 @@ class DashboardController{
 
     public static function productos(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
     
         // Obtener todos los productos
         $productos = Productos::all();  // Usamos el método all() de ActiveRecord para obtener todos los productos
@@ -59,7 +59,7 @@ class DashboardController{
     public static function pedidos(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/pedidos', [
             'titulo' => 'Pedidos'
@@ -69,7 +69,7 @@ class DashboardController{
     public static function historial_de_pedidos(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/historial_de_pedidos', [
             'titulo' => 'Historial de pedidos'
@@ -78,7 +78,7 @@ class DashboardController{
 
     public static function unidades_de_transporte(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
     
         // Obtener las unidades de transporte y los choferes asociados
         $unidades = Unidad_de_transporte::all();  // Obtiene todas las unidades
@@ -97,7 +97,7 @@ class DashboardController{
     public static function servicios_de_unidades(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/servicios_de_unidades', [
             'titulo' => 'Servicios de unidades'
@@ -107,7 +107,7 @@ class DashboardController{
     public static function rastreo_de_unidades(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/rastreo_de_unidades', [
             'titulo' => 'Rastreo de unidades'
@@ -117,7 +117,7 @@ class DashboardController{
     public static function manifiestos(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/manifiestos', [
             'titulo' => 'Manifiestos'
@@ -127,7 +127,7 @@ class DashboardController{
     public static function chat(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/chat', [
             'titulo' => 'Chat'

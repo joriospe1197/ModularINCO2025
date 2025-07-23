@@ -9,7 +9,7 @@ class ProductsController {
 
     public static function register_product(Router $router) {
         session_start();
-        isAuth(); // Verificar que el usuario esté autenticado
+        //isAuth(); // Verificar que el usuario esté autenticado
 
         $alertas = [];
         $producto = new Productos(); // Instanciamos el modelo de Producto
@@ -57,7 +57,7 @@ class ProductsController {
 
     public static function product_success_message(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $router->render('products/product_success_message', [
             'titulo' => 'Producto registrado exitosamente'
         ]);
@@ -65,7 +65,7 @@ class ProductsController {
 
     public static function search_product(Router $router){
         session_start();
-        isAuth(); // Asegúrate de que el usuario esté autenticado
+        //isAuth(); // Asegúrate de que el usuario esté autenticado
         $alertas = [];
     
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -100,7 +100,7 @@ class ProductsController {
 
     public static function edit_product(Router $router) {
         session_start();
-        isAuth();
+        //isAuth();
         $alertas = [];
     
         // Obtener producto a editar
@@ -149,7 +149,7 @@ class ProductsController {
 
     public static function message_update_product(Router $router){
         session_start();
-        isAuth();
+        //isAuth();
         $router->render('products/message_update_product', [
             'titulo' => 'Producto actualizado exitosamente'
         ]);
@@ -157,7 +157,7 @@ class ProductsController {
 
     public static function remove_product(Router $router) {
         session_start();
-        isAuth();  // Asegúrate de que el usuario esté autenticado
+        //isAuth();  // Asegúrate de que el usuario esté autenticado
         $alertas = [];
 
         // Obtener todos los productos (productos)

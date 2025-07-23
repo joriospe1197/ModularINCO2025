@@ -15,6 +15,8 @@ class ManifiestosActiveRecord extends ManifiestosRecord {
         $this->mes = $args['mes'] ?? '';
         $this->anio = $args['anio'] ?? '';
         $this->total_m3 = $args['totalm3'] ?? '';
+        $this->obra = $args['obra'] ?? '';
+        $this->tipo = $args['tipo'] ?? '';  
 
         
     }

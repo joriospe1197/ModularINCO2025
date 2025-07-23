@@ -3,7 +3,7 @@
         'name' => 'victor/modularinco2025',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '7d818a75e37bcca6a41e7c5c98c43bbf030d7350',
+        'reference' => '48bd9ce06dbd77386e78c7cabea7864c12261354',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'victor/modularinco2025' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '7d818a75e37bcca6a41e7c5c98c43bbf030d7350',
+            'reference' => '48bd9ce06dbd77386e78c7cabea7864c12261354',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -25,7 +25,22 @@
     <div class="barra">
             <a href="/crear_manifiesto" class="register"> Crear nuevo manifiesto</a>
     </div>
-    
+<?php
+    $meses = [
+        '01' => 'Enero',
+        '02' => 'Febrero',
+        '03' => 'Marzo',
+        '04' => 'Abril',
+        '05' => 'Mayo',
+        '06' => 'Junio',
+        '07' => 'Julio',
+        '08' => 'Agosto',
+        '09' => 'Septiembre',
+        '10' => 'Octubre',
+        '11' => 'Noviembre',
+        '12' => 'Diciembre'
+    ];
+?>
     <div class="cajaManifiestos">
         <table>
             <thead>
@@ -39,12 +54,15 @@
             </thead>
             <tbody>
                 <?php foreach ($manifiestos as $manifiesto): ?>
+                    
                     <tr>
                         <td><?= $manifiesto->cliente ?></td>
-                        <td><?= $manifiesto->mes ?></td>
+                        <td><?= $meses[$manifiesto->mes] ?? $manifiesto->mes ?></td>
                         <td><?= $manifiesto->anio ?></td>
                         <td><?= $manifiesto->total_m3 ?></td>
-                        <td><a href="/ver_manifiesto">Ver manifiesto</a></td>
+                        <td hidden><?= $manifiesto->obra ?></td>
+                        <td ><?= $manifiesto->tipo_residuo ?></td>
+                        <td><a href="/vista_manifiesto?cliente=<?= urlencode($manifiesto->cliente) ?>&mes=<?= $manifiesto->mes ?>&anio=<?= $manifiesto->anio ?>&dirObra=<?= urlencode($manifiesto->obra) ?>&tipo_residuo=<?= urlencode($manifiesto->tipo_residuo) ?>">Ver manifiesto</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
