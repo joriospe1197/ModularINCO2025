@@ -85,7 +85,7 @@ class WeeklyRecord {
         return $resultado;
     }
     public static function allChoferes(){
-        $query = "SELECT * FROM  choferes";
+        $query = "SELECT * FROM  empleados WHERE tipo_puesto = 'Chofer' ORDER BY nombre ASC";
         $resultado = self::consultarSQL($query);
         return $resultado;
     }

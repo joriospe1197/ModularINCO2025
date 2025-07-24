@@ -86,7 +86,7 @@ class WeeklyController {
         $choferSeleccionado = $_GET['chofer'] ?? $choferes[0]->idempleado;
         $semanas = WeeklyRecord::obtenerSemanasPorChofer($choferSeleccionado); 
         $semanaSeleccionada = isset($_GET['semana']) ? intval($_GET['semana']) : 0;
-        //$choferSeleccionado = $_GET['chofer'] ?? 0;
+        
         
 
         if (isset($semanas[$semanaSeleccionada])) {
