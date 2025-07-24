@@ -22,8 +22,8 @@ try {
   db = await mysql.createConnection({
     host: 'localhost',
     user: 'root',       
-    password: 'veliz4$',
-    database: 'Constructora'
+    password: '123456',
+    database: 'constructora'
   });
   console.log('Conectado a la base de datos MySQL');
 } catch (error) {
@@ -94,6 +94,6 @@ io.on('connection', async (socket) => {
 });
 
 // Iniciar servidor
-server.listen(3000, () => {
-  console.log('Servidor de chat corriendo en http://localhost:3000');
+server.listen(3001, () => {
+  console.log('Servidor de chat corriendo en http://localhost:3001');
 });

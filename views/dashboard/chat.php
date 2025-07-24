@@ -18,7 +18,7 @@ include_once __DIR__ . '/header-dashboard.php';
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script>
-        const socket = io('http://localhost:3000');
+        const socket = io('http://localhost:3001');
 
         const nombreUsuario = <?php echo json_encode($nombreUsuario); ?>;
         console.log('Usuario conectado como:', nombreUsuario);  // <-- debugueo

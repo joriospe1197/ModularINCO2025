@@ -11,7 +11,7 @@
         }
     },
     "require": {
-        "phpmailer/phpmailer": "^6.10",
+        "phpmailer/phpmailer": "*",
         "dompdf/dompdf": "^3.1"
     }
 }

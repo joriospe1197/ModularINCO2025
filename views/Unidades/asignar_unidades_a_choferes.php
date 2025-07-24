@@ -12,7 +12,8 @@
             <select id="idempleado" name="chofer">
                 <option value="">Sin seleccionar</option>
                 <?php foreach ($choferes as $chofer) : ?>
-                    <option value="<?php echo $chofer->idempleado; ?>" <?php echo $usuario->chofer == $chofer->idempleado ? 'selected' : ''; ?>>
+                    <option value="<?php echo $chofer->idempleado; ?>" 
+                        <?php echo (isset($usuario) && $usuario->chofer == $chofer->idempleado) ? 'selected' : ''; ?>>
                         <?php echo $chofer->nombre; ?>
                     </option>
                 <?php endforeach; ?>
