@@ -2,32 +2,85 @@
 @use 'base/mixins' as m;
 
 .sidebar {
-    background-color: v.$azul;
-    padding: 2rem;
-    h2{
-        color: v.$blanco;
-        margin: 0;
+    background-color: v.$azul; // Mantiene tu color original (#0b2764e1)
+    color: rgba(v.$blanco, 0.9);
+    width: v.$sidebar-width;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    top: 0;
+    z-index: v.$z-sidebar;  /* Asegura que esté por encima */
+    padding: 0; // Eliminamos el padding general para los nuevos estilos
+    overflow-y: auto;  /* Scroll si el contenido es muy largo */
+    transition: width 0.3s ease; /* Para futuras animaciones */
+
+    .sidebar-header {
+        padding: 2rem;
         text-align: center;
-    }
-    .sidebar-nav{
-        margin-top: 5rem;
+        border-bottom: 1px solid rgba(v.$blanco, 0.1);
 
-        a{
-            color: v.$grisOscuro;
-            display: block;
-            margin-bottom: 1.5rem;
-            padding: .7rem;
-            transition-property: background-color;
-            transition-duration: 300ms; 
-            text-transform: uppercase;
-            font-weight: bold;
-            //font-size: 2rem;
-
-            &:hover,
-            &.activo{
-                background-color: darken(v.$blanco, 20%);
-                border-radius: .5rem;
+        h2 {
+            color: v.$blanco;
+            margin: 0;
+            font-size: 1.8rem;
+            @include m.tablet {
+                font-size: 2rem;
             }
         }
+        
+    }
+
+    .nav-menu {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem 0;
+    }
+
+    .nav-link {
+        color: rgba(v.$blanco, 0.8);
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        border-left: 3px solid transparent;
+        transition: all 0.3s;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+
+        &:hover,
+        &.active {
+            background-color: rgba(v.$blanco, 0.1);
+            color: v.$blanco;
+            border-left-color: v.$verde; // Usa tu variable $verde
+        }
+
+        i {
+            margin-right: 1rem;
+            font-size: 1.4rem;
+        }
+    }
+
+    .nav-group {
+        margin-bottom: 2rem;
+
+        &-title {
+            color: rgba(v.$blanco, 0.6);
+            font-size: 1rem;
+            padding: 0 2rem 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    }
+
+    .sidebar-footer {
+        border-top: 1px solid rgba(v.$blanco, 0.1);
+        padding: 1.5rem;
+    }
+
+    // Responsive (usando tus mixins)
+    @include m.tablet {
+        width: v.$sidebar-width;
     }
 }

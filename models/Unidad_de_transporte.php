@@ -18,7 +18,7 @@ class Unidad_de_transporte extends ActiveRecord {
 
     // Método para buscar una unidad por un campo
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE $columna = '$valor'";
         $resultado = self::consultarSQL($query);
         return !empty($resultado) ? $resultado[0] : null;  // Devuelve el primer registro o null si no existe
     }

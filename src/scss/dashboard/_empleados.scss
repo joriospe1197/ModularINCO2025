@@ -1,35 +1,51 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
 
-/* Aseguramos que los enlaces dentro de .barra estén alineados a la izquierda */
-.barra {
-    display: flex;
-    justify-content: flex-start; /* Alinea todos los elementos a la izquierda */
-    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+
+
+/* Estilos base para botones - aplican a todos los usos */
+.register, 
+.search_user, 
+.buscar_otro_empleado {
+    @include m.boton(v.$azul, v.$blanco);
 }
 
-/* Estilos comunes para los enlaces */
-.barra a {
-    font-size: 1.5rem;
-    padding: 1rem 1rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    align-content: left;
-    margin-right: 1rem;
-}
-
-/* Estilos para los botones */
-.register {
-    @include m.boton(v.$azul, v.$grisClaro);
-}
-
-.search_user{
-    @include m.boton(v.$azul, v.$grisClaro);
-}
 .remove_user {
-    @include m.boton(v.$rojo, v.$grisClaro);
+    @include m.boton(v.$rojo, v.$blanco);
 }
 
-.buscar_otro_empleado{
-    @include m.boton(v.$azul, v.$grisClaro);
+/* Estilos contextuales para diferentes usos */
+
+/* Cuando están en la barra superior */
+.barra_boton .register,
+.barra_boton .search_user,
+.barra_boton .remove_user {
+    margin: 0;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.3rem;
+}
+
+/* Cuando son botones principales (como en productos.php) */
+.acciones-principales .register,
+.acciones-principales .search_user {
+    min-width: 180px;
+    padding: 1rem 2rem;
+}
+
+/* Cuando son botones en tablas */
+.tabla-empleados .register,
+.tabla-empleados .search_user {
+    padding: 0.4rem 0.8rem;
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+/* Botones de regreso */
+.boton-regreso {
+    @include m.boton(v.$grisClaro, v.$grisOscuro);
+    border: 1px solid v.$gris;
+    
+    &:hover {
+        background-color: darken(v.$grisClaro, 5%);
+    }
 }

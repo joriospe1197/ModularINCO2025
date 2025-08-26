@@ -1,18 +1,15 @@
-<?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?> 
+<a href="/productos" class="btn-regresar">⬅ Regresar</a>
 
-    <div class="barra">
-        <a href="/productos" class="register">Regresar a la vista productos</a>
+<!-- Mostrar alertas -->
+<?php if (!empty($_SESSION['alerta'])): ?>
+    <div class="alerta <?php echo $_SESSION['alerta']['tipo']; ?> mb-4">
+        <p><?php echo $_SESSION['alerta']['mensaje']; ?></p>
     </div>
-
-    <!-- Mostrar alertas -->
-    <?php foreach ($alertas as $tipo => $mensajes): ?>
-        <?php foreach ($mensajes as $mensaje): ?>
-            <div class="alerta <?php echo $tipo; ?>"><?php echo $mensaje; ?></div>
-        <?php endforeach; ?>
-    <?php endforeach; ?>
+    <?php unset($_SESSION['alerta']); ?>
+<?php endif; ?>
 
     <!-- Tabla con los productos -->
-    <table class="tabla-empleados">
+    <table class="tabla-productos">
         <?php if (empty($productos)) : ?>
             <p>No hay productos registrados.</p>
         <?php else : ?>
@@ -42,5 +39,3 @@
             </tbody>
         <?php endif; ?>    
     </table>
-
-<?php include_once __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

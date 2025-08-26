@@ -1,24 +1,80 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
 
-.dashboard{
-    background-color: v.$grisClaro;
-
-    @include m.tablet{
+// Estructura principal del layout
+.dashboard {
+    // Estructura principal
+    .app-layout {
         display: flex;
-        height: 100vh;  
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden; // Previene desbordamiento horizontal
     }
 
-    .principal {
+
+    .main-content-area {
         flex: 1;
-        overflow: scroll;
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        min-width: 0; // Fix para tablas responsivas
+        margin-top: 60px;
+
     }
 
-    .contenido{
+    .content-viewport {
         padding: 2rem;
-        .nombre-pagina{
-            font-size: 2.8rem;
-            text-align: center;
+        width: 100%;
+        max-width: 1550px;
+        margin: 90px;
+        padding-top: 4rem;
+        // Asegura que el contenido no se esconda
+        position: relative;
+        z-index: 1;
+    }
+
+    // Estilos para tablas
+    .table-responsive {
+        overflow-x: auto;
+        max-width: 100%;
+        
+        table {
+            width: 100%;
+            min-width: 600px; // Ancho mínimo para tablas
+            border-collapse: collapse;
+            
+            th, td {
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+                white-space: nowrap;
+            }
+            
+            th {
+                background-color: #f8fafc;
+                font-weight: 600;
+            }
+            
+            tr:hover {
+                background-color: #f8fafc;
+            }
         }
     }
+
+    // Responsive
+    @media (max-width: 992px) {
+        .main-content-area {
+            margin-left: 0;
+            width: 100%;
+        }
+        
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            
+            &.active {
+                transform: translateX(0);
+            }
+        }
+    }
+
 }

@@ -17,6 +17,16 @@ class ActiveRecord {
         self::$db = $database;
     }
 
+    // Asegurar acceso a la conexion de BD
+    protected static function getDB() {
+        return self::$db;
+    }
+    // Para consultas que no devuelven resultados (INSERT, UPDATE, DELETE)
+    public static function ejecutarSQL($query) {
+        $resultado = self::$db->query($query);
+        return $resultado;
+    }
+
     public static function setAlerta($tipo, $mensaje) {
         static::$alertas[$tipo][] = $mensaje;
     }
@@ -34,20 +44,26 @@ class ActiveRecord {
     // Registros - CRUD
     public function guardar() {
         $resultado = '';
-    
-        // Detectar cuál es el campo ID primario de este modelo
-        $idCampo = property_exists($this, 'idproducto') ? 'idproducto' : (property_exists($this, 'idunidad') ? 'idunidad' : 'idempleado');
-    
-        if (!is_null($this->$idCampo) && $this->$idCampo > 0) {
+        
+        // Detectar ID de forma más robusta
+        $idCampo = null;
+        $idCamposPosibles = ['id', 'idempleado', 'idproducto', 'idunidad'];
+        
+        foreach ($idCamposPosibles as $campo) {
+            if (property_exists($this, $campo)) {
+                $idCampo = $campo;
+                break;
+            }
+        }
+        
+        if ($idCampo && !is_null($this->$idCampo) && $this->$idCampo > 0) {
             $resultado = $this->actualizar($idCampo);
         } else {
             $resultado = $this->register();
         }
-    
+        
         return $resultado;
     }
-    
-    
     
     public static function all() {
         $query = "SELECT * FROM " . static::$tabla;
@@ -57,21 +73,21 @@ class ActiveRecord {
 
     // Busca un registro por su id
     public static function find($idempleado) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE idempleado = ${idempleado}";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE idempleado = $idempleado";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
 
     // Obtener Registro
     public static function get($limite) {
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT ${limite}";
+        $query = "SELECT * FROM " . static::$tabla . " LIMIT $limite";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE $columna = '$valor'";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
@@ -167,6 +183,7 @@ class ActiveRecord {
 
         return $objeto;
     }
+    
 
     // Identificar y unir los atributos de la BD
     public function atributos() {
@@ -178,6 +195,8 @@ class ActiveRecord {
         }
         return $atributos;
     }
+
+
 
     public function sanitizarAtributos() {
         $atributos = $this->atributos();

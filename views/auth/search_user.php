@@ -1,31 +1,33 @@
-<?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?>
+<a href="/empleados" class="btn-regresar">⬅ Regresar a la vista de empleados</a>
 
-<div class="barra">
-    <a href="/empleados" class="register">Regresar a la vista empleados</a>
-</div>
+<?php include_once __DIR__ .'/../templates/alertas.php'; ?>
+<!-- Mostrar info si se encontró usuario (solo para debug) -->
+<?php if (isset($usuario) && $usuario): ?>
+    <div class="alerta exito">
+        <p>Empleado encontrado:  <?php echo $usuario->nombre; ?></p>
+        <p>  Redirigiendo a edición...</p>
+    </div>
+    <script>
+        // Redirección con JavaScript en caso de que el header no funcione
+        setTimeout(function() {
+            window.location.href = '/edit_user?idempleado=<?php echo $usuario->idempleado; ?>';
+        }, 2000);
+    </script>
+<?php endif; ?>
 
-        <?php include_once __DIR__ .'/../templates/alertas.php'; ?>
+<!-- Mostrar el formulario siempre -->
+<form class="formulario" method="POST" action="/search_user">
+    <div class="campo">
+        <label for="idempleado">Id del empleado:</label>
+        <input
+            type="number"
+            id="idempleado"
+            placeholder="Ingrese el id del empleado que desea editar."
+            name="idempleado"
+            value="<?php echo $_POST['idempleado'] ?? ''; ?>"
+            required
+        />
+    </div>
+    <input type="submit" class="boton" value="Buscar empleado">
+</form>
 
-        <!-- Mostrar el formulario solo si no se ha encontrado un usuario -->
-        <?php if (!isset($usuario)): ?>
-            <form class="formulario" method="POST" action="/search_user">
-                <div class="campo">
-                    <label for="idempleado">Id del empleado:</label>
-                    <input
-                        type="number"
-                        id="idempleado"
-                        placeholder="Ingrese el id del empleado que desea editar."
-                        name="idempleado"
-                        value="<?php echo isset($usuario) ? $usuario->idempleado : ''; ?>"
-                    />
-                </div>
-                <input type="submit" class="boton" value="Buscar empleado">
-            </form>
-        <?php else: ?>
-            <!-- Si se encontró al usuario, redirige a la página de edición -->
-            <?php header('Location: /edit_user?idempleado=' . $usuario->idempleado); exit; ?>
-        <?php endif; ?>
-
-  
-
-<?php include_once __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

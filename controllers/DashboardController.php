@@ -6,13 +6,13 @@ use Model\Unidad_de_transporte;
 use Model\Productos;
 use Model\Usuario;
 use MVC\Router;
+use Model\Pedidos;
 
 
 class DashboardController{
 
     public static function mi_perfil(Router $router){
         session_start();
-
         $router->render('dashboard/mi_perfil', [
             'titulo' => 'Mi perfil'
         ]);
@@ -31,6 +31,15 @@ class DashboardController{
     public static function empleados(Router $router) {
         session_start();
         isAuth();
+         // Validar que el usuario sea tipo 1 (admin)
+        if ($_SESSION['tipo_usuario'] != 1) {
+            $_SESSION['alerta'] = [
+                'tipo' => 'error',
+                'mensaje' => 'No tienes permisos para acceder a esta sección'
+            ];
+            header('Location: /inicio');
+            exit;
+        }
     
         // Obtener todos los empleados
         $empleados = Usuario::all();  // Usamos el método all() de ActiveRecord para obtener todos los empleados
@@ -57,13 +66,16 @@ class DashboardController{
         ]);
     }    
 
-    public static function pedidos(Router $router){
+    public static function pedidos(Router $router) {
         session_start();
-
         isAuth();
 
+        // Obtener los pedidos
+        $pedidos = Pedidos::obtenerTodos();
+        
         $router->render('dashboard/pedidos', [
-            'titulo' => 'Pedidos'
+            'titulo' => 'Pedidos',
+            'pedidos' => $pedidos
         ]);
     }
 
@@ -108,7 +120,7 @@ class DashboardController{
     public static function rastreo_de_unidades(Router $router){
         session_start();
 
-        isAuth();
+        //isAuth();
 
         $router->render('dashboard/rastreo_de_unidades', [
             'titulo' => 'Rastreo de unidades'

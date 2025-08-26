@@ -4,9 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc8cbd304c47171beab60a20f77368e44
+class ComposerStaticInit5a68f74be973fc47940b02f6369d167c
 {
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Svg\\' => 4,
+            'Sabberworm\\CSS\\' => 15,
+        ),
         'P' => 
         array (
             'PHPMailer\\PHPMailer\\' => 20,
@@ -14,7 +19,16 @@ class ComposerStaticInitc8cbd304c47171beab60a20f77368e44
         'M' => 
         array (
             'Model\\' => 6,
+            'Masterminds\\' => 12,
             'MVC\\' => 4,
+        ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
+        ),
+        'D' => 
+        array (
+            'Dompdf\\' => 7,
         ),
         'C' => 
         array (
@@ -24,6 +38,14 @@ class ComposerStaticInitc8cbd304c47171beab60a20f77368e44
     );
 
     public static $prefixDirsPsr4 = array (
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
@@ -32,9 +54,21 @@ class ComposerStaticInitc8cbd304c47171beab60a20f77368e44
         array (
             0 => __DIR__ . '/../..' . '/models',
         ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
         'MVC\\' => 
         array (
             0 => __DIR__ . '/../..' . '/',
+        ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
         'Controllers\\' => 
         array (
@@ -48,14 +82,15 @@ class ComposerStaticInitc8cbd304c47171beab60a20f77368e44
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc8cbd304c47171beab60a20f77368e44::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc8cbd304c47171beab60a20f77368e44::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc8cbd304c47171beab60a20f77368e44::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5a68f74be973fc47940b02f6369d167c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5a68f74be973fc47940b02f6369d167c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5a68f74be973fc47940b02f6369d167c::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -2,44 +2,254 @@
 @use 'base/mixins' as m;
 
 .login {
-    margin-top: 0;
-    min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
-    height: 100%; /* Asegura que el contenedor ocupe todo el espacio disponible */
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     
-    /* Imagen de fondo */
-    background-image: url('fondo.jpg'); /* Reemplaza con la ruta de tu imagen */
-    background-repeat: no-repeat;
-    background-size: cover; /* Hace que la imagen cubra toda la pantalla */
-    background-position: center center; /* Centra la imagen */
-    background-attachment: fixed; /* Hace que la imagen se quede fija al hacer scroll */
-    
-    /* Fallback para dispositivos móviles donde background-attachment no funciona bien */
-    @media (max-width: 768px) {
-        background-attachment: scroll; /* En pantallas más pequeñas se habilita el desplazamiento */
+
+    //Nuevo diseño login!!
+    @include m.flex-center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(v.$azul, 0.9), rgba(v.$grisOscuro, 0.8)), url('fondo.jpg') center/cover no-repeat fixed;
+    padding: 2rem;
+    font-family: v.$fuente_headings;
+
+
+    .contenedor-login {
+        width: 100%;
+        max-width: 1400px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+        
+
+        @include m.tablet {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+    }
+
+    .logo-constructora {
+        text-align: center;
+        color: v.$blanco;
+        padding: 1rem;
+
+        .nombre-empresa {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1.5rem 0 1rem;
+
+            span {
+                color: v.$amarillo;
+            }
+        }
+
+        .slogan { //eliminarlo despues
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+    }
+
+    .card-login {
+        background: rgba(v.$blanco, 0.95);
+        border-radius: 1.5rem;
+        padding: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 1000px; // Definimos un ancho máximo
+        margin: 0 auto;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(v.$blanco, 0.2);
+
+        .titulo-formulario {
+            color: v.$azul;
+            font-size: 2.2em;
+            margin-bottom: 1rem;
+        }
+
+        .instrucciones {
+            color: v.$gris;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+    }
+
+    .grupo-input {
+        position: relative;
+        margin-bottom: 2rem;
+
+        .etiqueta {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: v.$grisOscuro;
+            font-weight: 500;
+            font-size: 1.5rem;
+        }
+
+        .input-login {
+            width: 100%;
+            padding: 1.2rem 1rem 1.2rem 3rem;
+            border: 1px solid v.$grisClaro;
+            border-radius: 0.8rem;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+
+            &:focus {
+                border-color: v.$azul-pendiente;
+                box-shadow: 0 0 0 3px rgba(v.$azul-pendiente, 0.1);
+                outline: none;
+            }
+        }
+
+        .icono-input {
+            position: absolute;
+            left: 1.2rem;
+            top: 3.1rem;
+            color: v.$gris;
+            font-size: 1.2rem;
+        }
+    }
+
+    .opciones-login {
+        @include m.flex-between;
+        margin: 2.5rem 0;
+
+        .recordarme {
+            @include m.flex-center;
+            gap: 0.8rem;
+
+            input {
+                cursor: pointer;
+            }
+
+            label {
+                font-size: 1.3rem;
+                color: v.$grisOscuro;
+                cursor: pointer;
+            }
+        }
+
+        .enlace-olvido {
+            color: v.$azul-pendiente;
+            font-size: 1.3rem;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .boton-login {
+        @include m.boton(v.$azul-pendiente, v.$grisClaro);
+        width: 100%;
+        padding: 1.2rem;
+        font-size: 1.3rem;
+        font-weight: 400;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: darken(v.$azul-pendiente, 10%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(v.$azul, 0.2);
+        }
+
+        i {
+            margin-right: 0.8rem;
+        }
+    }
+
+    .pie-login {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: v.$blanco;
+        margin-top: 2rem;
+        font-size: 1rem;
+        opacity: 0.8;
+
+        p {
+            margin: 0.3rem 0;
+        }
+    }
+
+    @include m.telefono {
+        padding: 1rem;
+
+        .card-login {
+            padding: 3rem 2rem;
+        }
+
+        .logo-constructora {
+            padding: 1rem;
+
+            .nombre-empresa {
+                font-size: 2.5rem;
+            }
+        }
+    }
+
+    //Fin nuevo diseño Login
+
+
+    /* Elimina márgenes del contenedor principal */
+    .contenedor {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Ajusta el contenedor del formulario */
+    .contenedor-sm {
+        background-color: rgba(v.$blanco, 0.9);
+        padding: 3rem;
+        border-radius: 1rem;
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
     }
     
 
     @media (max-width: 768px) {
-        background-attachment: scroll; /* Elimina 'fixed' en pantallas más pequeñas */
+        background-attachment: scroll;
+        
+        .contenedor-sm {
+            width: 95%;
+            padding: 2rem;
+        }
     }
 
+    /* Resto de tus estilos... */
     .Constructora {
         @include m.textoDegradado(v.$grisClaro);
+        text-align: center;
+        margin-bottom: 2rem;
     }
 
-    input[type="submit"]{
-        @include m.boton(v.$azul, v.$grisClaro);
+    input[type="submit"] {
+        @include m.boton(v.$azul, v.$blanco);
+        width: 100%;
     }
 
-    .boton{
-        font-size: 1.4rem;
-        padding: 1rem;
-        border-radius: .5rem;
-    }
-    
     .acciones {
+        text-align: center;
+        margin-top: 1.5rem;
+        
         a {
-            color: v.$blanco;
+            color: v.$azul;
+            font-weight: 600;
+            
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

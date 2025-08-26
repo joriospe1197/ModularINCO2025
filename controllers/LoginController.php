@@ -8,7 +8,11 @@ use MVC\Router;
 
 class LoginController {
     public static function login(Router $router){
-
+        if(isset($_SESSION['login'])) {
+            header('Location: /inicio');
+            exit;
+        }
+        session_start();
         $alertas = [];
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para el inicio de sesión
@@ -27,7 +31,7 @@ class LoginController {
                     if(password_verify($_POST['contrasena'], $usuario->contrasena)){
                         
                         // Inicio de sesión
-                        session_start();
+                        
                         $_SESSION['idempleado'] = $usuario->idempleado;  // ID de empleado
                         $_SESSION['nombre'] = $usuario->nombre;
                         $_SESSION['email'] = $usuario->email;
@@ -49,7 +53,8 @@ class LoginController {
         // Render a la vista
         $router->render('auth/login', [
             'titulo' => 'Iniciar Sesión',
-            'alertas' => $alertas
+            'alertas' => $alertas,
+            'simple_layout' => true  // Nueva bandera
         ]);
     }
 
@@ -60,6 +65,9 @@ class LoginController {
     }
 
     public static function forgot_my_password(Router $router){
+        $password = "veliz4";
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+        echo "Hash: " . $hashed;
         $alertas = [];//Arreglo vacio
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para recuperación de contraseña
@@ -95,6 +103,7 @@ class LoginController {
         // Muestra la vista
         $router->render('auth/forgot_my_password', [
             'titulo' => 'Olvide mi contraseña',
+            'simple_layout' => true, // Esto evitará que se muestre el sidebar
             'alertas' => $alertas
         ]);
     }

@@ -79,7 +79,8 @@ class UnidadController {
         session_start();
         isAuth(); // Asegúrate de que el usuario esté autenticado
         $alertas = [];
-    
+        
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Crear un objeto de la unidad de transporte con los datos del formulario
             $Unidad_de_transporte = new Unidad_de_transporte($_POST);
@@ -175,6 +176,18 @@ class UnidadController {
         session_start();
         isAuth(); 
         $alertas = [];
+
+        // Validar que el usuario tenga permisos (tipo = 1)
+        if ($_SESSION['tipo_usuario'] != 1) {
+            $_SESSION['alerta'] = [
+                'tipo' => 'error',
+                'mensaje' => 'No tienes permisos para eliminar unidades'
+            ];
+            header('Location: /unidades_de_transporte');
+            exit;
+        }
+
+       
     
         // Si se recibe el idunidad por POST, proceder a eliminar la unidad
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idunidad'])) {
@@ -187,9 +200,12 @@ class UnidadController {
                 // Eliminar la unidad
                 $unidad->eliminar();
     
-                // Mensaje de éxito
-                Unidad_de_transporte::setAlerta('exito', 'Unidad eliminada correctamente');
-                header('Location: /remove_unidad');
+                $_SESSION['alerta'] = [
+                    'tipo' => 'exito',
+                    'mensaje' => 'Unidad con placas  ' .$unidad->placas . '  eliminada correctamente'
+                ];
+                // Redirigir con un mensaje de éxito
+                header('Location: /remove_unidad');  // Redirigir a la misma página para mostrar los cambios
                 exit;
             } else {
                 Unidad_de_transporte::setAlerta('error', 'La unidad no existe');

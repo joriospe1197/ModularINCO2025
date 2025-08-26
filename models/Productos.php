@@ -29,6 +29,10 @@ class Productos extends ActiveRecord {
         return $alertas;
     }
 
+    public static function all() {
+        $query = "SELECT * FROM " . static::$tabla;
+        return self::consultarSQL($query);
+    }
 
     // Validación de otros campos
     public function validarProducto() {

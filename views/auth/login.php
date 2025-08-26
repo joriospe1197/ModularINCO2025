@@ -1,40 +1,58 @@
 <div class="login">
-    <div class="contenedor">
-    <?php include_once __DIR__ .'/../templates/nombre-sitio.php'; ?>
+    <div class="contenedor-login">
+        <div class="logo-constructora">
+            <?php include_once __DIR__ .'/../templates/nombre-sitio.php'; ?>
+            <!--<h1 class="nombre-empresa">Constructora <span>XYZ</span></h1> -->
+            
+        </div>
 
-        <div class="contenedor-sm">
-            <!-- <p class="descripcion-pagina">Iniciar Sesión</p> -->
+        <div class="card-login">
+            <h2 class="titulo-formulario">Inicio de sesión</h2>
+            <p class="instrucciones">Ingresa tus credenciales para acceder al sistema</p>
 
             <?php include_once __DIR__ .'/../templates/alertas.php'; ?>
 
             <form class="formulario" method="POST" action="/" novalidate>
-                <div class="campo">
-                    <!-- <label for="email">Correo electronico</label> -->
+                <div class="grupo-input">
+                    <label for="email" class="etiqueta">Correo electrónico</label>
                     <input
                         type="email"
                         id="email"
-                        placeholder="Ingresa tu correo electronico."
+                        placeholder="usuario@---.com"
                         name="email"
+                        class="input-login"
                     />
+                    <i class="icono-input fas fa-envelope"></i>
                 </div>
 
-                <div class="campo">
-                <!--<label for="contrasena">Contraseña</label> -->
+                <div class="grupo-input">
+                    <label for="contrasena" class="etiqueta">Contraseña</label>
                     <input
                         type="password"
                         id="contrasena"
-                        placeholder="Ingresa tu contraseña."
+                        placeholder="••••••••"
                         name="contrasena"
+                        class="input-login"
                     />
+                    <i class="icono-input fas fa-lock"></i>
                 </div>
 
-                <input type="submit" class="boton" value="Iniciar Sesión">
-            </form>
+                <div class="opciones-login">
+                    <div class="recordarme">
+                        <input type="checkbox" id="recordar">
+                        <label for="recordar">Recordar sesión</label>
+                    </div>
+                    <a href="/forgot_my_password" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+                </div>
 
-            <div class="acciones">
-                <!--.<a href="/register">¿No tienes cuenta? obtener una</a>-->
-                <a href="/forgot_my_password">¿Olvidaste tu Password?</a>
-            </div>
-        </div><!--.contenedor-sm -->
+                <button type="submit" class="boton-login">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+            </form>
+        </div>
+
+        <div class="pie-login">
+            <p>© <?php echo date('Y'); ?> Constructora XYZ. Todos los derechos reservados.</p>
+        </div>
     </div>
 </div>

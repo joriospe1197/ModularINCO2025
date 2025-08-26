@@ -1,8 +1,5 @@
-<?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?> 
+<a href="/empleados" class="btn-regresar">⬅ Regresar a la vista de empleados</a>
 
-<div class="barra">
-    <a href="/empleados" class="register">Regresar a la vista empleados</a>
-</div>
 
 <!-- Mostrar alertas -->
 <?php foreach ($alertas as $tipo => $mensajes): ?>
@@ -11,8 +8,9 @@
     <?php endforeach; ?>
 <?php endforeach; ?>
 
+
 <!-- Tabla con los empleados -->
-<table class="tabla-empleados">
+<table class="tabla-unidades">
     <thead>
         <tr>
             <th>Id Empleado</th>
@@ -41,4 +39,3 @@
     </tbody>
 </table>
 
-<?php include_once __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

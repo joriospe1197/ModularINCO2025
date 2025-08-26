@@ -1,20 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Constructora | <?php echo $titulo ?? ''; ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700;900&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="build/css/app.css">
+    <title>Constructora | <?= $titulo ?? '' ?></title>
+    <?php include 'templates/cdn-head.php'; ?>
+    <link rel="stylesheet" href="/build/css/app.css">
 </head>
 <body>
-    <div class="contenedor-app">
-    <!--<div class="imagen"></div> -->
-        <div class="app imagen">
-            <?php echo $contenido; ?>
-        </div>
-    </div>
+    <?php
+    // Iniciar sesión si no está iniciada
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     
-            
+    // Determinar si debemos mostrar el sidebar
+    $mostrarSidebar = true;
+    
+    // No mostrar sidebar en páginas con simple_layout
+    if (isset($simple_layout) && $simple_layout === true) {
+        $mostrarSidebar = false;
+    }
+    
+    // No mostrar sidebar si no hay sesión activa
+    if (!isset($_SESSION['login'])) {
+        $mostrarSidebar = false;
+    }
+    ?>
+    
+    <?php if($mostrarSidebar): ?>
+        <?php include 'templates/sidebar.php'; ?>
+        <?php include 'templates/barra.php'; ?>
+    <?php endif; ?>
+    
+    <div class="dashboard">
+        <div class="main-content-area">
+            <div class="content-viewport">
+                <?= $contenido ?>
+            </div>
+        </div>
+    </div>    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/build/js/app.js"></script>
 </body>
 </html>

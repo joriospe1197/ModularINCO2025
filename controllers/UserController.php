@@ -130,36 +130,38 @@ class UserController {
 
     public static function search_user(Router $router){
         session_start();
-        isAuth(); // Asegúrate de que el usuario esté autenticado
+        isAuth();
         $alertas = [];
+        $usuarioEncontrado = null; // Cambiar nombre para evitar conflicto
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lógica para encontrar el usuario
-            $usuario = new Usuario($_POST);  // Creamos el objeto Usuario con los datos del formulario
-    
-            // Validar el idempleado
-            $alertas = $usuario->validaridempleado();
-    
-            if (empty($alertas)) {
-                // Verificar que el usuario exista
-                $usuario = Usuario::where('idempleado', $usuario->idempleado);  // Buscar el usuario por idempleado
-    
-                if (!$usuario || !$usuario->confirmado) {  // Verificar que el usuario exista y esté confirmado
-                    Usuario::setAlerta('error', 'El id de usuario no existe o no está confirmado');
+            $idempleado = $_POST['idempleado'] ?? '';
+            
+            // Validar que no esté vacío
+            if (empty($idempleado)) {
+                Usuario::setAlerta('error', 'El ID de empleado es requerido');
+            } else {
+                // Buscar directamente por el ID
+                $usuarioEncontrado = Usuario::where('idempleado', $idempleado);
+                
+                if (!$usuarioEncontrado) {
+                    Usuario::setAlerta('error', 'El empleado con ID ' . $idempleado . ' no existe');
+                } elseif (!$usuarioEncontrado->confirmado) {
+                    Usuario::setAlerta('error', 'El empleado con ID ' . $idempleado . ' no está confirmado');
                 } else {
-                    // Aquí redirigimos al formulario de edición pasando el idempleado
-                    header('Location: /edit_user?idempleado=' . $usuario->idempleado);
-                    exit;  // Asegúrate de que no se ejecute más código después de la redirección
+                    // Redirigir a edición
+                    header('Location: /edit_user?idempleado=' . $usuarioEncontrado->idempleado);
+                    exit;
                 }
             }
         }
-    
-        // Si no es un POST, simplemente renderizamos la vista con las alertas
+
         $alertas = Usuario::getAlertas();
-    
-        // Renderizar la vista
+        
         $router->render('auth/search_user', [
-            'titulo' => 'Buscando empleado',
+            'titulo' => 'Buscar empleado',
             'alertas' => $alertas,
+            'usuario' => $usuarioEncontrado // Pasar el usuario encontrado
         ]);
     }
     
@@ -179,11 +181,19 @@ class UserController {
             if (!$usuario) {
                 // Si no se encuentra al usuario, mostramos la alerta
                 Usuario::setAlerta('error', 'El usuario no existe');
+                header('Location: /search_user');
+                exit;
             }
+            
+
+        } else {
+            // Si no hay idempleado, redirigir a búsqueda
+            header('Location: /search_user');
+            exit;
         }
     
         // Si recibimos los datos del formulario (método POST), actualizamos el usuario
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
            
             // Sincronizamos los datos del formulario con el objeto $usuario
             $usuario->sincronizar($_POST);
@@ -261,8 +271,11 @@ class UserController {
                 // Eliminar al usuario
                 $usuario->eliminar();  // Aquí se usa la función eliminar de ActiveRecord
 
+                $_SESSION['alerta'] = [
+                    'tipo' => 'exito',
+                    'mensaje' => 'Empleado con nombre  ' .$usuario->nombre . '  eliminado correctamente'
+                ];
                 // Redirigir con un mensaje de éxito
-                Usuario::setAlerta('exito', 'Empleado eliminado correctamente');
                 header('Location: /remove_user');  // Redirigir a la misma página para mostrar los cambios
                 exit;
             } else {

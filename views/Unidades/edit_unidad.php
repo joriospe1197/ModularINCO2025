@@ -1,8 +1,4 @@
-<?php include_once __DIR__ . '/../dashboard/header-dashboard.php'; ?>
-
-<div class="barra">
-    <a href="/search_unidad" class="search_user">Buscar otra unidad</a>
-</div>
+<a href="/unidades_de_transporte" class="btn-regresar"> ⬅ Regresar a la vista de unidades</a>
 
 <?php include_once __DIR__ . '/../templates/alertas.php'; ?>
 
@@ -42,4 +38,3 @@
     <input type="submit" class="boton" value="Actualizar Unidad">
 </form>
 
-<?php include_once __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

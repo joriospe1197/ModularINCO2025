@@ -6,6 +6,27 @@ use Model\Productos;
 use MVC\Router;
 
 class ProductsController {
+    public static function index(Router $router) {
+        session_start();
+        isAuth();
+        
+        $alertas = [];
+        $productos = Productos::all();
+        
+        // Si hay una búsqueda, filtrar productos
+        if (isset($_GET['busqueda']) && !empty($_GET['busqueda'])) {
+            $busqueda = $_GET['busqueda'];
+            $productos = array_filter($productos, function($producto) use ($busqueda) {
+                return stripos($producto->descripcion, $busqueda) !== false;
+            });
+        }
+        
+        $router->render('dashboard/productos', [
+            'titulo' => 'Productos',
+            'productos' => $productos,
+            'alertas' => $alertas
+        ]);
+    }
 
     public static function register_product(Router $router) {
         session_start();
@@ -59,7 +80,7 @@ class ProductsController {
         session_start();
         isAuth();
         $router->render('products/product_success_message', [
-            'titulo' => 'Producto registrado exitosamente'
+            'titulo' => 'Registrar Producto'
         ]);
     }
 
@@ -162,6 +183,14 @@ class ProductsController {
 
         // Obtener todos los productos (productos)
         $productos = Productos::all();  // Esto obtiene todos los productos de la base de datos
+        if ($_SESSION['tipo_usuario'] != 1) {
+            $_SESSION['alerta'] = [
+                'tipo' => 'error',
+                'mensaje' => 'No tienes permisos para eliminar productos'
+            ];
+            header('Location: /productos');
+            exit;
+        }
 
         // Si se recibe el idppoducto en la URL, proceder a eliminar el producto
         if (isset($_GET['idproducto']) && $_GET['idproducto']) {
@@ -174,8 +203,13 @@ class ProductsController {
                 // Eliminar el producto
                 $producto->eliminar();  // Aquí se usa la función eliminar de ActiveRecord
 
+
+
+                $_SESSION['alerta'] = [
+                    'tipo' => 'exito',
+                    'mensaje' => 'Producto  ' .$producto->descripcion . '  eliminado correctamente'
+                ];
                 // Redirigir con un mensaje de éxito
-                Productos::setAlerta('exito', 'Producto eliminado correctamente');
                 header('Location: /remove_product');  // Redirigir a la misma página para mostrar los cambios
                 exit;
             } else {
