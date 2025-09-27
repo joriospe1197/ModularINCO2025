@@ -1,0 +1,117 @@
+@use 'base/variables' as v;
+
+/** Media Queries **/
+@mixin telefono {
+    @media (min-width: v.$telefono) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: v.$tablet) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: v.$desktop) {
+        @content;
+    }
+}
+
+/** Mixin para el botón **/
+@mixin boton($bgColor, $colorTexto, $borderRadius: 0.4rem) {
+    background-color: $bgColor;
+    padding: 0.8rem 1.6rem;
+    color: $colorTexto;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    border-radius: $borderRadius;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: inline-flex; // Cambiado a flex para alinear iconos
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; // Espacio entre icono y texto
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    text-decoration: none; // Para enlaces
+    line-height: 1.2;
+    margin-top: 1rem;
+    
+    &:hover {
+        background-color: darken($bgColor, 8%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    i {
+        font-size: 1.2rem;
+    }
+    
+    @include tablet {
+        padding: 0.9rem 1.8rem;
+        min-width: 120px; // Ancho mínimo para consistencia
+    }
+}
+
+/** Mixin para Grid **/
+@mixin grid($columnas, $espaciado) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: repeat($columnas, 1fr);
+}
+
+/** Mixin para texto degradado **/
+@mixin textoDegradado($color) {
+    background: linear-gradient(to right, $color 0%, darken($color, 30%) 100%);
+    color: transparent;
+    background-clip: text;
+    text-align: center;
+    font-size: 7rem;
+
+    @include tablet {
+        font-size: 10rem;
+    }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-regresar {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    background-color: v.$azul;   // Fondo azul
+    color: v.$blanco;            // Texto blanco
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.4rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease; // transición suave
+
+    &:hover {
+        background-color: darken(v.$azul, 15%);
+        color: v.$blanco;
+    }
+}
+a.btn-regresar {
+  color: v.$blanco;
+}

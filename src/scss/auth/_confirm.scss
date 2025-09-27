@@ -1,0 +1,36 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.confirm {
+    margin-top: 0rem;
+
+    .Constructora {
+        @include m.textoDegradado(v.$grisClaro); // Usando el color $cyan de las variables
+    }
+
+    .acciones {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            color: v.$blanco;  // Color de texto blanco
+            background-color: v.$cyan; // Color de fondo cyan
+            padding: 12px 24px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: v.$cyan-dark; // Ahora $cyan-dark está definido correctamente
+        }
+
+        a:focus {
+            outline: none;
+            box-shadow: 0 0 5px v.$cyan-dark; // También aquí se usa la variable definida
+        }
+    }
+}

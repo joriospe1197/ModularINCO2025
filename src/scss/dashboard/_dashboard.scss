@@ -1,0 +1,249 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+// Estructura principal del layout
+.dashboard {
+    // Estructura principal
+    .app-layout {
+        display: flex;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden; // Previene desbordamiento horizontal
+    }
+
+
+    .main-content-area {
+        flex: 1;
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        min-width: 0; // Fix para tablas responsivas
+        margin-top: 60px;
+
+    }
+
+    .content-viewport {
+        padding: 2rem;
+        width: 100%;
+        max-width: 1550px;
+        margin: 90px;
+        padding-top: 4rem;
+        // Asegura que el contenido no se esconda
+        position: relative;
+        z-index: 1;
+    }
+
+    // Estilos para tablas
+    .table-responsive {
+        overflow-x: auto;
+        max-width: 100%;
+        
+        table {
+            width: 100%;
+            min-width: 600px; // Ancho mínimo para tablas
+            border-collapse: collapse;
+            
+            th, td {
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+                white-space: nowrap;
+            }
+            
+            th {
+                background-color: #f8fafc;
+                font-weight: 600;
+            }
+            
+            tr:hover {
+                background-color: #f8fafc;
+            }
+        }
+    }
+}
+
+
+// Responsive para móviles
+@include m.tablet {
+    .dashboard {
+        .app-layout {
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content-area {
+            margin-left: 0 !important;
+            width: 100% !important;
+            margin-top: 0 !important; // La barra ya es fija
+        }
+
+        .content-viewport {
+            padding: 1rem !important;
+            margin: 0 !important;
+            padding-top: 6rem !important; // Espacio para barra móvil
+            width: 100% !important;
+            max-width: 100% !important;
+            
+            // Para dispositivos muy pequeños
+            @media (max-width: 480px) {
+                padding: 0.8rem !important;
+                padding-top: 5.5rem !important;
+            }
+        }
+
+        // Sidebar para móviles (si existe)
+        .sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 280px !important;
+            height: 100vh !important;
+            z-index: v.$z-modal !important;
+            transition: left 0.3s ease !important;
+            
+            &.active {
+                left: 0 !important;
+            }
+            
+            // Overlay para cerrar sidebar al hacer clic fuera
+            &::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 280px;
+                width: calc(100vw - 280px);
+                height: 100vh;
+                background: rgba(0,0,0,0.5);
+                z-index: -1;
+            }
+        }
+
+        // Tablas responsivas mejoradas
+        .table-responsive {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            
+            table {
+                min-width: 100% !important;
+                
+                th, td {
+                    padding: 0.6rem 0.8rem !important;
+                    font-size: 1.3rem !important;
+                    white-space: normal !important; // Permite wrap en móviles
+                    min-width: 100px; // Ancho mínimo para celdas
+                    
+                    // Para celdas muy largas
+                    &:first-child {
+                        min-width: 120px;
+                    }
+                    
+                    &:last-child {
+                        min-width: 80px;
+                    }
+                }
+                
+                th {
+                    font-size: 1.2rem !important;
+                    padding: 0.8rem !important;
+                }
+                
+                // Estilo alternativo para móviles: cards en lugar de tabla
+                @media (max-width: 480px) {
+                    display: block;
+                    
+                    thead {
+                        display: none;
+                    }
+                    
+                    tbody, tr, td {
+                        display: block;
+                        width: 100% !important;
+                    }
+                    
+                    tr {
+                        margin-bottom: 1rem;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 0.5rem;
+                        padding: 1rem;
+                        background: v.$blanco;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    
+                    td {
+                        border: none !important;
+                        padding: 0.5rem 0 !important;
+                        position: relative;
+                        padding-left: 50% !important; // Para label flotante
+                        
+                        &::before {
+                            content: attr(data-label);
+                            position: absolute;
+                            left: 0;
+                            width: 45%;
+                            padding-right: 1rem;
+                            font-weight: 600;
+                            color: v.$grisOscuro;
+                            font-size: 1.2rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Botón para toggle del sidebar en móviles
+        .sidebar-toggle {
+            display: block !important;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: v.$z-modal + 10;
+            background: v.$azul;
+            color: v.$blanco;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            font-size: 1.4rem;
+        }
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard {
+        .main-content-area {
+            margin-left: 80px !important; // Sidebar colapsado
+            width: calc(100% - 80px) !important;
+        }
+
+        .content-viewport {
+            margin: 2rem !important;
+            padding: 1.5rem !important;
+            padding-top: 5rem !important;
+        }
+
+        .table-responsive {
+            table {
+                min-width: 800px !important;
+                
+                th, td {
+                    padding: 0.7rem 0.9rem !important;
+                    font-size: 1.4rem !important;
+                }
+            }
+        }
+    }
+}
+
+// Ajustes específicos para landscape en móviles
+@media (max-width: 768px) and (orientation: landscape) {
+    .dashboard {
+        .content-viewport {
+            padding-top: 5rem !important; // Menos espacio en landscape
+        }
+        
+        .table-responsive {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+    }
+}
