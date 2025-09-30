@@ -1,6 +1,6 @@
 <?php
 
-$db = mysqli_connect('localhost', 'root', '123456', 'Constructora');
+$db = mysqli_connect('gondola.proxy.rlwy.net', 'root', 'hgVvISLFXzOyIALjHttvbipzQmSCPMAl', 'constructora');
 
 if (!$db) {
     echo "Error: No se pudo conectar a MySQL.";
