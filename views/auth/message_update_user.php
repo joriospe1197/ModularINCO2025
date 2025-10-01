@@ -1,5 +1,5 @@
 
-<a href="/productos" class="btn-regresar">⬅ Regresar</a>
+<a href="/empleados" class="btn-regresar">⬅ Regresar</a>
 <div class="contenedor message">
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Usuario actualizado de manera exitosa!</p>
