@@ -60,7 +60,7 @@ class UnidadController {
         }
     
         // Renderizar la vista
-        $router->render('unidades/asignar_unidades_a_choferes', [
+        $router->render('Unidades/asignar_unidades_a_choferes', [
             'alertas' => $alertas,
             'titulo' => 'Asignar unidades a choferes',
             'choferes' => $choferes  // Pasamos la lista de choferes a la vista
