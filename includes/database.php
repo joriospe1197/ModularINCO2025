@@ -5,7 +5,7 @@ $db = mysqli_connect(
     'root',                        // Usuario
     'hgVvISLFXzOyIALjHttvbipzQmSCPMAl', // Contraseña
     'constructora',                     // Nombre de base de datos correcto
-    59369                          // Puerto personalizado
+    59369                          // Puerto personalizadogh
 );
 
 if (!$db) {
