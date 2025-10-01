@@ -4,7 +4,7 @@ $db = mysqli_connect(
     'gondola.proxy.rlwy.net',     // Host
     'root',                        // Usuario
     'hgVvISLFXzOyIALjHttvbipzQmSCPMAl', // Contraseña
-    'railway',                     // Nombre de base de datos correcto
+    'constructora',                     // Nombre de base de datos correcto
     59369                          // Puerto personalizado
 );
 
