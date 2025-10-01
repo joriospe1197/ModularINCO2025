@@ -11,7 +11,7 @@
     <?php
     // Iniciar sesión si no está iniciada
     if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+        //session_start();
     }
     
     // Determinar si debemos mostrar el sidebar
