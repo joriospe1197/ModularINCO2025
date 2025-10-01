@@ -46,7 +46,7 @@ class DashboardController{
         $empleados = Usuario::all();  // Usamos el método all() de ActiveRecord para obtener todos los empleados
     
         // Renderizar la vista pasando los empleados
-        $router->render('Dashboard/empleados', [
+        $router->render('dashboard/empleados', [
             'titulo' => 'Empleados',
             'empleados' => $empleados
         ]);
