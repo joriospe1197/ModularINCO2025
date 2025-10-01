@@ -36,7 +36,7 @@ class Email{
 
         $contenido = '<html>';
         $contenido .= "<p>Hola<strong> " . $this->nombre . "</strong> has creado tu cuenta en Constructora, confirmala en el siguiente enlace.</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/confirm?token=" . 
+        $contenido .= "<p>Presiona aquí: <a href='https://modularinco2025-2.onrender.com/confirm?token=" . 
         $this->token ."'>Confirmar cuenta</a></p>";
         $contenido .= "<p>Si tu no creaste esta cuenta, puedes ignorar este mensaje.</p>";
         $contenido .= '</html>';
@@ -68,7 +68,7 @@ class Email{
 
         $contenido = '<html>';
         $contenido .= "<p>Hola<strong> " . $this->nombre . "</strong> selecciona el siguiente enlace para recuperar tu contraseña.</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/recover?token=" . 
+        $contenido .= "<p>Presiona aquí: <a href='https://modularinco2025-2.onrender.com/recover?token=" . 
         $this->token ."'>Restablecer contraseña</a></p>";
         $contenido .= "<p>Si tu no creaste esta cuenta, puedes ignorar este mensaje.</p>";
         $contenido .= '</html>';
