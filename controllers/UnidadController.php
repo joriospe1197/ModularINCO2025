@@ -133,7 +133,7 @@ class UnidadController {
         // Validar si el formulario fue enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              // Verificar qué llega en el POST
-            var_dump($_POST);  // Aquí verás lo que está llegando en el POST
+            //var_dump($_POST);  // Aquí verás lo que está llegando en el POST
 
             // Sincronizamos los datos
             $unidad->modelo = $_POST['modelo'] ?? $unidad->modelo;
@@ -154,7 +154,7 @@ class UnidadController {
                 $resultado = $unidad->guardar();
 
                 if ($resultado['resultado']) {
-                    var_dump($_POST);  // Aquí verás lo que está llegando en el POST
+                    //var_dump($_POST);  // Aquí verás lo que está llegando en el POST
                     header('Location: /message_update_unidad');
                     exit;
                 } else {
