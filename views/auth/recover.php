@@ -1,5 +1,5 @@
 <div class="login">
-    <div class="contenedor recover">
+    <div class="contenedor-login">
         <?php include_once __DIR__ .'/../templates/nombre-sitio.php'; ?>
         
         <div class="contenedor-sm">
