@@ -16,7 +16,7 @@
                         name="email"
                     />
                 </div>
-                <input type="submit" class="boton" value="Enviar instrucciones">
+                <input type="submit" class="boton-login" value="Enviar instrucciones">
             </form>
 
             <div class="acciones">
