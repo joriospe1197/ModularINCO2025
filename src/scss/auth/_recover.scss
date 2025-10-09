@@ -10,8 +10,10 @@
         @include m.boton(v.$azul, v.$blanco);
     }
 
-    .acciones{
-        color: v.$cyan;
+    .Acciones{
+        a{
+            color: v.$cyan;
+        }
     }
 
 }

@@ -26,7 +26,7 @@
             <?php } ?>
 
             <!-- ✅ Aquí separamos .acciones del .recover anidado -->
-            <div class="acciones">
+            <div class="Acciones">
                 <a href="/register">¿No tienes cuenta? obtener una</a>
                 <a href="/forgot_my_password">¿Olvidaste tu Password?</a>
             </div>
