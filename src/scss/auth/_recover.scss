@@ -3,17 +3,24 @@
 
 .recover {
     margin-top: 0rem;
-    .Constructora{
-        @include m.textoDegradado(v.$grisClaro)
+
+    .Constructora {
+        @include m.textoDegradado(v.$grisClaro);
     }
-    input[type="submit"]{
+
+    input[type="submit"] {
         @include m.boton(v.$azul, v.$blanco);
     }
+}
 
-    .acciones{
-        a{
-            color: v.$cyan;
-        }
+// ✅ Este bloque puede estar aquí o en un SCSS global (si se repite en otras vistas)
+.acciones a {
+    color: v.$cyan;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: lighten(v.$cyan, 10%);
     }
-
 }
