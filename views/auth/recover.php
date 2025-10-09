@@ -25,7 +25,7 @@
 
             <?php } ?>
 
-            <div class="recover acciones">
+            <div class="recover acciones a">
                 <a href="/register">¿No tienes cuenta? obtener una</a>
                 <a href="/forgot_my_password">¿Olvidaste tu Password?</a>
             </div>
