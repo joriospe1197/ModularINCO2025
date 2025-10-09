@@ -37,10 +37,10 @@
                 </div>
 
                 <div class="opciones-login">
-                    <div class="recordarme">
+                    <!-- <div class="recordarme">
                         <input type="checkbox" id="recordar">
                         <label for="recordar">Recordar sesión</label>
-                    </div>
+                    </div> -->
                     <a href="/forgot_my_password" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
                 </div>
 
