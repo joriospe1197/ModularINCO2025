@@ -67,7 +67,7 @@ class LoginController {
     public static function forgot_my_password(Router $router){
         $password = "veliz4";
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-        echo "Hash: " . $hashed;
+        //echo "Hash: " . $hashed;
         $alertas = [];//Arreglo vacio
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             // Lógica para recuperación de contraseña
