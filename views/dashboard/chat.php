@@ -50,12 +50,16 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         inputMensaje.placeholder = "Conectando...";
     }
 
+    // Al conectarse, guardar el socketId y pedir historial
     socket.on('connect', () => {
         mySocketId = socket.id;
         sessionStorage.setItem('mySocketId', mySocketId);
         btnEnviar.disabled = false;
         inputMensaje.placeholder = "Escribe tu mensaje...";
         console.log('Conectado con ID:', mySocketId);
+
+        // ✅ Pedir historial cada vez que entres al chat
+        socket.emit('pedir_historial');
     });
 
     formChat.addEventListener('submit', enviarMensaje);
@@ -68,10 +72,10 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
                 mensaje: msg
             };
 
-            // Emitir mensaje al servidor
+            // Emitir al servidor
             socket.emit('mensaje_chat', payload);
 
-            // Mostrar mensaje localmente de inmediato
+            // Mostrar mensaje localmente
             renderMensaje({
                 nombre: 'Tú',
                 mensaje: msg,
@@ -83,7 +87,7 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         }
     }
 
-    // Mostrar mensaje recibido del servidor
+    // Mostrar mensaje recibido
     socket.on('mensaje_chat', (data) => {
         const esMio = data.socketId === mySocketId;
 
@@ -95,8 +99,10 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         });
     });
 
-    // Mostrar historial
+    // Mostrar historial al entrar o regresar al chat
     socket.on('historial', (mensajes) => {
+        chatDiv.innerHTML = ''; // ✅ Limpiar antes de renderizar
+
         mensajes.forEach((data) => {
             const esMio = data.idempleado == idEmpleado;
 
@@ -114,6 +120,7 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         alert("Error del chat: " + msg);
     });
 
+    // Función para renderizar mensajes
     function renderMensaje({nombre, mensaje, hora, mio}) {
         const div = document.createElement('div');
         div.classList.add('mensaje', mio ? 'mio' : 'otro');

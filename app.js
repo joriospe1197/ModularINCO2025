@@ -33,27 +33,30 @@ const userSessions = new Map();
 io.on('connection', async (socket) => {
   console.log('Nuevo cliente conectado:', socket.id);
 
-  // Enviar historial
-  try {
-    const [rows] = await db.execute(`
-      SELECT e.nombre, m.mensaje, m.fecha, e.idempleado
-      FROM mensajes_chat m
-      JOIN empleados e ON e.idempleado = m.idempleado
-      ORDER BY m.fecha ASC
-      LIMIT 100
-    `);
+  // Evento para historial a demanda
+  socket.on('pedir_historial', async () => {
+    try {
+      const [rows] = await db.execute(`
+        SELECT e.nombre, m.mensaje, m.fecha, e.idempleado
+        FROM mensajes_chat m
+        JOIN empleados e ON e.idempleado = m.idempleado
+        ORDER BY m.fecha ASC
+        LIMIT 100
+      `);
 
-    const mensajes = rows.map(row => ({
-      nombre: row.nombre,
-      mensaje: row.mensaje,
-      fecha: new Date(row.fecha).toISOString(),
-      idempleado: row.idempleado
-    }));
+      const mensajes = rows.map(row => ({
+        nombre: row.nombre,
+        mensaje: row.mensaje,
+        fecha: new Date(row.fecha).toISOString(),
+        idempleado: row.idempleado
+      }));
 
-    socket.emit('historial', mensajes);
-  } catch (error) {
-    console.error('Error al obtener historial:', error);
-  }
+      socket.emit('historial', mensajes);
+    } catch (error) {
+      console.error('Error al obtener historial bajo demanda:', error);
+      socket.emit('error_chat', 'No se pudo cargar el historial.');
+    }
+  });
 
   // Recibir mensajes
   socket.on('mensaje_chat', async (data) => {
