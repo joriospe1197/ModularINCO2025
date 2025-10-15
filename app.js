@@ -58,51 +58,75 @@ io.on('connection', async (socket) => {
     }
   });
 
-  // Recibir mensajes
   socket.on('mensaje_chat', async (data) => {
-    console.log('Mensaje recibido:', data);
-
+    console.log('--- mensaje_chat recibido del cliente ---');
+    console.log('data:', data);
+  
     try {
+      // 1. Buscar al usuario por nombre
       const [rows] = await db.execute(
         'SELECT idempleado FROM empleados WHERE nombre = ? LIMIT 1',
         [data.nombre]
       );
-
+      console.log('rows al buscar empleado:', rows);
+  
       if (rows.length === 0) {
-        socket.emit('error_chat', 'Usuario no identificado. Inicia sesión para enviar mensajes.');
+        // No existe ese usuario
+        console.warn(`Usuario no encontrado con nombre: '${data.nombre}'`);
+        socket.emit('error_chat', 'Usuario no identificado. No se insertará el mensaje.');
         return;
       }
-
+  
       const idempleado = rows[0].idempleado;
+      console.log('idempleado encontrado:', idempleado);
+  
       userSessions.set(socket.id, idempleado);
-
+  
+      // 2. Insertar el mensaje en la base de datos
       const [insertResult] = await db.execute(
         'INSERT INTO mensajes_chat (idempleado, mensaje) VALUES (?, ?)',
         [idempleado, data.mensaje]
       );
-
+      console.log('Resultado INSERT:', insertResult);
+  
+      if (!insertResult.insertId) {
+        console.warn('No se obtuvo insertId después del INSERT');
+      }
+  
+      // 3. Obtener el registro insertado (incluyendo la fecha)
       const [newMsgRows] = await db.execute(
-        'SELECT m.*, e.nombre FROM mensajes_chat m JOIN empleados e ON e.idempleado = m.idempleado WHERE m.id = ?',
+        `SELECT m.*, e.nombre
+         FROM mensajes_chat m
+         JOIN empleados e ON e.idempleado = m.idempleado
+         WHERE m.id = ?`,
         [insertResult.insertId]
       );
-
-      if (newMsgRows.length > 0) {
-        const newMsg = newMsgRows[0];
-        const responseData = {
-          nombre: newMsg.nombre,
-          mensaje: newMsg.mensaje,
-          fecha: new Date(newMsg.fecha).toISOString(),
-          idempleado: newMsg.idempleado,
-          socketId: socket.id
-        };
-
-        io.emit('mensaje_chat', responseData);
+      console.log('newMsgRows:', newMsgRows);
+  
+      if (newMsgRows.length === 0) {
+        console.warn('No se encontró el mensaje recién insertado');
+        return;
       }
+  
+      const newMsg = newMsgRows[0];
+  
+      const responseData = {
+        nombre: newMsg.nombre,
+        mensaje: newMsg.mensaje,
+        fecha: new Date(newMsg.fecha).toISOString(),
+        idempleado: newMsg.idempleado,
+        socketId: socket.id
+      };
+  
+      console.log('Enviando a todos:', responseData);
+      io.emit('mensaje_chat', responseData);
+  
     } catch (error) {
-      console.error('Error procesando mensaje:', error);
-      socket.emit('error_chat', 'Ocurrió un error al procesar tu mensaje.');
+      console.error('Error interno procesando mensaje_chat:', error);
+      socket.emit('error_chat', 'Error interno al procesar mensaje.');
     }
   });
+  
 
   socket.on('disconnect', () => {
     console.log('Cliente desconectado:', socket.id);
