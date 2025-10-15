@@ -26,7 +26,7 @@
             <?php } ?>
 
             <div class="Acciones">
-                <a href="/register">¿No tienes cuenta? obtener una</a>
+                <a href="/register">¿No tienes cuenta? obtener una</a><br>
                 <a href="/forgot_my_password">¿Olvidaste tu Password?</a>
             </div>
         </div><!-- .contenedor-sm -->
