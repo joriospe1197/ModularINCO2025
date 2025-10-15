@@ -19,9 +19,9 @@ const io = new Server(server, {
 let db;
 try {
   db = await mysql.createConnection({
-    host: 'localhost',
+    host: 'gondola.proxy.rlwy.net',
     user: 'root',       
-    password: '123456',
+    password: 'hgVvISLFXzOyIALjHttvbipzQmSCPMAl',
     database: 'constructora'
   });
   console.log('Conectado a la base de datos MySQL');
