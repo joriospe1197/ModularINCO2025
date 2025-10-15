@@ -65,26 +65,18 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
     formChat.addEventListener('submit', enviarMensaje);
 
     function enviarMensaje() {
-        const msg = inputMensaje.value.trim();
-        if (msg.length > 0) {
-            const payload = {
-                nombre: nombreUsuario,
-                mensaje: msg
-            };
+    const msg = inputMensaje.value.trim();
+    if (msg.length > 0) {
+        const payload = {
+            nombre: nombreUsuario,
+            mensaje: msg
+        };
 
-            // Emitir al servidor
-            socket.emit('mensaje_chat', payload);
+        socket.emit('mensaje_chat', payload);
 
-            // Mostrar mensaje localmente
-            renderMensaje({
-                nombre: 'Tú',
-                mensaje: msg,
-                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                mio: true
-            });
-
-            inputMensaje.value = '';
-        }
+        // Ya no renderizamos aquí, solo limpiamos el input
+        inputMensaje.value = '';
+    }
     }
 
     // Mostrar mensaje recibido
