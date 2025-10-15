@@ -18,10 +18,12 @@ let db;
 try {
   db = await mysql.createConnection({
     host: 'gondola.proxy.rlwy.net',
+    port: 59369, // ✅ Puerto TCP del proxy de Railway
     user: 'root',
     password: 'hgVvISLFXzOyIALjHttvbipzQmSCPMAl',
     database: 'constructora'
   });
+  
   console.log('Conectado a la base de datos MySQL');
 } catch (error) {
   console.error('Error al conectar con la base de datos:', error);
