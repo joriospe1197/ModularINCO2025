@@ -43,10 +43,8 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
     const btnEnviar = document.getElementById('enviar');
     const formChat = document.getElementById('form-chat');
 
-    // Almacenar el ID de socket en sessionStorage para persistencia
     let mySocketId = sessionStorage.getItem('mySocketId');
-    
-    // Deshabilitar el envío hasta que tengamos socketId
+
     if (!mySocketId) {
         btnEnviar.disabled = true;
         inputMensaje.placeholder = "Conectando...";
@@ -69,18 +67,26 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
                 nombre: nombreUsuario,
                 mensaje: msg
             };
+
+            // Emitir mensaje al servidor
             socket.emit('mensaje_chat', payload);
-            
-            // NO renderizar mensaje temporal - esperar confirmación del servidor
+
+            // Mostrar mensaje localmente de inmediato
+            renderMensaje({
+                nombre: 'Tú',
+                mensaje: msg,
+                hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                mio: true
+            });
+
             inputMensaje.value = '';
         }
     }
 
-    // Mostrar mensaje recibido
+    // Mostrar mensaje recibido del servidor
     socket.on('mensaje_chat', (data) => {
-        // Determinar si es nuestro mensaje comparando con el ID de socket
         const esMio = data.socketId === mySocketId;
-        
+
         renderMensaje({
             nombre: esMio ? "Tú" : data.nombre,
             mensaje: data.mensaje,
@@ -89,12 +95,11 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         });
     });
 
-    // Cargar historial
+    // Mostrar historial
     socket.on('historial', (mensajes) => {
         mensajes.forEach((data) => {
-            // Para mensajes históricos, usar el idEmpleado para identificar los propios
             const esMio = data.idempleado == idEmpleado;
-            
+
             renderMensaje({
                 nombre: esMio ? "Tú" : data.nombre,
                 mensaje: data.mensaje,
@@ -104,11 +109,15 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
         });
     });
 
-    // Función para renderizar mensajes
+    // Mostrar errores del servidor
+    socket.on('error_chat', (msg) => {
+        alert("Error del chat: " + msg);
+    });
+
     function renderMensaje({nombre, mensaje, hora, mio}) {
         const div = document.createElement('div');
         div.classList.add('mensaje', mio ? 'mio' : 'otro');
-        
+
         div.innerHTML = `
             <span class="usuario">${nombre}</span>
             <span>${mensaje}</span>
