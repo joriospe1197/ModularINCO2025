@@ -34,7 +34,7 @@ $idEmpleado = isset($_SESSION['idempleado']) ? $_SESSION['idempleado'] : 0;
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 
 <script>
-    const socket = io('http://localhost:3001');
+    const socket = io('https://modularinco2025-2.onrender.com/');
     const nombreUsuario = <?php echo json_encode($nombreUsuario); ?>;
     const idEmpleado = <?php echo json_encode($idEmpleado); ?>;
 
