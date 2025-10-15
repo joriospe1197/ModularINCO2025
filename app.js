@@ -3,11 +3,9 @@ import http from 'http';
 import { Server } from 'socket.io';
 import mysql from 'mysql2/promise';
 
-// Configuración de Express y HTTP Server
 const app = express();
 const server = http.createServer(app);
 
-// Inicializar Socket.IO con CORS
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -15,12 +13,12 @@ const io = new Server(server, {
   }
 });
 
-// Conexión a la base de datos MySQL
+// Conexión a la base de datos
 let db;
 try {
   db = await mysql.createConnection({
     host: 'gondola.proxy.rlwy.net',
-    user: 'root',       
+    user: 'root',
     password: 'hgVvISLFXzOyIALjHttvbipzQmSCPMAl',
     database: 'constructora'
   });
@@ -30,14 +28,12 @@ try {
   process.exit(1);
 }
 
-// Almacenar información de sesiones de usuarios
 const userSessions = new Map();
 
-// Socket.IO - Manejo de eventos
 io.on('connection', async (socket) => {
   console.log('Nuevo cliente conectado:', socket.id);
 
-  // Enviar historial de mensajes desde la base de datos
+  // Enviar historial
   try {
     const [rows] = await db.execute(`
       SELECT e.nombre, m.mensaje, m.fecha, e.idempleado
@@ -47,7 +43,6 @@ io.on('connection', async (socket) => {
       LIMIT 100
     `);
 
-    // Formatear correctamente las fechas
     const mensajes = rows.map(row => ({
       nombre: row.nombre,
       mensaje: row.mensaje,
@@ -60,66 +55,58 @@ io.on('connection', async (socket) => {
     console.error('Error al obtener historial:', error);
   }
 
-  // Recibir y reenviar mensajes
+  // Recibir mensajes
   socket.on('mensaje_chat', async (data) => {
-    console.log('Mensaje recibido en servidor:', data);
-  
+    console.log('Mensaje recibido:', data);
+
     try {
       const [rows] = await db.execute(
         'SELECT idempleado FROM empleados WHERE nombre = ? LIMIT 1',
         [data.nombre]
       );
-  
-      console.log('Resultado búsqueda idempleado:', rows);
-  
-      if (rows.length > 0) {
-        const idempleado = rows[0].idempleado;
-        
-        // Guardar la relación entre socket.id y idempleado
-        userSessions.set(socket.id, idempleado);
 
-        const [insertResult] = await db.execute(
-          'INSERT INTO mensajes_chat (idempleado, mensaje) VALUES (?, ?)',
-          [idempleado, data.mensaje]
-        );
-  
-        console.log('Mensaje insertado:', insertResult);
-        
-        // Recuperar el mensaje recién insertado con su fecha
-        const [newMsgRows] = await db.execute(
-          'SELECT m.*, e.nombre FROM mensajes_chat m JOIN empleados e ON e.idempleado = m.idempleado WHERE m.id = ?',
-          [insertResult.insertId]
-        );
-        
-        if (newMsgRows.length > 0) {
-          const newMsg = newMsgRows[0];
-          const responseData = {
-            nombre: newMsg.nombre,
-            mensaje: newMsg.mensaje,
-            fecha: new Date(newMsg.fecha).toISOString(),
-            idempleado: newMsg.idempleado,
-            socketId: socket.id  // Asegurar que enviamos el socketId correcto
-          };
-          
-          // Emitir a TODOS los clientes incluyendo al remitente
-          io.emit('mensaje_chat', responseData);
-        }
-      } else {
-        console.warn(`No se encontró el usuario '${data.nombre}' en la base de datos.`);
+      if (rows.length === 0) {
+        socket.emit('error_chat', 'Usuario no identificado. Inicia sesión para enviar mensajes.');
+        return;
+      }
+
+      const idempleado = rows[0].idempleado;
+      userSessions.set(socket.id, idempleado);
+
+      const [insertResult] = await db.execute(
+        'INSERT INTO mensajes_chat (idempleado, mensaje) VALUES (?, ?)',
+        [idempleado, data.mensaje]
+      );
+
+      const [newMsgRows] = await db.execute(
+        'SELECT m.*, e.nombre FROM mensajes_chat m JOIN empleados e ON e.idempleado = m.idempleado WHERE m.id = ?',
+        [insertResult.insertId]
+      );
+
+      if (newMsgRows.length > 0) {
+        const newMsg = newMsgRows[0];
+        const responseData = {
+          nombre: newMsg.nombre,
+          mensaje: newMsg.mensaje,
+          fecha: new Date(newMsg.fecha).toISOString(),
+          idempleado: newMsg.idempleado,
+          socketId: socket.id
+        };
+
+        io.emit('mensaje_chat', responseData);
       }
     } catch (error) {
-      console.error('Error en la inserción:', error);
+      console.error('Error procesando mensaje:', error);
+      socket.emit('error_chat', 'Ocurrió un error al procesar tu mensaje.');
     }
   });
 
-  // Desconexión
   socket.on('disconnect', () => {
     console.log('Cliente desconectado:', socket.id);
     userSessions.delete(socket.id);
   });
 });
 
-// Iniciar servidor
 server.listen(3001, () => {
-  console.log('Servidor de chat corriendo en http://localhost:3001');
+  console.log('Servidor corriendo en http://localhost:3001');
 });
