@@ -40,20 +40,21 @@ class Router
 
     public function render($view, $datos = [])
     {
-        // Extraer las variables del arreglo $datos
+        // Pasar las variables del arreglo a variables individuales
         foreach ($datos as $key => $value) {
             $$key = $value;
         }
 
-        ob_start(); // Inicia el buffer
+        ob_start(); // Inicia el buffer de salida
 
         // Incluir la vista solicitada
-        include_once __DIR__ . "/../views/$view.php";
+        include_once __DIR__ . "/views/$view.php";
 
-        $contenido = ob_get_clean(); // Captura y limpia el buffer
+        $contenido = ob_get_clean(); // Captura el contenido de la vista
 
         // Incluir el layout principal
-        include_once __DIR__ . '/../views/layout.php';
+        include_once __DIR__ . '/views/layout.php';
     }
+
 
 }
