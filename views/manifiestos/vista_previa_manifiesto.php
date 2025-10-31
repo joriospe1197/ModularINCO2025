@@ -152,8 +152,8 @@
     <input type="hidden" name="telefono" value="<?= $telefono ?>">
     <input type="hidden" name="nombre" value="<?= $nombre ?>">
     <input type="submit" class="boton" value="Generar en PDF">
-    <br><br>
-    <a href="/manifiestos">Regresar al inicio</a>
+    <!-- <br><br> -->
+    <a href="/manifiestos" class="btn-regresar">Regresar al inicio</a>
 
 
 </form>
