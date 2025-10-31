@@ -153,7 +153,7 @@
     <input type="hidden" name="nombre" value="<?= $nombre ?>">
     <input type="submit" class="boton" value="Generar en PDF">
     <!-- <br><br> -->
-    <a href="/manifiestos" class="btn-regresar">Regresar al inicio</a>
+    <a href="/manifiestos" class="boton">Regresar al inicio</a>
 
 
 </form>
