@@ -151,9 +151,9 @@
     <input type="hidden" name="municipio" value="<?= $municipio ?>">
     <input type="hidden" name="telefono" value="<?= $telefono ?>">
     <input type="hidden" name="nombre" value="<?= $nombre ?>">
-    <input type="submit" class="boton" value="Generar en PDF">
+    <input type="submit" class="btn-regresar" value="Generar en PDF">
     <!-- <br><br> -->
-    <a href="/manifiestos" class="boton">Regresar al inicio</a>
+    <a href="/manifiestos" class="btn-regresar">Regresar al inicio</a>
 
 
 </form>
