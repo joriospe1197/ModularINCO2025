@@ -76,7 +76,7 @@ class ServicioUnidad extends ActiveRecord {
         $query .= "'" . $estado . "')";
         
         // DEBUG: Mostrar la query
-        echo "<pre>Query manual: " . $query . "</pre>";
+        // echo "<pre>Query manual: " . $query . "</pre>";
         
         // Ejecutar la query
         $resultado = self::$db->query($query);

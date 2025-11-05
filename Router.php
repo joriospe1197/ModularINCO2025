@@ -40,17 +40,21 @@ class Router
 
     public function render($view, $datos = [])
     {
-
-        // Leer lo que le pasamos  a la vista
+        // Pasar las variables del arreglo a variables individuales
         foreach ($datos as $key => $value) {
-            $$key = $value;  // Doble signo de dolar significa: variable variable, básicamente nuestra variable sigue siendo la original, pero al asignarla a otra no la reescribe, mantiene su valor, de esta forma el nombre de la variable se asigna dinamicamente
+            $$key = $value;
         }
 
-        ob_start(); // Almacenamiento en memoria durante un momento...
+        ob_start(); // Inicia el buffer de salida
 
-        // entonces incluimos la vista en el layout
+        // Incluir la vista solicitada
         include_once __DIR__ . "/views/$view.php";
-        $contenido = ob_get_clean(); // Limpia el Buffer
+
+        $contenido = ob_get_clean(); // Captura el contenido de la vista
+
+        // Incluir el layout principal
         include_once __DIR__ . '/views/layout.php';
     }
+
+
 }

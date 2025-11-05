@@ -40,7 +40,6 @@ class ManifiestosController
             'clientes' => $clientes,
             'meses' => $meses,
             'mesSeleccionado' => $mesSeleccionado
-
         ]);
     }
 
@@ -55,7 +54,6 @@ class ManifiestosController
             self::crear_manifiesto($router);
             return;
         }
-
         $cliente_id = $_POST['clientes'];
         $mesM = $_POST['mes'];
         $anio = $_POST['anio'];
@@ -304,7 +302,6 @@ class ManifiestosController
             $dompdf->loadHtml($html, 'UTF-8');
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
-
             //  ENVIAR HEADERS CORRECTOS PARA PDF
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="manifiesto_' . $nombre . '_' . $mesM . '.pdf"');
@@ -352,7 +349,6 @@ class ManifiestosController
 
         // OBTENER EL ID_CLIENTE DESDE EL NOMBRE
         $datos_cliente = ManifiestosRecord::busquedaPorNombre($cliente_nombre);
-
         if (!$datos_cliente) {
             $alertas['error'][] = 'Cliente no encontrado: ' . $cliente_nombre;
             $cliente_id = null;

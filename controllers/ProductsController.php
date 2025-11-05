@@ -68,7 +68,7 @@ class ProductsController {
             
         }
         
-        $router->render('Products/register_product', [
+        $router->render('products/register_product', [
             'titulo' => 'Registrar Producto',
             'productos' => $producto,
             'alertas' => $alertas 
