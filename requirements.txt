@@ -3,3 +3,4 @@ numpy
 sqlalchemy
 scikit-learn
 python-dotenv
+PyMySQL
