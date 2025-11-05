@@ -1,0 +1,234 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+
+/* Estilos base para botones - aplican a todos los usos */
+.register, 
+.search_user, 
+.buscar_otro_empleado {
+    @include m.boton(v.$azul, v.$blanco);
+}
+
+.remove_user {
+    @include m.boton(v.$rojo, v.$blanco);
+}
+
+/* Estilos contextuales para diferentes usos */
+
+/* Cuando están en la barra superior */
+.barra_boton .register,
+.barra_boton .search_user,
+.barra_boton .remove_user {
+    margin: 0;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.3rem;
+}
+
+/* Cuando son botones principales (como en productos.php) */
+.acciones-principales .register,
+.acciones-principales .search_user {
+    min-width: 180px;
+    padding: 1rem 2rem;
+}
+
+/* Cuando son botones en tablas */
+.tabla-empleados .register,
+.tabla-empleados .search_user {
+    padding: 0.4rem 0.8rem;
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+/* Botones de regreso */
+.boton-regreso {
+    @include m.boton(v.$grisClaro, v.$grisOscuro);
+    border: 1px solid v.$gris;
+    
+    &:hover {
+        background-color: darken(v.$grisClaro, 5%);
+    }
+}
+
+// Responsive para móviles
+@include m.tablet {
+    /* Botones principales - Ajustes generales para móviles */
+    .register, 
+    .search_user, 
+    .buscar_otro_empleado,
+    .remove_user,
+    .boton-regreso {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+        padding: 1.2rem 1.5rem !important;
+        font-size: 1.6rem !important;
+        min-height: 44px; // Altura mínima para touch
+        justify-content: center;
+        
+        // Mejorar área táctil
+        &:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+        
+        i {
+            font-size: 1.4rem !important;
+            margin-right: 0.8rem !important;
+        }
+    }
+
+    /* Botones en la barra superior */
+    .barra_boton {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        
+        .register,
+        .search_user,
+        .remove_user {
+            margin: 0.3rem 0 !important;
+            padding: 1rem 1.2rem !important;
+            font-size: 1.4rem !important;
+            width: 100% !important;
+            min-width: auto !important;
+        }
+    }
+
+    /* Botones principales en contenedores específicos */
+    .acciones-principales {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        
+        .register,
+        .search_user {
+            min-width: auto !important;
+            width: 100% !important;
+            padding: 1.2rem 1.5rem !important;
+            font-size: 1.5rem !important;
+        }
+    }
+
+    /* Botones en tablas - comportamiento especial */
+    .tabla-empleados {
+        .register,
+        .search_user {
+            padding: 0.8rem 1rem !important;
+            font-size: 1.3rem !important;
+            width: auto !important;
+            min-width: 120px;
+            margin: 0.2rem 0 !important;
+            
+            // En móviles muy pequeños, botones full width
+            @media (max-width: 480px) {
+                width: 100% !important;
+                min-width: auto !important;
+            }
+        }
+        
+        // Contenedor de botones en tabla para móviles
+        .acciones-tabla {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+
+    /* Botón de regreso específico para móviles */
+    .boton-regreso {
+        position: relative;
+        padding-left: 2.5rem !important;
+        
+        &::before {
+            content: '←';
+            position: absolute;
+            left: 1rem;
+            font-size: 1.6rem;
+        }
+        
+        i {
+            display: none; // Ocultar icono, usar flecha Unicode
+        }
+    }
+
+    /* Grupos de botones horizontales en móviles */
+    .grupo-botones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        
+        &.botones-horizontales {
+            @media (min-width: 481px) and (max-width: 768px) {
+                flex-direction: row;
+                flex-wrap: wrap;
+                
+                .register,
+                .search_user,
+                .remove_user {
+                    flex: 1;
+                    min-width: 150px;
+                }
+            }
+        }
+    }
+}
+
+// Para pantallas muy pequeñas (menos de 480px)
+@media (max-width: 480px) {
+    .register, 
+    .search_user, 
+    .buscar_otro_empleado,
+    .remove_user,
+    .boton-regreso {
+        padding: 1.1rem 1.2rem !important;
+        font-size: 1.5rem !important;
+        margin: 0.4rem 0 !important;
+    }
+
+    .barra_boton {
+        .register,
+        .search_user,
+        .remove_user {
+            padding: 0.9rem 1rem !important;
+            font-size: 1.3rem !important;
+        }
+    }
+
+    .acciones-principales {
+        .register,
+        .search_user {
+            padding: 1.1rem 1.3rem !important;
+            font-size: 1.4rem !important;
+        }
+    }
+
+    .tabla-empleados {
+        .register,
+        .search_user {
+            padding: 0.7rem 0.9rem !important;
+            font-size: 1.2rem !important;
+            min-width: 100px;
+        }
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .register, 
+    .search_user, 
+    .buscar_otro_empleado,
+    .remove_user {
+        padding: 1rem 1.8rem !important;
+        font-size: 1.4rem !important;
+    }
+
+    .barra_boton {
+        .register,
+        .search_user,
+        .remove_user {
+            padding: 0.7rem 1.4rem !important;
+            font-size: 1.3rem !important;
+        }
+    }
+}

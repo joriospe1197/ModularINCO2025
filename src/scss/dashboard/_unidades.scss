@@ -1,0 +1,419 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contenedor-unidades {
+    margin: 0 auto; 
+    max-width: 1000px;
+    
+    .card-unidades {
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        border: none;
+        
+        .card-header-unidades {
+            background-color: v.$azul;
+            color: v.$blanco;
+            border-radius: 0.5rem 0.5rem 0 0 ;
+            padding: 1.25rem 1.5rem;
+            
+            
+            .card-title-unidades {
+                font-size: 5rem;
+                margin-bottom: 0;
+                
+                i {
+                    margin-right: 0.75rem;
+                }
+            }
+        }
+        
+        .card-body-unidades {
+            padding: 2rem;
+        }
+    }
+}
+
+.acciones-unidades {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    
+    a {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+        
+        &.register {
+            background-color: v.$azul;
+            color: v.$blanco;
+            
+            &:hover {
+                background-color: darken(v.$azul, 10%);
+                transform: translateY(-2px);
+            }
+        }
+        
+        &.search_user {
+            background-color: lighten(v.$naranja, 10%);
+            color: v.$blanco;
+            
+            &:hover {
+                background-color: v.$naranja;
+                transform: translateY(-2px);
+            }
+        }
+        
+        &.remove_user {
+            background-color: lighten(v.$danger, 10%);
+            color: v.$blanco;
+            
+            &:hover {
+                background-color: v.$danger;
+                transform: translateY(-2px);
+            }
+        }
+        
+        i {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.tabla-unidades {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    th:nth-child(1) {
+        text-align: center;
+    }
+
+    td:nth-child(1) {
+        text-align: center;
+    }
+    thead {
+        background-color: v.$azul-tabla;
+        
+        th {
+            color: v.$blanco ;
+            opacity: 1 ;
+            padding: 1.5rem 1rem ;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.5rem;
+            border-bottom: 2px solid v.$azul;
+        }
+    }
+    
+    tbody {
+        tr {
+            border-bottom: 2px solid v.$gris-claro;
+            
+            &:hover {
+                background-color: rgba(v.$azul, 0.05);
+            }
+            
+            td {
+                padding: 1.2rem 1rem;
+                vertical-align: middle;
+                font-size: 1.3rem;
+                
+                &:first-child {
+                    font-weight: 700;
+                    color: v.$azul;
+                }
+                
+                &:last-child {
+                    font-weight: 600;
+                    color: darken(v.$azul, 15%);
+                }
+            }
+        }
+    }
+}
+
+// Responsive para móviles
+@include m.tablet {
+    .contenedor-unidades {
+        margin: 0 auto;
+        max-width: 100%;
+        padding: 0.5rem;
+        
+        .card-unidades {
+            margin: 0.5rem 0;
+            
+            .card-header-unidades {
+                padding: 1rem 1rem;
+                text-align: center;
+                
+                .card-title-unidades {
+                    font-size: 2.5rem !important;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.5rem;
+                    
+                    i {
+                        margin-right: 0;
+                        font-size: 2rem;
+                    }
+                    
+                    span {
+                        font-size: 1.4rem;
+                        opacity: 0.9;
+                    }
+                }
+            }
+            
+            .card-body-unidades {
+                padding: 1rem;
+            }
+        }
+    }
+
+    .acciones-unidades {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        
+        a {
+            width: 100%;
+            justify-content: center;
+            padding: 1.2rem 1rem !important;
+            font-size: 1.4rem !important;
+            min-height: 44px; // Touch-friendly
+            
+            i {
+                font-size: 1.3rem !important;
+            }
+            
+            // Efecto táctil
+            &:active {
+                transform: translateY(-1px) !important;
+                transition: transform 0.1s ease;
+            }
+        }
+    }
+
+    .tabla-unidades {
+        margin-top: 1rem;
+        border: 1px solid v.$gris-claro;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        
+        thead {
+            display: none;
+        }
+        
+        tbody {
+            tr {
+                display: block;
+                margin-bottom: 0.8rem;
+                border: 1px solid v.$gris-claro;
+                border-radius: 0.4rem;
+                background: v.$blanco;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                td {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem 0.8rem !important;
+                    text-align: left !important;
+                    font-size: 1.3rem !important;
+                    border-bottom: 1px solid v.$gris-claro;
+                    
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    &::before {
+                        content: attr(data-label);
+                        font-weight: 600;
+                        color: v.$azul;
+                        font-size: 1.2rem;
+                        margin-right: 1rem;
+                        min-width: 120px;
+                    }
+                    
+                    // Primera celda (ID) más destacada
+                    &:first-child {
+                        background: rgba(v.$azul, 0.05);
+                        font-weight: 700;
+                        font-size: 1.4rem !important;
+                        
+                        &::before {
+                            content: "ID Unidad:";
+                            color: v.$azul;
+                        }
+                    }
+                    
+                    // Última celda sin borde inferior
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+                
+                // Efecto hover mejorado para móviles
+                &:active {
+                    background: rgba(v.$azul, 0.1);
+                    transform: scale(0.99);
+                    transition: all 0.2s ease;
+                }
+            }
+        }
+    }
+}
+
+// Para pantallas muy pequeñas (menos de 480px)
+@media (max-width: 480px) {
+    .contenedor-unidades {
+        padding: 0.3rem;
+        
+        .card-unidades {
+            .card-header-unidades {
+                padding: 0.8rem 0.8rem;
+                
+                .card-title-unidades {
+                    font-size: 2.2rem !important;
+                    
+                    i {
+                        font-size: 1.8rem;
+                    }
+                    
+                    span {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+            
+            .card-body-unidades {
+                padding: 0.8rem;
+            }
+        }
+    }
+
+    .acciones-unidades {
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+        
+        a {
+            padding: 1rem 0.8rem !important;
+            font-size: 1.3rem !important;
+            
+            i {
+                font-size: 1.2rem !important;
+            }
+        }
+    }
+
+    .tabla-unidades {
+        tbody {
+            tr {
+                margin-bottom: 0.6rem;
+                border-radius: 0.3rem;
+                
+                td {
+                    padding: 0.8rem 0.6rem !important;
+                    font-size: 1.2rem !important;
+                    
+                    &::before {
+                        font-size: 1.1rem !important;
+                        min-width: 100px;
+                        margin-right: 0.5rem;
+                    }
+                    
+                    &:first-child {
+                        font-size: 1.3rem !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .contenedor-unidades {
+        max-width: 95%;
+        
+        .card-header-unidades {
+            .card-title-unidades {
+                font-size: 3.5rem !important;
+            }
+        }
+        
+        .acciones-unidades {
+            flex-direction: row;
+            flex-wrap: wrap;
+            
+            a {
+                flex: 1;
+                min-width: 200px;
+            }
+        }
+        
+        .tabla-unidades {
+            thead {
+                display: table-header-group;
+            }
+            
+            tbody {
+                tr {
+                    display: table-row;
+                    
+                    td {
+                        display: table-cell;
+                        text-align: left;
+                        
+                        &::before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mejoras específicas para landscape en móviles
+@media (max-width: 768px) and (orientation: landscape) {
+    .contenedor-unidades {
+        .card-body-unidades {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .tabla-unidades tbody {
+            max-height: 50vh;
+            overflow-y: auto;
+            display: block;
+        }
+    }
+}
+
+// Asegurar que los botones de acción en tablas sean touch-friendly
+.tabla-unidades {
+    .btn-accion {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        
+        @include m.tablet {
+            padding: 0.8rem !important;
+            font-size: 1.2rem !important;
+        }
+    }
+}

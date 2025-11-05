@@ -1,0 +1,51 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+/* Estilos para el botón eliminar empleado en la tabla */
+.tabla-empleados a {
+
+    /* Estilos generales del botón */
+    padding: 6px 12px; /* Reduce el padding para hacerlo más pequeño */
+    font-size: 12px; /* Reduce el tamaño de la fuente */
+    border-radius: 3px; /* Hace los bordes más pequeños */
+    min-width: auto; /* Evita que el botón tenga un ancho mínimo grande */
+
+    &:hover {
+        background-color: darken(v.$rojo, 10%);
+        cursor: pointer;
+    }
+}
+
+.boton_eliminar_empleado_tabla {
+@include m.boton(v.$rojo, v.$grisClaro);
+}
+
+/* Estilo para la tabla de empleados */
+.tabla-empleados {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.tabla-empleados th, .tabla-empleados td {
+  text-align: left;
+  padding: 12px;
+  border: 1px solid v.$grisClaro;
+}
+
+.tabla-empleados th {
+  background-color: v.$azul;
+  color: v.$blanco;
+  font-size: 16px;
+}
+
+.tabla-empleados td {
+  background-color: v.$grisClaro;
+  color: v.$grisOscuro;
+}
+
+/* Añadir color a la fila al pasar el ratón */
+.tabla-empleados tr:hover {
+  background-color: v.$gris;
+  color: v.$blanco;
+}

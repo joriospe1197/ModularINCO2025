@@ -1,0 +1,33 @@
+<div class="login">
+    <div class="contenedor-login">
+        <?php include_once __DIR__ .'/../templates/nombre-sitio.php'; ?>
+        
+        <div class="contenedor-sm">
+            <p class="descripcion-pagina">Coloca tu nuevo password</p>
+
+            <?php include_once __DIR__ .'/../templates/alertas.php'; ?>
+
+            <?php if($mostrar) { ?> <!-- En caso de que la variable mostrar esté en true, muestra el formulario -->
+
+                <form class="formulario" method="POST">
+                    <div class="campo">
+                        <!-- <label for="password">Contraseña</label> -->
+                        <input
+                            type="password"
+                            id="contrasena"
+                            placeholder="Ingrese su nueva contraseña."
+                            name="contrasena"
+                        />
+                    </div>
+
+                    <input type="submit" class="boton" value="Guardar Password">
+                </form>
+
+            <?php } ?>
+
+            <div class="acciones">
+                <a href="/">¿Ya recordaste tu contraseña? Inicia sesión</a>
+            </div>
+        </div><!-- .contenedor-sms -->
+    </div>
+</div>

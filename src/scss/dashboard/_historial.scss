@@ -1,0 +1,298 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.filtros {
+    background: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    
+    .form-filtros {
+        display: flex;
+        gap: 1rem;
+        align-items: end;
+        
+        .campo {
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+            
+            select, input {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th, td {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    
+    th {
+        background: #0c56a5;
+        color: white;
+    }
+    
+    tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+    
+    .total-fila {
+        background: #e3f2fd;
+        font-weight: bold;
+    }
+}
+
+.resumen-totales {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    
+    h4 {
+        margin-bottom: 0.5rem;
+        color: #007bff;
+    }
+}
+
+.no-resultados {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+// Responsive para móviles - Agregar al final del archivo
+@include m.tablet {
+    .filtros {
+        padding: 0.8rem !important;
+        margin-bottom: 0.8rem !important;
+        
+        .form-filtros {
+            flex-direction: column !important;
+            gap: 0.8rem !important;
+            align-items: stretch !important;
+            
+            .campo {
+                width: 100% !important;
+                
+                label {
+                    font-size: 1.4rem !important;
+                    margin-bottom: 0.3rem !important;
+                }
+                
+                select, input {
+                    width: 100% !important;
+                    padding: 0.8rem !important;
+                    font-size: 1.6rem !important; // Previene zoom en iOS
+                    min-height: 44px; // Altura mínima para touch
+                    border: 1px solid #ccc !important;
+                    border-radius: 6px !important;
+                }
+            }
+        }
+    }
+
+    .tabla-contenedor {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        
+        // Scroll horizontal mejorado
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+    }
+
+    .tabla-historial {
+        min-width: 600px; // Ancho mínimo para scroll horizontal
+        
+        th, td {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 1.3rem !important;
+            white-space: nowrap; // Evita wrap en celdas
+        }
+        
+        th {
+            font-size: 1.2rem !important;
+            padding: 0.8rem !important;
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
+        
+        // Primera columna sticky para mejor navegación
+        td:first-child {
+            position: sticky;
+            left: 0;
+            background: inherit;
+            z-index: 1;
+        }
+        
+        .total-fila {
+            font-size: 1.4rem !important;
+            background: #e3f2fd !important;
+        }
+        
+        // Versión card para móviles muy pequeños
+        @media (max-width: 480px) {
+            min-width: 500px;
+            
+            th, td {
+                padding: 0.5rem 0.6rem !important;
+                font-size: 1.2rem !important;
+            }
+        }
+    }
+
+    .resumen-totales {
+        margin-top: 0.8rem !important;
+        padding: 0.8rem !important;
+        
+        h4 {
+            font-size: 1.6rem !important;
+            margin-bottom: 0.8rem !important;
+        }
+        
+        .totales-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            
+            .total-item {
+                text-align: center;
+                padding: 0.8rem;
+                background: white;
+                border-radius: 6px;
+                border: 1px solid #e0e0e0;
+                
+                .valor {
+                    font-size: 1.8rem !important;
+                    font-weight: bold;
+                    color: #007bff;
+                }
+                
+                .etiqueta {
+                    font-size: 1.2rem !important;
+                    color: #666;
+                }
+            }
+        }
+    }
+
+    .no-resultados {
+        padding: 1.5rem !important;
+        font-size: 1.4rem !important;
+        
+        i {
+            font-size: 3rem !important;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+// Para pantallas muy pequeñas (menos de 480px)
+@media (max-width: 480px) {
+    .filtros {
+        padding: 0.6rem !important;
+        
+        .form-filtros {
+            gap: 0.6rem !important;
+            
+            .campo {
+                select, input {
+                    padding: 0.7rem !important;
+                    font-size: 1.5rem !important;
+                    min-height: 42px;
+                }
+            }
+        }
+    }
+
+    .tabla-historial {
+        min-width: 450px;
+        
+        th, td {
+            padding: 0.5rem 0.6rem !important;
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .resumen-totales {
+        padding: 0.6rem !important;
+        
+        h4 {
+            font-size: 1.5rem !important;
+        }
+        
+        .totales-grid {
+            grid-template-columns: 1fr;
+            gap: 0.6rem;
+            
+            .total-item {
+                padding: 0.6rem;
+                
+                .valor {
+                    font-size: 1.6rem !important;
+                }
+            }
+        }
+    }
+
+    .no-resultados {
+        padding: 1rem !important;
+        font-size: 1.3rem !important;
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .filtros {
+        .form-filtros {
+            flex-wrap: wrap;
+            
+            .campo {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+    }
+
+    .tabla-historial {
+        th, td {
+            padding: 0.7rem !important;
+            font-size: 1.4rem !important;
+        }
+    }
+}
+
+// Mejoras específicas para landscape en móviles
+@media (max-width: 768px) and (orientation: landscape) {
+    .tabla-contenedor {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    
+    .filtros {
+        padding: 0.5rem !important;
+    }
+}

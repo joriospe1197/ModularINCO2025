@@ -1,0 +1,673 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contenedor-pedidos {
+    padding: 1.5rem;
+    
+    .card {
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        border: none;
+        
+        .card-header {
+            background-color: v.$azul;
+            color: v.$blanco;
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+            padding: 1.25rem 1.5rem;
+            .btn-primary {
+                padding: 0.85rem 1.75rem !important;  // Más grande
+                font-size: 1.3rem !important;
+                min-width: 160px;
+                font-weight: 700;
+                i { margin-right: 0.5rem; }
+                background-color: #284076;
+                border-radius: 1rem;
+                border-color: v.$blanco;
+
+            }
+            .card-title {
+                font-size: 1.9rem;
+                margin-bottom: 0;
+                
+                i {
+                    margin-right: 0.75rem;
+                }
+            }
+        }
+        
+        .card-body {
+            padding: 0;
+        }
+    }
+}
+
+
+
+.tabla-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    th:nth-child(1),  // Primera columna (Folio)
+    td:nth-child(1) { // Celda correspondiente
+        width: 250px !important;  // Ancho reducido (ajusta este valor)
+        min-width: 250px;         // Ancho mínimo garantizado
+        max-width: 250px;         // Ancho máximo (opcional)
+        
+    }
+    th:nth-child(1),
+    th:nth-child(5) {
+        padding-left: 2rem !important; 
+    }
+
+
+    thead {
+        background-color: v.$gris-oscuro;
+        color: v.$blanco;
+        
+        th {
+            color: v.$azul !important;  //
+            opacity: 1 !important;        // Asegurar visibilidad
+            padding: 1.5rem 0.5rem !important;  // Ajuste de padding para mejor visualización
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.7rem;
+        }
+    }
+    
+    tbody {
+        tr {
+            border-bottom: 3px solid v.$gris-claro;
+
+            // clase para filas clickeables
+            &.fila-clicable {
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            
+                &:hover {
+                    background-color: rgba(v.$azul, 0.05);
+                }
+            }
+
+            td {
+                padding: 1.2rem 1rem;
+                vertical-align: middle;
+
+                // Asegurar que la celda de acciones no herede el cursor
+                &.acciones {
+                    cursor: default;
+                }
+                
+                .btn-folio {
+                    font-weight: 500;
+                    text-align: center;
+                    white-space: nowrap;
+                    padding: 0.75rem 1.5rem !important;  // Más grande que el estándar
+                    font-size: 1.3rem !important;        // Tamaño de fuente aumentado
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 1rem;
+                }
+                
+                .badge {
+                    padding: 0.75rem 1.3rem;
+                    border-radius: 1.5rem;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    min-width: 100px;
+                    min-height: 30px;
+                    display: inline-block;
+                    text-align: center;
+                    vertical-align: middle;
+                    
+                    &.estado-pendiente {
+                        background-color: v.$azul-pendiente;
+                        color: v.$blanco;
+                    }
+                    
+                    &.estado-en_proceso {
+                        background-color: v.$azul-estado;
+                        color: v.$blanco;
+                    }
+                    
+                    &.estado-finalizado {
+                        background-color: v.$verde-estado;
+                        color: v.$blanco;
+                    }
+                    
+                    &.estado-cancelado {
+                        background-color: v.$rojo-estado;
+                        color: v.$blanco;
+                    }
+
+                    // Loading state
+                    .fa-spinner {
+                        margin-right: 5px;
+                    }
+                }
+                
+                .btn-sm {
+                    padding: 0.75rem 1.3rem !important;
+                    font-size: 1.2rem;
+                    background-color: #6c757d;
+                    border-color: v.$gris;
+                }
+            }
+        }
+    }
+}
+
+.alert-info {
+    margin: 1.5rem;
+}
+
+/* Modal cliente */
+.modal-content {
+    border-radius: 1rem;
+    
+
+    
+    .modal-header {
+        background-color: v.$azul;
+        color: v.$blanco;
+        border-radius: 0.5rem 0.5rem 0 0;
+        
+    }
+    
+    .modal-body {
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            
+            strong {
+                display: inline-block;
+                min-width: 100px;
+            }
+        }
+    }
+}
+
+// Eliminación forzada del fondo gris (backdrop)
+body.modal-open {
+    overflow: auto;
+    padding-right: 0 !important;
+    
+    // Opcional: si usas navbar fija
+    .fixed-top {
+        padding-right: 0 !important;
+    }
+}
+
+/* Fix para el modal */
+#modalCliente {
+    &.show {
+        display: block !important;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    .modal-dialog {
+        margin-top: 1rem !important;
+        transform: none !important;
+    }
+}
+
+
+.modal-backdrop {
+    display: none !important;
+}
+
+/* Reset para body cuando modal está abierto */
+body.modal-open {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+.status-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.status-option {
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        border-color: v.$azul;
+        background-color: #f8f9fa;
+    }
+    
+    &.selected {
+        border-color: v.$azul;
+        background-color: #e8f4ff;
+    }
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    
+    // Asegurar que los colores coincidan con los existentes
+    &.estado-pendiente {
+        background-color: v.$azul-pendiente;
+        color: v.$blanco;
+    }
+    
+    &.estado-en_proceso {
+        background-color: v.$azul-estado;
+        color: v.$blanco;
+    }
+    
+    &.estado-finalizado {
+        background-color: v.$verde-estado;
+        color: v.$blanco;
+    }
+    
+    &.estado-cancelado {
+        background-color: v.$rojo-estado;
+        color: v.$blanco;
+    }
+}
+
+.status-description {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+// Estilos para el popup de SweetAlert2 personalizado
+.status-change-popup {
+    border-radius: 12px;
+    
+    .swal2-title {
+        font-size: 1.8rem;
+        color: v.$azul;
+        margin-bottom: 1rem;
+    }
+    
+    .swal2-html-container {
+        padding: 0 10px;
+    }
+    
+    .swal2-confirm {
+        background-color: #655cca;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.3rem;
+        
+        &:hover {
+            background-color: darken(#655cca, 10%);
+        }
+    }
+    .swal2-cancel{
+        background-color: v.$gris;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.3rem;
+        
+    }
+}
+
+// Texto de estado actual en el modal
+.text-center {
+    p {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        
+        .badge {
+            font-size: 1.3rem;
+            padding: 0.5rem 1rem;
+        }
+    }
+}
+
+
+
+// Responsive para móviles - Agregar al final del archivo
+@include m.tablet {
+    .contenedor-pedidos {
+        padding: 1rem !important;
+        
+        .card {
+            margin: 0.5rem 0;
+            
+            .card-header {
+                padding: 1rem 1rem !important;
+                text-align: center;
+                
+                .card-title {
+                    font-size: 1.6rem !important;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                    
+                    i {
+                        margin-right: 0;
+                        font-size: 1.8rem;
+                    }
+                }
+                
+                .btn-primary {
+                    width: 100% !important;
+                    max-width: 200px;
+                    margin: 0 auto !important;
+                    padding: 1rem 1.5rem !important;
+                    font-size: 1.4rem !important;
+                    min-height: 44px; // Touch-friendly
+                    justify-content: center;
+                    
+                    i {
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .tabla-pedidos {
+        border: 1px solid v.$gris-claro;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        
+        thead {
+            display: none;
+        }
+        
+        tbody {
+            tr {
+                display: block;
+                margin-bottom: 0.8rem;
+                border: 1px solid v.$gris-claro;
+                border-radius: 0.4rem;
+                background: v.$blanco;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 1rem;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                // Eliminar el ancho fijo de las celdas en móviles
+                td {
+                    display: flex !important;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.8rem 0.5rem !important;
+                    text-align: left !important;
+                    font-size: 1.3rem !important;
+                    border-bottom: 1px solid v.$gris-claro;
+                    width: 100% !important;
+                    min-width: auto !important;
+                    max-width: none !important;
+                    
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    &::before {
+                        content: attr(data-label);
+                        font-weight: 600;
+                        color: v.$azul;
+                        font-size: 1.2rem;
+                        margin-right: 1rem;
+                        min-width: 120px;
+                    }
+                    
+                    // Estilo especial para la celda de folio
+                    &:first-child {
+                        background: rgba(v.$azul, 0.05);
+                        font-weight: 700;
+                        font-size: 1.4rem !important;
+                        
+                        &::before {
+                            content: "Folio:";
+                            color: v.$azul;
+                        }
+                        
+                        .btn-folio {
+                            width: 100%;
+                            justify-content: center;
+                            padding: 0.8rem 1rem !important;
+                            font-size: 1.3rem !important;
+                        }
+                    }
+                    
+                    // Estilo para badges de estado
+                    .badge {
+                        padding: 0.6rem 1rem !important;
+                        font-size: 1.1rem !important;
+                        min-width: 90px !important;
+                        min-height: 30px !important;
+                    }
+                    
+                    // Botones de acciones
+                    .btn-sm {
+                        padding: 0.8rem 1rem !important;
+                        font-size: 1.2rem !important;
+                        min-height: 36px;
+                        min-width: 36px;
+                    }
+                }
+                
+                // Efecto hover mejorado para móviles
+                &.fila-clicable:active {
+                    background: rgba(v.$azul, 0.1);
+                    transform: scale(0.99);
+                    transition: all 0.2s ease;
+                }
+            }
+        }
+    }
+
+    // Modal responsive
+    .modal-content {
+        margin: 1rem;
+        border-radius: 0.8rem;
+        
+        .modal-header {
+            padding: 1rem 1.5rem !important;
+            
+            .modal-title {
+                font-size: 1.6rem !important;
+            }
+        }
+        
+        .modal-body {
+            p {
+                font-size: 1.4rem !important;
+                margin-bottom: 0.8rem;
+                
+                strong {
+                    min-width: 80px;
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    // Status options responsive
+    .status-options-container {
+        gap: 0.8rem;
+        margin: 1rem 0;
+    }
+
+    .status-option {
+        padding: 1rem;
+        font-size: 1.3rem;
+    }
+
+    .status-badge {
+        font-size: 1.1rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+
+    .status-description {
+        font-size: 1.2rem !important;
+    }
+
+    // SweetAlert2 popup responsive
+    .status-change-popup {
+        .swal2-title {
+            font-size: 1.6rem !important;
+        }
+        
+        .swal2-confirm,
+        .swal2-cancel {
+            padding: 0.8rem 1.2rem !important;
+            font-size: 1.3rem !important;
+            min-height: 44px;
+        }
+    }
+}
+
+// Para pantallas muy pequeñas (menos de 480px)
+@media (max-width: 480px) {
+    .contenedor-pedidos {
+        padding: 0.5rem !important;
+        
+        .card {
+            .card-header {
+                padding: 0.8rem 0.8rem !important;
+                
+                .card-title {
+                    font-size: 1.4rem !important;
+                    
+                    i {
+                        font-size: 1.6rem;
+                    }
+                }
+                
+                .btn-primary {
+                    max-width: 100% !important;
+                    padding: 0.9rem 1.2rem !important;
+                    font-size: 1.3rem !important;
+                }
+            }
+        }
+    }
+
+    .tabla-pedidos {
+        tbody {
+            tr {
+                padding: 0.8rem;
+                margin-bottom: 0.6rem;
+                
+                td {
+                    padding: 0.7rem 0.4rem !important;
+                    font-size: 1.2rem !important;
+                    
+                    &::before {
+                        font-size: 1.1rem !important;
+                        min-width: 100px;
+                        margin-right: 0.5rem;
+                    }
+                    
+                    &:first-child {
+                        font-size: 1.3rem !important;
+                    }
+                    
+                    .badge {
+                        padding: 0.5rem 0.8rem !important;
+                        font-size: 1rem !important;
+                        min-width: 80px !important;
+                    }
+                    
+                    .btn-sm {
+                        padding: 0.7rem 0.8rem !important;
+                        font-size: 1.1rem !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .modal-content {
+        margin: 0.5rem;
+        
+        .modal-header {
+            padding: 0.8rem 1rem !important;
+        }
+        
+        .modal-body {
+            p {
+                font-size: 1.3rem !important;
+            }
+        }
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .contenedor-pedidos {
+        max-width: 95%;
+        margin: 0 auto;
+        
+        .card-header {
+            .card-title {
+                font-size: 2.2rem !important;
+            }
+            
+            .btn-primary {
+                min-width: 180px !important;
+                font-size: 1.4rem !important;
+            }
+        }
+    }
+
+    .tabla-pedidos {
+        thead {
+            display: table-header-group;
+        }
+        
+        tbody {
+            tr {
+                display: table-row;
+                
+                td {
+                    display: table-cell;
+                    text-align: left;
+                    padding: 1rem 0.8rem !important;
+                    
+                    &::before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mejoras específicas para landscape en móviles
+@media (max-width: 768px) and (orientation: landscape) {
+    .contenedor-pedidos {
+        .card-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .tabla-pedidos tbody {
+            max-height: 50vh;
+            overflow-y: auto;
+            display: block;
+        }
+    }
+}
+
+// Asegurar que los elementos interactivos sean touch-friendly
+.btn-folio, .badge, .btn-sm {
+    @include m.tablet {
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,541 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.badge_servicio {
+    font-size: 0.875em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.badge_servicio:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.estado-pendiente_servicio {
+    background-color: #ffc107;
+    color: #000 ;
+}
+
+.estado-programado_servicio {
+    background-color: #0d6efd;
+    color: white ;
+}
+
+.estado-completado_servicio {
+    background-color: #198754;
+    color: white ;
+}
+
+.status-option.selected {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.contenedor-historial-servicios {
+    padding: 2rem;
+    margin-left: 250px;
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
+    background: #f8f9fa;
+    
+    @media (max-width: 768px) {
+        margin-left: 0;
+        padding: 1rem;
+        margin-top: 60px;
+    }
+}
+
+/* ===== CARD PRINCIPAL ===== */
+.card-historial-servicios {
+    background: white;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.card-header-historial-servicios {
+    background: linear-gradient(135deg, #284076 0%, #f8f8f8 100%);
+    border-bottom: none;
+    padding: 1.5rem 2rem;
+    
+    h2 {
+        margin: 0;
+        color: white;
+        font-weight: 400;
+        font-size: 1.8rem;
+        
+        .fa-history {
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 0.75rem;
+        }
+    }
+    
+    .btn-historial-servicios {
+        margin-left: 0.75rem;
+        border-radius: 8px;
+        font-weight: 500;
+        
+        @media (max-width: 768px) {
+            margin: 0.5rem 0;
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+.card-body-historial-servicios {
+    padding: 2rem;
+}
+
+/* ===== INFORMACIÓN DE LA UNIDAD ===== */
+.info-unidad-historial {
+    background: linear-gradient(135deg, #f8f9fa 0%, #3a94ed 100%);
+    border-left: 4px solid #007bff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    
+    h5 {
+        color: #094682;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        font-size: 1.6rem;
+    }
+    
+    .row > div {
+        margin-bottom: 0.75rem;
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== SELECTOR DE UNIDAD ===== */
+.selector-unidad-historial {
+    margin-bottom: 2rem;
+    
+    .form-control-selector-historial {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.875rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        
+        &:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    }
+}
+
+/* ===== TABLA DE SERVICIOS ===== */
+.tabla-responsive-historial {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-historial-servicios {
+    margin-bottom: 0;
+    width: 100%;
+    
+    thead th {
+        background: #5b77b9;
+        border-bottom: none;
+        font-weight: 600;
+        color: white;
+        padding: 1.25rem;
+        font-size: 1.5rem;
+    }
+    
+    tbody td {
+        padding: 1.25rem;
+        vertical-align: middle;
+        border-color: #f0f0f0;
+        font-size: 1.4rem;
+    }
+    
+    tbody tr {
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+        }
+        
+        &:nth-child(even) {
+            background-color: #fafafa;
+        }
+    }
+}
+
+
+.btn-primary-historial {
+    background:  #34549c;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    
+    &:hover {
+        background: #284076;
+        color: white;
+    }
+}
+
+.btn-secondary-historial {
+    background:  #656c7d;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    
+    &:hover {
+        background: #313131;
+        color: white;
+    }
+}
+
+
+
+/* ===== RESPONSIVE ===== */
+
+@include m.tablet {
+    .contenedor-historial-servicios {
+        margin-left: 0 !important;
+        padding: 0.5rem !important;
+        margin-top: 60px !important;
+        min-height: calc(100vh - 60px);
+        background: #f8f9fa;
+    }
+
+    .card-historial-servicios {
+        margin-bottom: 1rem !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    }
+
+    .card-header-historial-servicios {
+        padding: 1rem 1rem !important;
+        background: #284076 !important; // Color sólido para mejor rendimiento en móviles
+        
+        h2 {
+            font-size: 1.5rem !important;
+            text-align: center;
+            width: 100%;
+            
+            .fa-history {
+                margin-right: 0.5rem;
+                font-size: 1.3rem;
+            }
+        }
+        
+        .btn-historial-servicios {
+            width: 100% !important;
+            margin: 0.5rem 0 0 0 !important;
+            padding: 0.8rem 1rem !important;
+            font-size: 1.3rem !important;
+            min-height: 44px;
+            justify-content: center;
+        }
+        
+        .d-flex {
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+        }
+    }
+
+    .card-body-historial-servicios {
+        padding: 1rem !important;
+    }
+
+    .info-unidad-historial {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+        border-left: 3px solid #007bff;
+        
+        h5 {
+            font-size: 1.4rem !important;
+            margin-bottom: 0.8rem !important;
+            text-align: center;
+        }
+        
+        .row > div {
+            margin-bottom: 0.5rem !important;
+            font-size: 1.3rem !important;
+            text-align: center;
+            width: 100%;
+            
+            strong {
+                display: block;
+                margin-bottom: 0.2rem;
+                color: #094682;
+            }
+        }
+    }
+
+    .selector-unidad-historial {
+        margin-bottom: 1rem !important;
+        
+        .form-control-selector-historial {
+            padding: 0.8rem !important;
+            font-size: 1.4rem !important; // Previene zoom en iOS
+            min-height: 44px;
+            border-radius: 0.5rem;
+        }
+    }
+
+    .tabla-responsive-historial {
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+    }
+
+    .tabla-historial-servicios {
+        min-width: 600px; // Ancho mínimo para scroll horizontal
+        
+        thead th {
+            padding: 0.8rem 0.5rem !important;
+            font-size: 1.3rem !important;
+            position: sticky;
+            left: 0;
+        }
+        
+        tbody td {
+            padding: 0.8rem 0.5rem !important;
+            font-size: 1.3rem !important;
+            white-space: nowrap;
+            
+            // Primera columna sticky para mejor navegación
+            &:first-child {
+                position: sticky;
+                left: 0;
+                background: inherit;
+                z-index: 1;
+            }
+        }
+        
+        tbody tr {
+            &:hover {
+                transform: none !important; // Eliminar transform en móviles
+            }
+            
+            &:active {
+                background-color: rgba(40, 64, 118, 0.1) !important;
+            }
+        }
+        
+        // Versión card para pantallas muy pequeñas
+        @media (max-width: 480px) {
+            min-width: 500px;
+            
+            thead th {
+                font-size: 1.2rem !important;
+                padding: 0.7rem 0.4rem !important;
+            }
+            
+            tbody td {
+                font-size: 1.2rem !important;
+                padding: 0.7rem 0.4rem !important;
+            }
+        }
+    }
+
+    .badge_servicio {
+        font-size: 1.1rem !important;
+        padding: 0.5rem 0.8rem !important;
+        min-width: 100px;
+        text-align: center;
+        display: inline-block;
+        
+        // Estados específicos
+        &.estado-pendiente_servicio {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+        }
+        
+        &.estado-programado_servicio {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+        
+        &.estado-completado_servicio {
+            background-color: #198754 !important;
+            color: white !important;
+        }
+        
+        // Efecto hover en móviles
+        &:active {
+            transform: scale(0.95) !important;
+            transition: transform 0.1s ease;
+        }
+    }
+
+    .btn-primary-historial,
+    .btn-secondary-historial {
+        font-size: 1.3rem !important;
+        padding: 0.8rem 1rem !important;
+        min-height: 44px;
+        width: 100%;
+        justify-content: center;
+        margin: 0.2rem 0;
+        
+        &:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+    }
+
+    // Estilos para elementos interactivos
+    .btn-sm {
+        min-width: 36px;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// Para pantallas muy pequeñas (menos de 480px)
+@media (max-width: 480px) {
+    .contenedor-historial-servicios {
+        padding: 0.3rem !important;
+        margin-top: 50px !important;
+    }
+
+    .card-header-historial-servicios {
+        padding: 0.8rem 0.8rem !important;
+        
+        h2 {
+            font-size: 1.3rem !important;
+        }
+        
+        .btn-historial-servicios {
+            padding: 0.7rem 0.8rem !important;
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .info-unidad-historial {
+        padding: 0.8rem !important;
+        
+        h5 {
+            font-size: 1.3rem !important;
+        }
+        
+        .row > div {
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .selector-unidad-historial {
+        .form-control-selector-historial {
+            padding: 0.7rem !important;
+            font-size: 1.3rem !important;
+        }
+    }
+
+    .badge_servicio {
+        font-size: 1rem !important;
+        padding: 0.4rem 0.6rem !important;
+        min-width: 90px;
+    }
+
+    .btn-primary-historial,
+    .btn-secondary-historial {
+        font-size: 1.2rem !important;
+        padding: 0.7rem 0.8rem !important;
+    }
+}
+
+// Para tablets en orientación vertical (768px - 1024px)
+@media (min-width: 769px) and (max-width: 1024px) {
+    .contenedor-historial-servicios {
+        margin-left: 80px !important; // Sidebar colapsado
+        padding: 1rem !important;
+    }
+
+    .card-header-historial-servicios {
+        h2 {
+            font-size: 1.7rem !important;
+        }
+        
+        .btn-historial-servicios {
+            font-size: 1.4rem !important;
+            min-width: 160px;
+        }
+    }
+
+    .tabla-historial-servicios {
+        thead th {
+            font-size: 1.4rem !important;
+        }
+        
+        tbody td {
+            font-size: 1.4rem !important;
+        }
+    }
+}
+
+// Mejoras específicas para landscape en móviles
+@media (max-width: 768px) and (orientation: landscape) {
+    .contenedor-historial-servicios {
+        .card-body-historial-servicios {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .tabla-responsive-historial {
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+    }
+}
+
+// Optimización para impresión
+@media print {
+    .contenedor-historial-servicios {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+    
+    .card-historial-servicios {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+    
+    .btn-historial-servicios {
+        display: none !important;
+    }
+}
+
+// Clases de utilidad para responsive
+.mobile-hidden {
+    @include m.tablet {
+        display: none !important;
+    }
+}
+
+.mobile-only {
+    display: none !important;
+    
+    @include m.tablet {
+        display: block !important;
+    }
+}

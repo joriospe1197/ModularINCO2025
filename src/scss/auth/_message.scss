@@ -1,0 +1,14 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.message {
+    margin-top: 0rem;
+    .Constructora{
+        @include m.textoDegradado(v.$grisClaro)
+    }
+}
+
+
+.descripcion-pagina{
+    color: v.$blanco;
+}

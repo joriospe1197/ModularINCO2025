@@ -1,0 +1,47 @@
+
+.pestanas {
+    display: flex;
+    border-bottom: 2px solid #1673d7;
+    margin-bottom: 2rem;
+    
+    .pestana-btn {
+        padding: 1rem 2rem;
+        border: none;
+        background: #f8f9fa;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: #e9ecef;
+        }
+        
+        &.active {
+            background: #0350a2f6;
+            color: white;
+            border-bottom: 3px solid #003063;
+        }
+        
+        &:first-child {
+            border-radius: 4px 0 0 0;
+        }
+        
+        &:last-child {
+            border-radius: 0 4px 0 0;
+        }
+    }
+}
+
+.tab-contenido {
+    display: none;
+    
+    &.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
