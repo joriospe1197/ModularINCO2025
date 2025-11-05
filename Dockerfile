@@ -17,7 +17,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Copia el archivo requirements.txt e instala dependencias de Python
 COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+RUN pip install --break-system-packages -r requirements.txt
 
 # Copia el resto del proyecto
 COPY . /app
