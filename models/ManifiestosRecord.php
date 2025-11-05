@@ -94,18 +94,16 @@ class ManifiestosRecord {
                 AND id_cliente = {$cliente_id} 
                 AND YEAR(fecha_pedido) = {$anio}
                 AND MONTH(fecha_pedido) = {$mes}";
-        
-        error_log("🔍 CALCULAR M3 - Buscando por ID: cliente_id={$cliente_id}, año={$anio}, mes={$mes}, tipo='{$tipo}'");
+
         
         $resultado = self::$db->query($query);
         if (!$resultado) {
-            error_log("❌ ERROR en consulta: " . self::$db->error);
+            
             return 0;
         }  
         $row = $resultado->fetch_assoc();
         $total = $row['total'] ?? 0;
         
-        error_log("🔍 CALCULAR M3 - Resultado: " . $total . " viajes encontrados");
         
         return $total;
     }

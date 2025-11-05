@@ -96,7 +96,7 @@
 <!-- Contenido de Pestaña 2: Generar Resumen -->
 <div id="tab-resumen" class="tab-contenido">
     <div class="historial-resumen-contenedor historial-resumen-fade-in">
-        <h3 class="historial-resumen-titulo">📊 Generar Resumen Semanal</h3>
+        <h3 class="historial-resumen-titulo">📊 Generar Resumen</h3>
 
         <?php if (!empty($alertas)): ?>
             <div class="historial-resumen-alerta <?php echo key($alertas) === 'error' ? 'error' : 'exito'; ?>">

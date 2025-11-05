@@ -17,6 +17,8 @@ use Controllers\ProductsController;
 use Controllers\PedidosController;
 use Controllers\ServicioUnidadController;
 use Model\ServicioUnidad;
+use Controllers\ClientesController;
+use Controllers\IAController;
 
 $router = new Router();
 //Generar pdf manifiesto
@@ -32,9 +34,12 @@ $router->post('/crear_manifiesto',[ManifiestosController::class, 'crear_manifies
 // Crear Registro Semanal
 $router->get('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
 $router->post('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
-
-$router->get('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
-$router->post('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+//Guardar manifiesto en el sistema sin imprimir
+$router->get('/manifiestos',[ManifiestosController::class, 'guardar_manifiesto']);
+$router->post('/manifiestos',[ManifiestosController::class, 'guardar_manifiesto']);
+//Vista previa del manifiesto creado
+$router->get('/guardar_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+$router->post('/guardar_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
 
 //Editar registro semanal
 $router->get('/edit_week', [WeeklyController::class,'edit_week_pr']);
@@ -95,10 +100,12 @@ $router->post('/forgot_my_password',[LoginController::class, 'forgot_my_password
 //Colocar el nuevo password
 $router->get('/recover',[LoginController::class, 'recover']);
 $router->post('/recover',[LoginController::class, 'recover']);
-
+//Perceptron para predicciones
+$router->get('/ia',[IAController::class, 'index']);
+$router->post('/ia',[IAController::class, 'index']);
+$router->get('/inicio',[IAController::class, 'index']);
 //Dashboard
 $router->get('/mi_perfil',[DashboardController::class, 'mi_perfil']);
-$router->get('/inicio',[DashboardController::class, 'inicio']);
 $router->get('/empleados',[DashboardController::class, 'empleados']);
 $router->get('/productos',[DashboardController::class, 'productos']);
 $router->get('/pedidos',[DashboardController::class, 'pedidos']);
@@ -108,7 +115,18 @@ $router->get('/servicios_de_unidades',[DashboardController::class, 'servicios_de
 $router->get('/rastreo_de_unidades',[DashboardController::class, 'rastreo_de_unidades']);
 $router->get('/manifiestos',[ManifiestosController::class, 'manifiestos']);
 $router->get('/chat',[DashboardController::class, 'chat']);
-
+//Clientes
+$router->get('/clientes', [ClientesController::class, 'listar']);
+//Ver descripcion completa del cliente
+$router->get('/clientes/ver', [ClientesController::class, 'ver']);
+//Registrar nuevo cliente
+$router->get('/clientes/agregar', [ClientesController::class, 'agregar']);
+$router->post('/clientes/agregar', [ClientesController::class, 'agregar']);
+//Editar información del cliente
+$router->get('/clientes/editar', [ClientesController::class, 'editar']);
+$router->post('/clientes/editar', [ClientesController::class, 'editar']);
+//Eliminar cliente
+$router->post('/clientes/eliminar', [ClientesController::class, 'eliminar']);
 // Asignar unidad a chofer
 $router->get('/asignar_unidades_a_choferes',[UnidadController::class, 'asignar_unidades_a_choferes']);
 $router->post('/asignar_unidades_a_choferes',[UnidadController::class, 'asignar_unidades_a_choferes']);

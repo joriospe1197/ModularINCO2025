@@ -42,7 +42,13 @@ $esAdmin = isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1;
                 <i class="fas fa-history"></i> Historial
             </a>
 
+            </a>
+            <a href="/clientes" class="nav-link <?= $titulo === 'Lista de Clientes' ? 'active' : '' ?>">
+                <i class="fas fa-user-tie"></i> Clientes
+            </a>
+
         </div>
+        
 
         <!-- Sección Logística -->
         <div class="nav-group">

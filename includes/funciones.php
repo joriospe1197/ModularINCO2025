@@ -1,5 +1,10 @@
 <?php
 
+define('PROJECT_ROOT', dirname(__DIR__));
+define('PYTHON_PATH', getenv('PYTHON_PATH') ?: 'python');
+define('SCRIPTS_DIR', PROJECT_ROOT . DIRECTORY_SEPARATOR );
+
+
 function debuguear($variable) : string {
     echo "<pre>";
     var_dump($variable);

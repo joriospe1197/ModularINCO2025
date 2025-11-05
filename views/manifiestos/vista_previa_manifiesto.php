@@ -130,12 +130,50 @@
             border-bottom: 1px solid #d0d0d0;
         }
     }
+    #regresar{
+        
+    background-color: rgba(11, 39, 100, .8823529412);
+    padding: .8rem 1.6rem;
+    color: #f3f4f6;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 1rem;
+    transition: all .2s ease;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-left: 15px;
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.2;
+    margin-top: 1rem;
+    }
+    #regresar:hover{
+        background-color: #1e3a5f;
+    }
+    .botones{
+        display: flex;
+        
+    }
 </style>
 
 
 
-
-
+<div class="botones">
+   
+<form class="formulario"  method="GET" action="/manifiestos">
+    <input type="submit" id="regresar" value="⬅ Regresar al inicio">
+</form>
+<form class="formulario"  method="GET" action="/guardar_manifiesto">
+    <button type="submit" id="regresar">
+        <i class="fas fa-save"></i> Guardar manifiesto
+    </button>
+</form>
 <form class="formulario" method="POST" action="/generar_PDF">.
     <input type="hidden" name="clientes" value="<?= $clienteM ?>">
     <input type="hidden" name="mes" value="<?= $mesM ?>">
@@ -151,13 +189,14 @@
     <input type="hidden" name="municipio" value="<?= $municipio ?>">
     <input type="hidden" name="telefono" value="<?= $telefono ?>">
     <input type="hidden" name="nombre" value="<?= $nombre ?>">
-    <input type="submit" class="btn-regresar" value="Generar en PDF">
-    <!-- <br><br> -->
-    <a href="/manifiestos" class="btn-regresar">Regresar al inicio</a>
-
-
+    <input type="submit" class="boton" value="Generar en PDF">
+    <br><br>
+    
 </form>
 
+
+
+</div>
 <br><br><br>
 
 <div class="container">

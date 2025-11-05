@@ -8,7 +8,11 @@ class ActiveRecord {
     protected static $db;
     protected static $tabla = '';
     protected static $columnasDB = [];
-
+    public $num_pedidos;
+    public $nombre_cliente;
+    public $servicio;
+    public $periodo;
+    public $ingresos;
     // Alertas y Mensajes
     protected static $alertas = [];
     
