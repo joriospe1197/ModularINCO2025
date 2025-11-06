@@ -12,11 +12,20 @@ class MachineLearningRecord extends ActiveRecord {
     protected static $columnasDB = [];
     protected static $alertas = [];
     
-    public static function verificar(){
-        $query = "SELECT COUNT(*) AS total FROM pronosticos_materiales;";
+    public static function verificar() {
+        $query = "SELECT COUNT(*) AS total FROM pronosticos_materiales 
+                  WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) 
+                  AND YEAR(created_at) = YEAR(CURRENT_DATE());";
+    
         $resultado = self::consultarSQL($query);
-        return !empty($resultado) && $resultado[0]->total > 0;
+    
+        if (!empty($resultado) && isset($resultado[0]->total)) {
+            return $resultado[0]->total > 0;
+        }
+    
+        return false;
     }
+    
     
     public static function top3Materiales(){
         $query = "SELECT servicio as servicio,
