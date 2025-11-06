@@ -56,27 +56,26 @@ class IAController
             }
             
         }else{
-            // Ejecutar script Python
-            exec($cmd, $out, $code);
-
-            if ($code !== 0) {
-                $_SESSION['alerta'] = [
-                    'tipo' => 'error',
-                    'mensaje' => "El script Python falló. Código de salida: $code"
-                ];
+            if (!$respuesta) {
+                // Ejecutar script Python
+                exec($cmd, $out, $code);
+            
+                if ($code !== 0) {
+                    $_SESSION['alerta'] = [
+                        'tipo' => 'error',
+                        'mensaje' => "El script Python falló. Código de salida: $code"
+                    ];
+                } else {
+                    $_SESSION['alerta'] = [
+                        'tipo' => 'exito',
+                        'mensaje' => "Análisis mensual completado correctamente."
+                    ];
+                }
+            
+                // Redirigir a la página de inicio sin hacer echo
                 header("Location: /inicio");
                 exit;
             }
-
-            // Guardar mensaje de éxito en sesión
-            $_SESSION['alerta'] = [
-                'tipo' => 'exito',
-                'mensaje' => "Análisis completado correctamente. Código de salida: $code"
-            ];
-
-            // Redirigir a la página de inicio
-            header("Location: /inicio");
-            exit;
 
         }
         
