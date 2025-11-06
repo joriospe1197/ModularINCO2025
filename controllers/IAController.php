@@ -67,7 +67,10 @@ class IAController
             if ($code !== 0) {
                 die("\nError: El script Python falló");
             }
-            echo "\nAnálisis completado. Recarga la página para ver los resultados.";
+            echo "\nAnálisis completado. Redirigiendo...";
+            header("Refresh:3; url=/inicio"); // Espera 3 segundos y recarga
+            exit;
+
         }
         
         $datos_vista = [
