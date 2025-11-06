@@ -29,6 +29,18 @@ class IAController
         
         $respuesta = MachineLearningRecord::verificar();
         
+        // Inicializar variables para evitar warnings cuando $respuesta es false
+        $datos = [];
+        $soloServicios = [];
+        $historialUltimoMes = [];
+        $clientesHistorial = [];
+        $ingresosPredicción = 0;
+        $prediccion = [];
+        $currentYear = date('Y');
+        $lastYear = $currentYear - 1;
+        $ingresosLastYear = 0;
+
+
         if($respuesta){
             $datos = MachineLearningRecord::top3Materiales();
             $historialUltimoMes = MachineLearningRecord::getLastMonth();
