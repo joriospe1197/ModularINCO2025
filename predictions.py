@@ -23,10 +23,10 @@ engine = create_engine(
 )
 
 DB_USER = "root"
-DB_PASS = "veliz4$"         
-DB_HOST = "127.0.0.1"       
-DB_PORT = 3306
-DB_NAME = "constructora_1.0"
+DB_PASS = "hgVvISLFXzOyIALjHttvbipzQmSCPMAl"         
+DB_HOST = "gondola.proxy.rlwy.net"       
+DB_PORT = 59369
+DB_NAME = "constructora"
 
 url = URL.create(
     "mysql+pymysql",
