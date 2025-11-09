@@ -35,11 +35,14 @@ $router->post('/crear_manifiesto',[ManifiestosController::class, 'crear_manifies
 $router->get('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
 $router->post('/create_weekly_history',[WeeklyController::class, 'create_weekly_history']);
 //Guardar manifiesto en el sistema sin imprimir
-$router->get('/manifiestos',[ManifiestosController::class, 'guardar_manifiesto']);
-$router->post('/manifiestos',[ManifiestosController::class, 'guardar_manifiesto']);
+$router->get('/guardar_manifiesto',[ManifiestosController::class, 'guardar_manifiesto']);
+$router->post('/guardar_manifiesto',[ManifiestosController::class, 'guardar_manifiesto']);
 //Vista previa del manifiesto creado
-$router->get('/guardar_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
-$router->post('/guardar_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+$router->get('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+$router->post('/vista_manifiesto',[ManifiestosController::class, 'vista_manifiesto']);
+//Vista previa del manifiesto guardado, para los que ya estan que no ocupan registrarse
+$router->get('/vista_manifiesto_guardado',[ManifiestosController::class, 'vista_manifiesto_guardado']);
+$router->post('/vista_manifiesto_guardado',[ManifiestosController::class, 'vista_manifiesto_guardado']);
 
 //Editar registro semanal
 $router->get('/edit_week', [WeeklyController::class,'edit_week_pr']);

@@ -178,7 +178,6 @@ class ManifiestosRecord {
     public static function buscarRegistro($cliente, $obra, $tipo_residuo, $mes, $anio){
         $query = "SELECT * FROM manifiestos 
                 WHERE cliente = '{$cliente}'
-                AND obra = '{$obra}' 
                 AND tipo_residuo = '{$tipo_residuo}'
                 AND mes = '{$mes}' 
                 AND anio = '{$anio}'";

@@ -8,6 +8,7 @@ use MVC\Router;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Model\WeeklyRecord;
+use Model\Clientes;
 
 class ManifiestosController
 {
@@ -60,7 +61,7 @@ class ManifiestosController
         $dirObra = $_POST['dirObra'] ?? '';
         $tipoResiduo = $_POST['tipoResiduo'] ?? '';
 
-
+        $cliente = Clientes::findByIdGetName($cliente_id);
 
         // CONVERTIR NOMBRE DEL MES A NÚMERO
         $meses = [
@@ -78,7 +79,44 @@ class ManifiestosController
             "Diciembre" => "12"
         ];
         $mes_numero = $meses[$mesM] ?? date('m'); // Usar mes actual si no se encuentra
+        //  VERIFICAR SI YA EXISTE EL MANIFIESTO
+        $busqueda = ManifiestosRecord::buscarRegistro($cliente, $dirObra, $tipoResiduo, $mes_numero, $anio);
 
+
+        if (!empty($busqueda)) {
+            ManifiestosRecord::setAlerta('error', 'Ya existe un manifiesto con estos datos');
+            // OBTENER DATOS DEL CLIENTE
+            $direccion = ManifiestosRecord::obtenerDir($cliente_id);
+            $correo = ManifiestosRecord::obtenerCorreo($cliente_id);
+            $codigo = ManifiestosRecord::obtenerCodP($cliente_id);
+            $municipio = ManifiestosRecord::obtenerMunicipio($cliente_id);
+            $estado = ManifiestosRecord::obtenerEstado($cliente_id);
+            $telefono = ManifiestosRecord::obtenerTel($cliente_id);
+            $nombre = ManifiestosRecord::obtenerNombre($cliente_id);
+            $viajes = ManifiestosRecord::calcularM3($cliente_id, $anio, $mes_numero, $tipoResiduo);
+            $totalm3 = $viajes * 7;
+            $router->render('manifiestos/vista_manifiesto_guardado', [
+                'titulo' => 'Vista Previa de Manifiesto',
+                'alertas' => ManifiestosRecord::getAlertas(),
+                'clienteM' => $cliente_id,
+                'mesM' => $mesM,
+                'mes_numero' => $mes_numero,
+                'anio' => $anio,
+                'dirObra' => $dirObra,
+                'direccion' => $direccion,
+                'correo' => $correo,
+                'tipoResiduo' => $tipoResiduo,
+                'totalm3' => $totalm3,
+                'codigo' => $codigo,
+                'estado' => $estado,
+                'municipio' => $municipio,
+                'telefono' => $telefono,
+                'nombre' => $nombre,
+                'busqueda' => $cliente
+            ]);
+            
+        }
+        
 
         // OBTENER DATOS DEL CLIENTE
         $direccion = ManifiestosRecord::obtenerDir($cliente_id);
@@ -92,7 +130,7 @@ class ManifiestosController
         // Calcular m³
         $viajes = ManifiestosRecord::calcularM3($cliente_id, $anio, $mes_numero, $tipoResiduo);
         $totalm3 = $viajes * 7;
-        /* if ($totalm3 === 0) {
+        if ($totalm3 === 0) {
             $clientes = ManifiestosRecord::allClientes();
             $meses = [
                 "01" => "Enero",
@@ -119,7 +157,7 @@ class ManifiestosController
 
             ]);
             return;
-        } */
+        }
 
 
         $router->render('manifiestos/vista_previa_manifiesto', [
@@ -138,11 +176,13 @@ class ManifiestosController
             'estado' => $estado,
             'municipio' => $municipio,
             'telefono' => $telefono,
-            'nombre' => $nombre
+            'nombre' => $nombre,
+            'busqueda' => $cliente
         ]);
     }
     // Agregar este método para verificación de consistencia ... eliminado
-    public static function guardar_manifiesto(Router $router){
+    public static function guardar_manifiesto(Router $router)
+    {
         session_start();
         $alertas = [];
         $cliente_id = $_POST['clientes'] ?? '';
@@ -155,6 +195,22 @@ class ManifiestosController
         $tipoResiduo = $_POST['tipoResiduo'] ?? '';
         $totalm3 = $_POST['totalm3'] ?? '';
         $dirObra = $_POST['dirObra'] ?? '';
+        if (empty($nombre)) {
+            ManifiestosRecord::setAlerta('error', 'El nombre del cliente es obligatorio');
+        }
+        if (empty($dirObra)) {
+            ManifiestosRecord::setAlerta('error', 'La dirección de obra es obligatoria');
+        }
+        if (empty($tipoResiduo)) {
+            ManifiestosRecord::setAlerta('error', 'El tipo de residuo es obligatorio');
+        }
+        if (empty($anio)) {
+            ManifiestosRecord::setAlerta('error', 'El año es obligatorio');
+        }
+        if (empty($totalm3)) {
+            ManifiestosRecord::setAlerta('error', 'El total de m³ es obligatorio');
+        }
+
 
         // SI mes_numero ESTÁ VACÍO, RECALCULARLO
         if (empty($mes_numero)) {
@@ -182,13 +238,13 @@ class ManifiestosController
         //  VERIFICAR SI YA EXISTE EL MANIFIESTO
         $busqueda = ManifiestosRecord::buscarRegistro($cliente_id, $dirObra, $tipoResiduo, $mes_numero, $anio);
 
-        if ($busqueda && count($busqueda) > 0) {
+        var_dump($busqueda);
+        if ($busqueda) {
             ManifiestosRecord::setAlerta('error', 'Ya existe un manifiesto con estos datos');
-            // Redirigir en lugar de generar PDF corrupto
-            self::crear_manifiesto($router);
+            self::manifiestos($router);
             return;
         }
-
+        error_log("SOLUCIÓN: mes_numero recalculado = " . $anio);
         $registro_manifiestos = ManifiestosRecord::registrar($nombre, $dirObra, $tipoResiduo, $mes_numero, $anio, $totalm3);
 
 
@@ -198,7 +254,71 @@ class ManifiestosController
         }
 
         self::manifiestos($router);
+    }
+    public static function vista_manifiesto_guardado(Router $router)
+    {
+        session_start();
+        $alertas = [];
+        $cliente_nombre = $_GET['cliente'] ?? '';
+        $mes = $_GET['mes'] ?? '';
+        $anio = $_GET['anio'] ?? '';
+        $dirObra = $_GET['dirObra'] ?? '';
+        $tipo_residuo = $_GET['tipo_residuo'] ?? '';
 
+        // OBTENER EL ID_CLIENTE DESDE EL NOMBRE
+        $datos_cliente = ManifiestosRecord::busquedaPorNombre($cliente_nombre);
+        if (!$datos_cliente) {
+            $alertas['error'][] = 'Cliente no encontrado: ' . $cliente_nombre;
+            $cliente_id = null;
+        } else {
+            $cliente_id = $datos_cliente[0]->id;
+        }
+
+        $busqueda = ManifiestosRecord::busquedaSec($cliente_nombre, $dirObra, $mes, $anio);
+
+        // USAR EL NUEVO MÉTODO CON ID_CLIENTE
+        if ($cliente_id) {
+            $viajes = ManifiestosRecord::calcularM3($cliente_id, $anio, $mes, $tipo_residuo);
+        } else {
+            $viajes = 0;
+            $alertas['error'][] = 'No se pudo calcular m³ - cliente no válido';
+        }
+
+        $totalm3 = $viajes * 7;
+
+        $meses = [
+            '01' => 'Enero',
+            '02' => 'Febrero',
+            '03' => 'Marzo',
+            '04' => 'Abril',
+            '05' => 'Mayo',
+            '06' => 'Junio',
+            '07' => 'Julio',
+            '08' => 'Agosto',
+            '09' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre'
+        ];
+
+        $router->render('manifiestos/vista_manifiesto_guardado', [
+            'titulo' => 'Vista de Manifiesto',
+            'alertas' => array_merge($alertas, ManifiestosRecord::getAlertas()),
+            'clienteM' => $cliente_nombre,
+            'mesM' => $meses[$mes] ?? $mes,
+            'mes_numero' => $mes,
+            'anio' => $anio,
+            'dirObra' => $dirObra,
+            'direccion' => $datos_cliente[0]->domicilio ?? '',
+            'correo' => $datos_cliente[0]->correo_electronico ?? '',
+            'tipoResiduo' => $tipo_residuo,
+            'totalm3' => $totalm3,
+            'codigo' => $datos_cliente[0]->codigo_postal ?? '',
+            'estado' => $datos_cliente[0]->estado ?? '',
+            'municipio' => $datos_cliente[0]->municipio ?? '',
+            'telefono' => $datos_cliente[0]->telefono ?? '',
+            'nombre' => $cliente_nombre
+        ]);
     }
 
     public static function generar_PDF(Router $router)
@@ -237,19 +357,6 @@ class ManifiestosController
             error_log("SOLUCIÓN: mes_numero recalculado = " . $mes_numero);
         }
 
-
-
-        //  VERIFICAR SI YA EXISTE EL MANIFIESTO
-        $busqueda = ManifiestosRecord::buscarRegistro($cliente_id, $dirObra, $tipoResiduo, $mes_numero, $anio);
-
-        if ($busqueda && count($busqueda) > 0) {
-            ManifiestosRecord::setAlerta('error', 'Ya existe un manifiesto con estos datos');
-            // Redirigir en lugar de generar PDF corrupto
-            self::crear_manifiesto($router);
-            return;
-        }
-
-        $registro_manifiestos = ManifiestosRecord::registrar($nombre, $dirObra, $tipoResiduo, $mes_numero, $anio, $totalm3);
 
 
         // LIMPIAR CUALQUIER OUTPUT ANTES DEL PDF

@@ -1,11 +1,10 @@
 <?php
 
 $db = mysqli_connect(
-    'gondola.proxy.rlwy.net',     // Host
+    'localhost',     // Host
     'root',                        // Usuario
-    'hgVvISLFXzOyIALjHttvbipzQmSCPMAl', // Contraseña
-    'constructora',                     // Nombre de base de datos correcto
-    59369                          // Puerto personalizadogh
+    'veliz4$', // Contraseña
+    'constructora_1.0'                         // Puerto personalizadogh
 );
 
 if (!$db) {

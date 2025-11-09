@@ -1,17 +1,10 @@
 <?php include_once __DIR__ . '/../templates/alertas.php'; ?>
-<a href="/clientes" class="btn-regresar">⬅ Regresar</a>
+<a href="/manifiestos" class="btn-regresar">⬅ Regresar</a>
 
 <div class="contenedor-pedido-constructora">
     <div class="card-formulario-pedido">
         <div class="card-body">
 
-            <?php if (!empty($alertas['error'])): ?>
-                <div class="alerta error mb-4">
-                    <?php foreach ($alertas['error'] as $error): ?>
-                        <p><?php echo $error; ?></p>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
 
             <form method="POST" class="formulario" id="form-cliente" action="/generar_manifiesto">
                 <div class="seccion-formulario">

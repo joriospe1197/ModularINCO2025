@@ -81,9 +81,10 @@
 <?php endforeach; ?>
 <?php $test ?>
 <div id="main_container_s">
+    <section id="chart"></section>
     <section id="prediccion_ingresos"></section>
     <section id="historico"></section>
-    <section id="chart"></section>
+    
     <section id="ingresos">
         <h4> Ingresos por clientes del ultimo mes </h4>
     </section>
