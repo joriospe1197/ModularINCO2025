@@ -65,6 +65,13 @@ class Clientes extends ActiveRecord
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
+    public static function findByIdGetName($id)
+    {
+        $query = "SELECT razon_social FROM clientes WHERE id = {$id}";
+        $resultado = self::consultarSQL($query);
+        
+        return $resultado[0]->razon_social;
+    }
     public static function findByName($name)
     {
         $query = "SELECT * FROM clientes WHERE razon_social = '{$name}'";

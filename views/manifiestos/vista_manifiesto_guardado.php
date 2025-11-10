@@ -1,22 +1,18 @@
-
-
 <style>
-        
-
     .container {
         max-width: 800px;
         margin: 0 auto;
         background-color: white;
         padding: 15px;
         border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .section {
         margin-bottom: 20px;
         border-radius: 6px;
         overflow: hidden;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
     }
 
     .section-header {
@@ -123,98 +119,93 @@
         .field-row {
             flex-direction: column;
         }
-        
+
         .field-label {
             min-width: auto;
             border-right: none;
             border-bottom: 1px solid #d0d0d0;
         }
     }
-    #regresar{
-        
-    background-color: rgba(11, 39, 100, .8823529412);
-    padding: .8rem 1.6rem;
-    color: #f3f4f6;
-    font-size: 1.4rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 1rem;
-    transition: all .2s ease;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    margin-left: 15px;
-    width: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-    cursor: pointer;
-    text-decoration: none;
-    line-height: 1.2;
-    margin-top: 1rem;
+
+    #regresar {
+
+        background-color: rgba(11, 39, 100, .8823529412);
+        padding: .8rem 1.6rem;
+        color: #f3f4f6;
+        font-size: 1.4rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 1rem;
+        transition: all .2s ease;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        margin-left: 15px;
+        width: auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 1.2;
+        margin-top: 1rem;
     }
-    #regresar:hover{
+
+    #regresar:hover {
         background-color: #1e3a5f;
     }
-    .botones{
+
+    .botones {
         display: flex;
-        
+
     }
 </style>
 
 
 
 <div class="botones">
-   
-<form class="formulario"  method="GET" action="/manifiestos">
-    <input type="submit" id="regresar" value="⬅ Regresar al inicio">
-</form>
-<form class="formulario"  method="POST" action="/guardar_manifiesto">
-    <input type="hidden" name="clientes" value="<?= $clienteM ?>">
-    <input type="hidden" name="mes" value="<?= $mesM ?>">
-     <input type="hidden" name="mes_numero" value="<?= $mes_numero ?>"> <!--  Número para BD -->
-    <input type="hidden" name="anio" value="<?= $anio ?>">
-    <input type="hidden" name="direccion" value="<?= $direccion ?>">
-    <input type="hidden" name="correo" value="<?= $correo ?>">
-    <input type="hidden" name="tipoResiduo" value="<?= $tipoResiduo ?>">
-    <input type="hidden" name="totalm3" value="<?= $totalm3 ?>">
-    <input type="hidden" name="dirObra" value="<?= $dirObra ?>">
-    <input type="hidden" name="codigo" value="<?= $codigo ?>">
-    <input type="hidden" name="estado" value="<?= $estado ?>">
-    <input type="hidden" name="municipio" value="<?= $municipio ?>">
-    <input type="hidden" name="telefono" value="<?= $telefono ?>">
-    <input type="hidden" name="nombre" value="<?= $nombre ?>">
-    <button type="submit" id="regresar">
-        <i class="fas fa-save"></i> Guardar manifiesto
-    </button>
-</form>
-<form class="formulario" method="POST" action="/generar_PDF">.
-    <input type="hidden" name="clientes" value="<?= $clienteM ?>">
-    <input type="hidden" name="mes" value="<?= $mesM ?>">
-     <input type="hidden" name="mes_numero" value="<?= $mes_numero ?>"> <!--  Número para BD -->
-    <input type="hidden" name="anio" value="<?= $anio ?>">
-    <input type="hidden" name="direccion" value="<?= $direccion ?>">
-    <input type="hidden" name="correo" value="<?= $correo ?>">
-    <input type="hidden" name="tipoResiduo" value="<?= $tipoResiduo ?>">
-    <input type="hidden" name="totalm3" value="<?= $totalm3 ?>">
-    <input type="hidden" name="dirObra" value="<?= $dirObra ?>">
-    <input type="hidden" name="codigo" value="<?= $codigo ?>">
-    <input type="hidden" name="estado" value="<?= $estado ?>">
-    <input type="hidden" name="municipio" value="<?= $municipio ?>">
-    <input type="hidden" name="telefono" value="<?= $telefono ?>">
-    <input type="hidden" name="nombre" value="<?= $nombre ?>">
-    <input type="submit" class="boton" value="Generar en PDF">
-    <br><br>
-    
-</form>
 
+    <form class="formulario" method="GET" action="/manifiestos">
+        <input type="submit" id="regresar" value="⬅ Regresar al inicio">
+    </form>
+
+    <form class="formulario" method="POST" action="/generar_PDF">.
+        <input type="hidden" name="clientes" value="<?= $clienteM ?>">
+        <input type="hidden" name="mes" value="<?= $mesM ?>">
+        <input type="hidden" name="mes_numero" value="<?= $mes_numero ?>"> <!--  Número para BD -->
+        <input type="hidden" name="anio" value="<?= $anio ?>">
+        <input type="hidden" name="direccion" value="<?= $direccion ?>">
+        <input type="hidden" name="correo" value="<?= $correo ?>">
+        <input type="hidden" name="tipoResiduo" value="<?= $tipoResiduo ?>">
+        <input type="hidden" name="totalm3" value="<?= $totalm3 ?>">
+        <input type="hidden" name="dirObra" value="<?= $dirObra ?>">
+        <input type="hidden" name="codigo" value="<?= $codigo ?>">
+        <input type="hidden" name="estado" value="<?= $estado ?>">
+        <input type="hidden" name="municipio" value="<?= $municipio ?>">
+        <input type="hidden" name="telefono" value="<?= $telefono ?>">
+        <input type="hidden" name="nombre" value="<?= $nombre ?>">
+        <input type="submit" class="boton" value="Generar en PDF">
+        <br><br>
+
+    </form>
 
 
 </div>
+<?php if (!empty($_SESSION['alerta'])): ?>
+    <div class="alerta <?php echo $_SESSION['alerta']['tipo']; ?> mb-4">
+        <p><?php echo $_SESSION['alerta']['mensaje']; ?></p>
+    </div>
+    <?php unset($_SESSION['alerta']); ?>
+<?php endif; ?>
+<?php if (!empty($alertas['error'])): ?>
+    <div class="alerta error mb-4">
+        <?php foreach ($alertas['error'] as $error): ?>
+            <p><?php echo $error; ?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
 <br><br><br>
-<div class="field-value">
-    <pre><?php print_r($busqueda); ?></pre>
-</div>
+
 <div class="container">
     <!-- GENERADOR -->
     <div class="section">
@@ -332,6 +323,4 @@
             </div>
         </div>
     </div>
-</div> 
-
-    
+</div>

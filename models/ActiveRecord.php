@@ -9,6 +9,7 @@ class ActiveRecord {
     protected static $tabla = '';
     protected static $columnasDB = [];
     public $num_pedidos;
+    public $razon_social;
     public $nombre_cliente;
     public $servicio;
     public $periodo;
