@@ -18,11 +18,11 @@ class IAController
         $soloServicios = [];
         $historialUltimoMes = [];
         $clientesHistorial = [];
-        $ingresosPredicción = [];
-        $prediccion = [];
+        $ingresosMes = [];
+        $prediccionMes = [];
+        $ingresosLastYear = [];
         $currentYear = date('Y');
         $lastYear = $currentYear - 1;
-        $ingresosLastYear = [];
 
         if (!defined('PYTHON_PATH') || !defined('SCRIPTS_DIR')) {
             die('Error: Configuración de Python no encontrada. Verifica config.php');
@@ -45,20 +45,8 @@ class IAController
 
         $respuesta = MachineLearningRecord::verificar();
 
-        if ($respuesta) {
-            // Datos ya existentes en la base de datos
-            $datos = MachineLearningRecord::top3Materiales();
-            $historialUltimoMes = MachineLearningRecord::getLastMonth();
-            $clientesHistorial = MachineLearningRecord::getClientesSaldo();
-            $ingresosPredicción = MachineLearningRecord::getIncomePredictions();
-            $prediccion = MachineLearningRecord::getPrediction();
-            $ingresosLastYear = MachineLearningRecord::getPreviousYear();
-
-            foreach ($datos as $material) {
-                $soloServicios[] = $material->servicio;
-            }
-        } else {
-            // Ejecuta ambos scripts Python
+        if (!$respuesta) {
+            // Ejecuta ambos scripts Python solo si no hay datos
             exec($cmdMateriales, $outMateriales, $codeMateriales);
             if ($codeMateriales !== 0) {
                 die("Error: predictions.py falló:\n" . implode("\n", $outMateriales));
@@ -68,18 +56,18 @@ class IAController
             if ($codeIngresos !== 0) {
                 die("Error: ingresos_predictions.py falló:\n" . implode("\n", $outIngresos));
             }
+        }
 
-            // Cargar datos nuevamente desde la base de datos
-            $datos = MachineLearningRecord::top3Materiales();
-            $historialUltimoMes = MachineLearningRecord::getLastMonth();
-            $clientesHistorial = MachineLearningRecord::getClientesSaldo();
-            $ingresosPredicción = MachineLearningRecord::getIncomePredictions();
-            $prediccion = MachineLearningRecord::getPrediction();
-            $ingresosLastYear = MachineLearningRecord::getPreviousYear();
+        // Cargar datos desde la base de datos
+        $datos = MachineLearningRecord::top3Materiales();
+        $historialUltimoMes = MachineLearningRecord::getLastMonth();
+        $clientesHistorial = MachineLearningRecord::getClientesSaldo();
+        $ingresosMes = MachineLearningRecord::getIncomePredictions();
+        $prediccionMes = MachineLearningRecord::getPrediction();
+        $ingresosLastYear = MachineLearningRecord::getPreviousYear();
 
-            foreach ($datos as $material) {
-                $soloServicios[] = $material->servicio;
-            }
+        foreach ($datos as $material) {
+            $soloServicios[] = $material->servicio;
         }
 
         // Preparar datos para la vista
@@ -89,8 +77,8 @@ class IAController
             'servicios' => $soloServicios,
             'ultimoMes' => $historialUltimoMes,
             'clientes' => $clientesHistorial,
-            'ingresosMes' => $ingresosPredicción,
-            'prediccionMes' => $prediccion,
+            'ingresosMes' => $ingresosMes,
+            'prediccionMes' => $prediccionMes,
             'currentYear' => $currentYear,
             'lastYear' => $lastYear,
             'ingresosLastYear' => $ingresosLastYear
