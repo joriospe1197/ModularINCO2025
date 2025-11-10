@@ -38,10 +38,10 @@ engine = create_engine(
 
 QUERY = """
 SELECT 
-  fecha   AS fecha,
+  fecha_pedido   AS fecha,
   costo   AS costo
 FROM pedidos
-WHERE fecha IS NOT NULL AND costo IS NOT NULL;
+WHERE fecha_pedido IS NOT NULL AND costo IS NOT NULL;
 """
 
 df = pd.read_sql(text(QUERY), engine)
