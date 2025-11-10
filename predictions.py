@@ -129,8 +129,9 @@ pipe.fit(X_train, y_train)
 pred = pipe.predict(X_test)
 
 # Métricas
+# Métricas
 mae  = mean_absolute_error(y_test, pred)
-rmse = mean_squared_error(y_test, pred, squared=False)
+rmse = np.sqrt(mean_squared_error(y_test, pred))
 
 def mape(y_true, y_pred):
     y_true = np.array(y_true, dtype=float)
@@ -144,6 +145,7 @@ print("=== Evaluación ===")
 print(f"MAE : {mae:,.2f}")
 print(f"RMSE: {rmse:,.2f}")
 print(f"MAPE: {mape_val:.2f}% (ignora meses con 0 real)")
+
 
 # Pronóstico siguiente mes
 horizon = 1
