@@ -3,13 +3,8 @@ from sqlalchemy import create_engine, text
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.neural_network import MLPRegressor
-from sklearn.exceptions import ConvergenceWarning
 from datetime import datetime
 import numpy as np
-import warnings
-
-# --- Ignorar advertencias de convergencia ---
-warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 # --- Configuración ---
 DB_USER = "root"
@@ -30,10 +25,6 @@ WHERE fecha_pedido IS NOT NULL AND costo IS NOT NULL;
 """
 df = pd.read_sql(text(QUERY), engine)
 
-if df.empty:
-    print("No hay datos históricos disponibles.")
-    exit(0)
-
 # --- Preparación de datos ---
 df['fecha'] = pd.to_datetime(df['fecha'])
 df['mes'] = df['fecha'].dt.month
@@ -42,7 +33,7 @@ df['anio'] = df['fecha'].dt.year
 X = df[['anio', 'mes']]
 y = df['costo']
 
-# --- Pipeline de escalado y modelo ---
+# --- Pipeline ---
 pipe = Pipeline([
     ('scaler', StandardScaler()),
     ('mlp', MLPRegressor(
@@ -64,7 +55,6 @@ ultimo_mes = df['fecha'].max()
 predicciones = []
 
 for i in range(1, MESES_A_PREDECIR + 1):
-    # Calcular mes y año del próximo mes
     nuevo_mes = ultimo_mes + pd.DateOffset(months=i)
     X_pred = pd.DataFrame({
         'anio': [nuevo_mes.year],
@@ -76,9 +66,9 @@ for i in range(1, MESES_A_PREDECIR + 1):
     predicciones.append({
         'fecha': nuevo_mes.date(),
         'periodo': nuevo_mes.strftime('%Y-%m'),
-        'costo': float(pred),
+        'ingreso_pronosticado': float(pred),
         'modelo': 'MLPRegressor',
-        'mae': None,
+        'mae': None,   # No aplicable para predicción futura
         'rmse': None,
         'mape': None
     })
@@ -86,12 +76,12 @@ for i in range(1, MESES_A_PREDECIR + 1):
 # --- Inserción de predicciones ---
 insert_query = text("""
 INSERT INTO pronosticos_ingresos 
-(fecha, periodo, costo, modelo, mae, rmse, mape)
-VALUES (:fecha, :periodo, :costo, :modelo, :mae, :rmse, :mape)
+(fecha, periodo, ingreso_pronosticado, modelo, mae, rmse, mape)
+VALUES (:fecha, :periodo, :ingreso_pronosticado, :modelo, :mae, :rmse, :mape)
 """)
 
 with engine.begin() as conn:
     for registro in predicciones:
-        conn.execute(insert_query, registro)  # CORRECCIÓN: pasar diccionario directamente
+        conn.execute(insert_query, registro)  # pasar diccionario directamente
 
 print(f"{MESES_A_PREDECIR} predicciones futuras insertadas correctamente.")
