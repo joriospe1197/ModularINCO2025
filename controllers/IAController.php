@@ -15,6 +15,18 @@ class IAController
     public static function index(Router $router)
     {
         session_start();
+
+        // Inicializar variables para evitar warnings
+        $datos = [];
+        $soloServicios = [];
+        $historialUltimoMes = [];
+        $clientesHistorial = [];
+        $ingresosPredicción = [];
+        $prediccion = [];
+        $currentYear = date('Y');
+        $lastYear = $currentYear - 1;
+        $ingresosLastYear = [];
+
         if (!defined('PYTHON_PATH') || !defined('SCRIPTS_DIR')) {
             die('Error: Configuración de Python no encontrada. Verifica config.php');
         }
