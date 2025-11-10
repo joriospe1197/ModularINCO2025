@@ -8,7 +8,13 @@ from datetime import datetime, timedelta
 import numpy as np
 
 # --- Configuración ---
-DB_URI = "mysql+pymysql://usuario:password@host:puerto/base_de_datos"
+DB_USER = "root"
+DB_PASS = "hgVvISLFXzOyIALjHttvbipzQmSCPMAl"
+DB_HOST = "gondola.proxy.rlwy.net"
+DB_PORT = 59369
+DB_NAME = "constructora"
+
+DB_URI = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DB_URI)
 MESES_A_PREDECIR = 3  # Número de meses futuros a pronosticar
 
