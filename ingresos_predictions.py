@@ -3,9 +3,13 @@ from sqlalchemy import create_engine, text
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.neural_network import MLPRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-from datetime import datetime, timedelta
+from sklearn.exceptions import ConvergenceWarning
+from datetime import datetime
 import numpy as np
+import warnings
+
+# --- Ignorar advertencias de convergencia ---
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 # --- Configuración ---
 DB_USER = "root"
@@ -26,6 +30,10 @@ WHERE fecha_pedido IS NOT NULL AND costo IS NOT NULL;
 """
 df = pd.read_sql(text(QUERY), engine)
 
+if df.empty:
+    print("No hay datos históricos disponibles.")
+    exit(0)
+
 # --- Preparación de datos ---
 df['fecha'] = pd.to_datetime(df['fecha'])
 df['mes'] = df['fecha'].dt.month
@@ -34,7 +42,7 @@ df['anio'] = df['fecha'].dt.year
 X = df[['anio', 'mes']]
 y = df['costo']
 
-# --- Pipeline ---
+# --- Pipeline de escalado y modelo ---
 pipe = Pipeline([
     ('scaler', StandardScaler()),
     ('mlp', MLPRegressor(
@@ -57,7 +65,7 @@ predicciones = []
 
 for i in range(1, MESES_A_PREDECIR + 1):
     # Calcular mes y año del próximo mes
-    nuevo_mes = (ultimo_mes + pd.DateOffset(months=i))
+    nuevo_mes = ultimo_mes + pd.DateOffset(months=i)
     X_pred = pd.DataFrame({
         'anio': [nuevo_mes.year],
         'mes': [nuevo_mes.month]
@@ -70,7 +78,7 @@ for i in range(1, MESES_A_PREDECIR + 1):
         'periodo': nuevo_mes.strftime('%Y-%m'),
         'costo': float(pred),
         'modelo': 'MLPRegressor',
-        'mae': None,   # No aplicable para predicción futura
+        'mae': None,
         'rmse': None,
         'mape': None
     })
@@ -84,6 +92,6 @@ VALUES (:fecha, :periodo, :costo, :modelo, :mae, :rmse, :mape)
 
 with engine.begin() as conn:
     for registro in predicciones:
-        conn.execute(insert_query, **registro)
+        conn.execute(insert_query, registro)  # CORRECCIÓN: pasar diccionario directamente
 
 print(f"{MESES_A_PREDECIR} predicciones futuras insertadas correctamente.")

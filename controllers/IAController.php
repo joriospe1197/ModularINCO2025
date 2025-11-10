@@ -18,8 +18,8 @@ class IAController
         $soloServicios = [];
         $historialUltimoMes = [];
         $clientesHistorial = [];
-        $ingresosMes = [];
-        $prediccionMes = [];
+        $ingresosPrediccion = [];
+        $prediccion = [];
         $ingresosLastYear = [];
         $currentYear = date('Y');
         $lastYear = $currentYear - 1;
@@ -32,21 +32,31 @@ class IAController
 
         // Scripts Python
         $scriptMateriales = SCRIPTS_DIR . DIRECTORY_SEPARATOR . 'predictions.py';
+        $scriptIngresos = SCRIPTS_DIR . DIRECTORY_SEPARATOR . 'ingresos_predictions.py';
+
         if (!file_exists($scriptMateriales)) {
             die("Error: Script predictions.py no encontrado en: $scriptMateriales");
         }
-        $cmdMateriales = "\"$python\" \"$scriptMateriales\" 2>&1";
 
-        $scriptIngresos = SCRIPTS_DIR . DIRECTORY_SEPARATOR . 'ingresos_predictions.py';
         if (!file_exists($scriptIngresos)) {
             die("Error: Script ingresos_predictions.py no encontrado en: $scriptIngresos");
         }
+
+        $cmdMateriales = "\"$python\" \"$scriptMateriales\" 2>&1";
         $cmdIngresos = "\"$python\" \"$scriptIngresos\" 2>&1";
 
         $respuesta = MachineLearningRecord::verificar();
 
-        if (!$respuesta) {
-            // Ejecuta ambos scripts Python solo si no hay datos
+        if ($respuesta) {
+            // Datos ya existentes en la base de datos
+            $datos = MachineLearningRecord::top3Materiales();
+            $historialUltimoMes = MachineLearningRecord::getLastMonth();
+            $clientesHistorial = MachineLearningRecord::getClientesSaldo();
+            $ingresosPrediccion = MachineLearningRecord::getIncomePredictions();
+            $prediccion = MachineLearningRecord::getPrediction();
+            $ingresosLastYear = MachineLearningRecord::getPreviousYear();
+        } else {
+            // Ejecuta ambos scripts Python
             exec($cmdMateriales, $outMateriales, $codeMateriales);
             if ($codeMateriales !== 0) {
                 die("Error: predictions.py falló:\n" . implode("\n", $outMateriales));
@@ -56,16 +66,17 @@ class IAController
             if ($codeIngresos !== 0) {
                 die("Error: ingresos_predictions.py falló:\n" . implode("\n", $outIngresos));
             }
+
+            // Recargar datos desde la base
+            $datos = MachineLearningRecord::top3Materiales();
+            $historialUltimoMes = MachineLearningRecord::getLastMonth();
+            $clientesHistorial = MachineLearningRecord::getClientesSaldo();
+            $ingresosPrediccion = MachineLearningRecord::getIncomePredictions();
+            $prediccion = MachineLearningRecord::getPrediction();
+            $ingresosLastYear = MachineLearningRecord::getPreviousYear();
         }
 
-        // Cargar datos desde la base de datos
-        $datos = MachineLearningRecord::top3Materiales();
-        $historialUltimoMes = MachineLearningRecord::getLastMonth();
-        $clientesHistorial = MachineLearningRecord::getClientesSaldo();
-        $ingresosMes = MachineLearningRecord::getIncomePredictions();
-        $prediccionMes = MachineLearningRecord::getPrediction();
-        $ingresosLastYear = MachineLearningRecord::getPreviousYear();
-
+        // Preparar array solo con nombres de servicios
         foreach ($datos as $material) {
             $soloServicios[] = $material->servicio;
         }
@@ -77,8 +88,8 @@ class IAController
             'servicios' => $soloServicios,
             'ultimoMes' => $historialUltimoMes,
             'clientes' => $clientesHistorial,
-            'ingresosMes' => $ingresosMes,
-            'prediccionMes' => $prediccionMes,
+            'ingresosMes' => $ingresosPrediccion,
+            'prediccionMes' => $prediccion,
             'currentYear' => $currentYear,
             'lastYear' => $lastYear,
             'ingresosLastYear' => $ingresosLastYear
