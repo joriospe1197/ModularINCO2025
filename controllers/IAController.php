@@ -56,18 +56,22 @@ class IAController
             }
             
         }else{
-            echo "Procedere a realizar el analisis mensual";
-            echo implode(PHP_EOL, $out);
+            // Ejecuta el script Python
             exec($cmd, $out, $code);
-            echo "<pre>";
-            echo "Salida del script:\n";
-            echo htmlspecialchars(implode(PHP_EOL, $out));
-            echo "\n\nCódigo de salida: $code";
-            echo "</pre>";
             if ($code !== 0) {
-                die("\nError: El script Python falló");
+                die("Error: el script Python falló: " . implode("\n", $out));
             }
-            echo "\nAnálisis completado. Recarga la página para ver los resultados.";
+        
+            // Una vez ejecutado, los pronósticos ya están en la base de datos
+            $datos = MachineLearningRecord::top3Materiales();
+            $historialUltimoMes = MachineLearningRecord::getLastMonth();
+            $clientesHistorial = MachineLearningRecord::getClientesSaldo();
+            $ingresosPredicción = MachineLearningRecord::getIncomePredictions();
+            $prediccion = MachineLearningRecord::getPrediction();
+        
+            foreach($datos as $material){
+                $soloServicios[] = $material->servicio;
+            }
         }
         
         $datos_vista = [
