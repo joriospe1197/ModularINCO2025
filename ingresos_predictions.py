@@ -20,9 +20,9 @@ MESES_A_PREDECIR = 3  # Número de meses futuros a pronosticar
 
 # --- Consulta de datos históricos ---
 QUERY = """
-SELECT fecha, costo
+SELECT fecha_pedido AS fecha, costo
 FROM pedidos
-WHERE fecha IS NOT NULL AND costo IS NOT NULL
+WHERE fecha_pedido IS NOT NULL AND costo IS NOT NULL;
 """
 df = pd.read_sql(text(QUERY), engine)
 
