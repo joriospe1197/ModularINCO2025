@@ -39,7 +39,7 @@ class LoginController {
                         $_SESSION['tipo_usuario'] = $usuario->tipo_usuario;  // Guardar el tipo de usuario en la sesión
 
                         //Redireccionar
-                        header('Location: /chat');
+                        header('Location: /inicio');
                     }                                       
                     else{
                         Usuario::setAlerta('error', 'Contraseña incorrecta');

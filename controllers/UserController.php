@@ -256,43 +256,60 @@ class UserController {
         session_start();
         isAuth();  
         $alertas = [];
-
+    
         // Obtener todos los empleados (usuarios)
-        $empleados = Usuario::all();  // Esto obtiene todos los usuarios de la base de datos
-
-        // Si se recibe el idempleado en la URL, proceder a eliminar el usuario
+        $empleados = Usuario::all();
+    
         if (isset($_GET['idempleado']) && $_GET['idempleado']) {
             $idempleado = $_GET['idempleado'];
             
             // Buscar al usuario por idempleado
             $usuario = Usuario::where('idempleado', $idempleado);
-
+    
             if ($usuario) {
-                // Eliminar al usuario
-                $usuario->eliminar();  // Aquí se usa la función eliminar de ActiveRecord
-
-                $_SESSION['alerta'] = [
-                    'tipo' => 'exito',
-                    'mensaje' => 'Empleado con nombre  ' .$usuario->nombre . '  eliminado correctamente'
-                ];
-                // Redirigir con un mensaje de éxito
-                header('Location: /remove_user');  // Redirigir a la misma página para mostrar los cambios
-                exit;
+                // Conexión a la base de datos
+                $db = \Model\ActiveRecord::getConnection();
+    
+                // Verificar si tiene pedidos activos
+                $query = "
+                    SELECT COUNT(*) AS total 
+                    FROM pedidos 
+                    WHERE 
+                        (id_empleado_chofer = {$idempleado} OR id_empleado_registra = {$idempleado})
+                        AND estado IN ('pendiente', 'en proceso')
+                ";
+                $res = $db->query($query);
+                $row = $res->fetch_assoc();
+                $tienePedidosActivos = $row['total'] > 0;
+    
+                if ($tienePedidosActivos) {
+                    // No eliminar si tiene pedidos activos
+                    Usuario::setAlerta('error', 'No se puede eliminar al empleado "' . $usuario->nombre . '" porque tiene pedidos activos.');
+                } else {
+                    // Eliminar usuario si no tiene pedidos activos
+                    $usuario->eliminar();
+                    Usuario::setAlerta('exito', 'Empleado "' . $usuario->nombre . '" eliminado correctamente.');
+                    
+                    // Volvemos a cargar la lista de empleados después de eliminar
+                    $empleados = Usuario::all();
+                }
             } else {
                 Usuario::setAlerta('error', 'El usuario no existe');
             }
         }
-
-        // Si no es un POST, simplemente renderizamos la vista con las alertas
+    
+        // Obtener alertas
         $alertas = Usuario::getAlertas();
-        
+    
         // Renderizar la vista y pasar los empleados
         $router->render('auth/remove_user', [
             'titulo' => 'Eliminar empleado',
             'alertas' => $alertas,
-            'empleados' => $empleados,  // Pasamos los empleados a la vista
+            'empleados' => $empleados,
         ]);
     }
+    
+    
     
     
 }

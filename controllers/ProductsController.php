@@ -180,9 +180,9 @@ class ProductsController {
         session_start();
         isAuth(); 
         $alertas = [];
-
-        // Obtener todos los productos (productos)
-        $productos = Productos::all();  // Esto obtiene todos los productos de la base de datos
+    
+        $productos = Productos::all();
+    
         if ($_SESSION['tipo_usuario'] != 1) {
             $_SESSION['alerta'] = [
                 'tipo' => 'error',
@@ -191,42 +191,54 @@ class ProductsController {
             header('Location: /productos');
             exit;
         }
-
-        // Si se recibe el idppoducto en la URL, proceder a eliminar el producto
+    
         if (isset($_GET['idproducto']) && $_GET['idproducto']) {
-            $idproducto = $_GET['idproducto'];
-            
-            // Busca el producto por idproducto
+            $idproducto = intval($_GET['idproducto']);
             $producto = Productos::where('idproducto', $idproducto);
-
+    
             if ($producto) {
-                // Eliminar el producto
-                $producto->eliminar();  // Aquí se usa la función eliminar de ActiveRecord
-
-
-
-                $_SESSION['alerta'] = [
-                    'tipo' => 'exito',
-                    'mensaje' => 'Producto  ' .$producto->descripcion . '  eliminado correctamente'
-                ];
-                // Redirigir con un mensaje de éxito
-                header('Location: /remove_product');  // Redirigir a la misma página para mostrar los cambios
+                // Obtener conexión de base de datos usando el nuevo método público
+                $db = \Model\ActiveRecord::getConnection();
+    
+                // Verificar si el producto está dentro de algún pedido
+                $query = "SELECT COUNT(*) AS total FROM pedido_productos WHERE idproducto = {$idproducto}";
+                $resultado = $db->query($query);
+                $row = $resultado->fetch_assoc();
+    
+                if ($row['total'] > 0) {
+                    $_SESSION['alerta'] = [
+                        'tipo' => 'error',
+                        'mensaje' => 'No se puede eliminar el producto "' . 
+                                     $producto->descripcion . 
+                                     '" porque el ID está asociado a un pedido activo. ' .
+                                     'Elimina o actualiza los pedidos antes de continuar.'
+                    ];
+                } else {
+                    // Eliminar producto si no está vinculado
+                    $producto->eliminar();
+                    $_SESSION['alerta'] = [
+                        'tipo' => 'exito',
+                        'mensaje' => 'Producto "' . $producto->descripcion . '" eliminado correctamente.'
+                    ];
+                }
+    
+                header('Location: /remove_product');
                 exit;
             } else {
                 Productos::setAlerta('error', 'El producto no existe');
             }
         }
-
-        // Si no es un POST, simplemente renderizamos la vista con las alertas
+    
         $alertas = Productos::getAlertas();
-        
-        // Renderizar la vista y pasar los productos
+    
         $router->render('products/remove_product', [
             'titulo' => 'Eliminar producto',
             'alertas' => $alertas,
-            'productos' => $productos,  // Pasamos los productos a la vista
+            'productos' => $productos
         ]);
     }
+    
+      
 }
 
 
