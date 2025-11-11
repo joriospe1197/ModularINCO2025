@@ -284,7 +284,7 @@ class UserController {
     
                 if ($tienePedidosActivos) {
                     // No eliminar si tiene pedidos activos
-                    Usuario::setAlerta('error', '⚠️ No se puede eliminar al empleado "' . $usuario->nombre . '" porque tiene pedidos activos.');
+                    Usuario::setAlerta('error', 'No se puede eliminar al empleado "' . $usuario->nombre . '" porque tiene pedidos activos.');
                 } else {
                     // Eliminar usuario si no tiene pedidos activos
                     $usuario->eliminar();
