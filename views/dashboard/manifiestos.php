@@ -74,7 +74,7 @@ $meses = [
                                 </td>
                                 <td class="text-wrap" style="max-width: 200px;"><?= htmlspecialchars($manifiesto->obra) ?></td>
                                 <td onclick="event.stopPropagation()">
-                                    <a href="/vista_manifiesto_guardado?cliente=<?= urlencode($manifiesto->cliente) ?>&mes=<?= $manifiesto->mes ?>&anio=<?= $manifiesto->anio ?>&dirObra=<?= urlencode($manifiesto->obra) ?>&tipo_residuo=<?= urlencode($manifiesto->tipo_residuo) ?>"
+                                    <a href="/vista_manifiesto_guardado?id_cliente=<?= urlencode($manifiesto->id_cliente) ?> $liente=<?= urlencode($manifiesto->cliente) ?>&mes=<?= $manifiesto->mes ?>&anio=<?= $manifiesto->anio ?>&dirObra=<?= urlencode($manifiesto->obra) ?>&tipo_residuo=<?= urlencode($manifiesto->tipo_residuo) ?>"
                                         class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i>  Ver
                                     </a>
