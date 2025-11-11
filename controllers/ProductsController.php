@@ -181,10 +181,9 @@ class ProductsController {
         isAuth(); 
         $alertas = [];
     
-        // Obtener todos los productos
         $productos = Productos::all();
     
-        // Validar permisos
+        // Verificar permisos
         if ($_SESSION['tipo_usuario'] != 1) {
             $_SESSION['alerta'] = [
                 'tipo' => 'error',
@@ -194,42 +193,37 @@ class ProductsController {
             exit;
         }
     
-        // Si se recibe un idproducto por GET, intentar eliminar
+        // Si hay idproducto por GET
         if (isset($_GET['idproducto']) && $_GET['idproducto']) {
             $idproducto = intval($_GET['idproducto']);
-    
-            // Verificar si el producto existe
             $producto = Productos::where('idproducto', $idproducto);
     
             if ($producto) {
-                // Conexión a la base de datos
-                $db = \Model\ActiveRecord::getDB();
+                // ✅ Obtener conexión desde el modelo (válido porque hereda de ActiveRecord)
+                $db = $producto->db;
     
-                // Verificar si el producto está asociado a algún pedido
+                // Verificar si el producto está en algún pedido
                 $query = "SELECT COUNT(*) AS total FROM pedido_productos WHERE idproducto = {$idproducto}";
                 $resultado = $db->query($query);
                 $row = $resultado->fetch_assoc();
     
                 if ($row['total'] > 0) {
-                    // Si hay pedidos asociados, mostrar mensaje de advertencia
                     $_SESSION['alerta'] = [
                         'tipo' => 'error',
                         'mensaje' => '⚠️ No se puede eliminar el producto "' . 
                                      $producto->descripcion . 
-                                     '" porque se encuentra dentro de un pedido activo. ' . 
-                                     'Si deseas eliminarlo, primero elimina o actualiza el pedido asociado.'
+                                     '" porque se encuentra dentro de un pedido activo. ' .
+                                     'Primero elimina o actualiza el pedido asociado.'
                     ];
                 } else {
-                    // Eliminar producto porque no tiene dependencias
+                    // Eliminar si no está vinculado
                     $producto->eliminar();
-    
                     $_SESSION['alerta'] = [
                         'tipo' => 'exito',
                         'mensaje' => '✅ Producto "' . $producto->descripcion . '" eliminado correctamente.'
                     ];
                 }
     
-                // Redirigir para mostrar mensaje y evitar reenvío del formulario
                 header('Location: /remove_product');
                 exit;
             } else {
@@ -237,16 +231,15 @@ class ProductsController {
             }
         }
     
-        // Renderizar la vista con alertas y productos
         $alertas = Productos::getAlertas();
-        
+    
         $router->render('products/remove_product', [
             'titulo' => 'Eliminar producto',
             'alertas' => $alertas,
             'productos' => $productos
         ]);
     }
-    
+      
 }
 
 
