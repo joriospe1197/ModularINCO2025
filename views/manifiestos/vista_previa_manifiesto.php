@@ -212,9 +212,7 @@
 
 </div>
 <br><br><br>
-<div class="field-value">
-    <pre><?php print_r($busqueda); ?></pre>
-</div>
+
 <div class="container">
     <!-- GENERADOR -->
     <div class="section">

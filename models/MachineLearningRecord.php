@@ -20,6 +20,14 @@ class MachineLearningRecord extends ActiveRecord {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
+    public static function verificarIngresos(){
+        $query = "SELECT * 
+                    FROM pronosticos_ingresos 
+                    WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
+                    AND YEAR(created_at) = YEAR(CURRENT_DATE());";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
     public static function top3Materiales(){
         $query = "SELECT servicio as servicio,
                         pronostico_mes as num_pedidos,

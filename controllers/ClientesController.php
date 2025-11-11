@@ -81,7 +81,7 @@ class ClientesController
         }
         $cliente = Clientes::findById($id);
         if (!$cliente) {
-            
+
             header('Location: /clientes');
             exit;
         }
@@ -113,9 +113,9 @@ class ClientesController
             header('Location: /clientes');
             exit;
         }
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+
             $nombre_cliente = $_POST['nombre_cliente'] ?? null;
             $domicilio_cliente = $_POST['domicilio_cliente'] ?? null;
             $estado = $_POST['estado'] ?? null;
@@ -123,9 +123,15 @@ class ClientesController
             $codigo_postal = $_POST['codigo_postal'] ?? null;
             $telefono_cliente = $_POST['telefono_cliente'] ?? null;
             $correo_electronico = $_POST['correo_electronico'] ?? null;
-            $resultado = Clientes::updateData($id,$nombre_cliente, $domicilio_cliente, $estado, $municipio, $codigo_postal, $telefono_cliente, $correo_electronico);
+            $resultado = Clientes::updateData($id, $nombre_cliente, $domicilio_cliente, $estado, $municipio, $codigo_postal, $telefono_cliente, $correo_electronico);
+            $prueba = Clientes::actualizarNombreManifiestos($nombre_cliente,$id);
             if ($resultado) {
-
+                if ($prueba) {
+                    $_SESSION['alerta'] = [
+                        'tipo' => 'exito',
+                        'mensaje' => 'Información del cliente actualizada correctamente'
+                    ];
+                }
                 $_SESSION['alerta'] = [
                     'tipo' => 'exito',
                     'mensaje' => 'Información del cliente actualizada correctamente'
@@ -143,30 +149,31 @@ class ClientesController
             'alertas' => $alertas
         ]);
     }
-    public static function eliminar() {
+    public static function eliminar()
+    {
         session_start();
         isAuth();
-        
+
         // VERIFICAR PERMISOS (solo admin puede eliminar)
         if ($_SESSION['tipo_usuario'] != 1) {
             echo json_encode([
-                'success' => false, 
+                'success' => false,
                 'error' => 'No tienes permisos para eliminar manifiestos'
             ]);
             return;
         }
-        
+
         header('Content-Type: application/json');
         $id = $_POST['id'] ?? null;
-        
+
         if (!$id) {
             echo json_encode(['success' => false, 'error' => 'ID no proporcionado']);
             return;
         }
-        
+
         try {
             $resultado = Clientes::eliminarCliente($id);
-            
+
             if ($resultado) {
                 echo json_encode(['success' => true]);
             } else {

@@ -79,14 +79,16 @@
 <?php foreach ($ingresosLastYear as $casos): ?>
     <?php $datosUltimoAnio[] = floatval($casos->ingresos) ?>
 <?php endforeach; ?>
+
 <?php $test ?>
+<p><?php print_r($ingresosCheck); ?></p>
 <div id="main_container_s">
     <section id="chart"></section>
     <section id="prediccion_ingresos"></section>
     <section id="historico"></section>
     
     <section id="ingresos">
-        <h4> Ingresos por clientes del ultimo mes </h4>
+        <h4 class="card-title mb-0"> Ingresos por clientes del ultimo mes </h4>
     </section>
     <section id="materiales"></section>
 </div>
@@ -114,9 +116,17 @@
             },
             chart: {
                 height: 350,
-                width: 1200,
+                width: 1350,
                 type: 'treemap'
             },
+            responsive: [{
+                breakpoint: 1000,
+                options: {
+                    chart: {
+                        width: 450
+                    }
+                }
+            }],
             title: {
                 text: 'Materiales mas demandados para el siguiente periodo'
             }
@@ -261,7 +271,7 @@
             },
             grid: {
                 row: {
-                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    colors: ['#f3f3f3', 'transparent'], 
                     opacity: 0.5
                 },
 

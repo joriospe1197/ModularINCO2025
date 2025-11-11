@@ -43,11 +43,14 @@ $meses = [
                     </thead>
                     <tbody>
                         <?php foreach ($manifiestos as $manifiesto): ?>
-                            <tr class="fila-clicable" data-cliente-id = "<?= $manifiesto->cliente ?>"
+                           
+                            <tr class="fila-clicable" data-cliente_id = "<?= $manifiesto->id_cliente ?>"
+                            data-cliente = "<?= $manifiesto->cliente ?>"
                             data-mes = "<?=$manifiesto->mes?>"
                             data-anio ="<?=$manifiesto->anio?>"
                             data-obra = "<?=urlencode($manifiesto->obra)?>"
-                            data-tipo_residuo = "<?=$manifiesto->tipo_residuo?>">
+                            data-tipo_residuo = "<?=$manifiesto->tipo_residuo?>"
+                            data-totalm3 = "<?=$manifiesto->total_m3?>">
                                 <td class="text-wrap" style="max-width: 200px;"><?= htmlspecialchars($manifiesto->cliente) ?></td>
                                 <td>
                                     <?php
@@ -134,14 +137,15 @@ $meses = [
         if ($(e.target).closest('.btn-folio, .badge, .acciones').length) {
             return;
         }
-        
-        const cliente = $(this).data('cliente-id');
+        const id_cliente = $(this).data('cliente_id');
+        const cliente = $(this).data('cliente');
         const mes = $(this).data('mes');
         const anio = $(this).data('anio');
         const obra = $(this).data('obra');
         const tipo_residuo = $(this).data('tipo_residuo');
+        const total_m3 = $(this).data('total_m3');
         if (cliente) {
-            window.location.href = '/vista_manifiesto_guardado?cliente=' + cliente + '&mes=' + mes + '&anio=' + anio + '&dirObra=' + obra + '&tipo_residuo=' + tipo_residuo;
+            window.location.href = '/vista_manifiesto_guardado?id_cliente=' + id_cliente + '&cliente=' + cliente +'&mes=' + mes + '&anio=' + anio + '&dirObra=' + obra + '&tipo_residuo=' + tipo_residuo + '&totalm3=' + total_m3;
         }
     });
 

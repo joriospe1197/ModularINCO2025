@@ -11,6 +11,7 @@ class ManifiestosActiveRecord extends ManifiestosRecord {
 
     public function __construct($args = []) {
 
+        $this->id_cliente = $args['id_cliente'] ?? '';
         $this->cliente = $args['cliente'] ?? '';
         $this->mes = $args['mes'] ?? '';
         $this->anio = $args['anio'] ?? '';

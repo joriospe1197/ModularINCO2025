@@ -23,6 +23,7 @@ class ManifiestosRecord {
     public $obra;
     public $tipo_residuo;
 
+    public $id_cliente;
     
 
     public static function setDB($database) {
@@ -86,12 +87,12 @@ class ManifiestosRecord {
         return $resultado->telefono;
     }
     // Se cambio de nombre a  cliente_id ya que es la variable de los clientes registrados
-    public static function calcularM3($cliente_id, $anio, $mes, $tipo){
+    public static function calcularM3($id_cliente, $anio, $mes, $tipo){
         // BUSCAR POR ID_CLIENTE EN LUGAR DE NOMBRE
         $tipo_escapado = self::$db->escape_string($tipo);
         $query = "SELECT COUNT(*) as total FROM pedidos 
                 WHERE servicio = '{$tipo}'
-                AND id_cliente = {$cliente_id} 
+                AND id_cliente = {$id_cliente} 
                 AND YEAR(fecha_pedido) = {$anio}
                 AND MONTH(fecha_pedido) = {$mes}";
 
@@ -159,9 +160,9 @@ class ManifiestosRecord {
             }
         }
     }
-    public static function registrar($cliente, $obra, $tipo_residuo, $mes, $anio, $totalm3){
-        $query = "INSERT INTO manifiestos (cliente, obra, tipo_residuo, mes, anio, total_m3)
-                VALUES ('{$cliente}','{$obra}','{$tipo_residuo}','{$mes}','{$anio}','{$totalm3}')";
+    public static function registrar($id_cliente,$cliente, $obra, $tipo_residuo, $mes, $anio, $totalm3){
+        $query = "INSERT INTO manifiestos (id_cliente,cliente, obra, tipo_residuo, mes, anio, total_m3)
+                VALUES ('{$id_cliente}','{$cliente}','{$obra}','{$tipo_residuo}','{$mes}','{$anio}','{$totalm3}')";
 
         $resultado = self::$db->query($query);
         return [
@@ -175,9 +176,9 @@ class ManifiestosRecord {
 
         return $resultado;
     }
-    public static function buscarRegistro($cliente, $obra, $tipo_residuo, $mes, $anio){
+    public static function buscarRegistro($cliente_id, $obra, $tipo_residuo, $mes, $anio){
         $query = "SELECT * FROM manifiestos 
-                WHERE cliente = '{$cliente}'
+                WHERE id_cliente = '{$cliente_id}'
                 AND tipo_residuo = '{$tipo_residuo}'
                 AND mes = '{$mes}' 
                 AND anio = '{$anio}'";
@@ -185,8 +186,8 @@ class ManifiestosRecord {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
-    public static function busquedaSec($cliente,$obra,$mes,$anio){
-        $query = "SELECT * FROM manifiestos WHERE cliente = '{$cliente}'
+    public static function busquedaSec($cliente_id,$obra,$mes,$anio){
+        $query = "SELECT * FROM manifiestos WHERE id_cliente = '{$cliente_id}'
         AND obra = '{$obra}'AND mes = '{$mes}' AND anio = '{$anio}'";
         $resultado = self::consultarSQL($query);
         return $resultado;
@@ -197,7 +198,11 @@ class ManifiestosRecord {
         return $resultado;  
     }
 
-
+    public static function busquedaPorId($id){
+        $query = "SELECT * FROM clientes WHERE id = '{$id}'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;  
+    }
 
     // metodos nuevos para conexion con pedidos
 

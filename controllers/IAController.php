@@ -28,8 +28,9 @@ class IAController
         $code = 0;
         
         $respuesta = MachineLearningRecord::verificar();
-        
+        $ingresos = MachineLearningRecord::verificarIngresos();
         if($respuesta){
+            
             $datos = MachineLearningRecord::top3Materiales();
             $historialUltimoMes = MachineLearningRecord::getLastMonth();
             $clientesHistorial = MachineLearningRecord::getClientesSaldo();
@@ -55,8 +56,27 @@ class IAController
             if ($code !== 0) {
                 die("\nError: El script Python falló");
             }
+            $python = PYTHON_PATH;
+            $script = SCRIPTS_DIR . DIRECTORY_SEPARATOR . 'ingresos_predictions.py';
+            if (!file_exists($script)) {
+                die("Error: Script Python no encontrado en: $script");
+            }
+            $cmd = "\"$python\" \"$script\" 2>&1";
+            $out = [];
+            $code = 0;
+            echo implode(PHP_EOL, $out);
+            exec($cmd, $out, $code);
+            echo "<pre>";
+            echo "Salida del script:\n";
+            echo htmlspecialchars(implode(PHP_EOL, $out));
+            echo "\n\nCódigo de salida: $code";
+            echo "</pre>";
+
+            
             echo "\nAnálisis completado. Recarga la página para ver los resultados.";
         }
+
+        
         
         $datos_vista = [
             'titulo' => 'Dashboard',
@@ -68,7 +88,8 @@ class IAController
             'prediccionMes' => $prediccion,
             'currentYear' => $currentYear,
             'lastYear' => $lastYear,
-            'ingresosLastYear' => $ingresosLastYear
+            'ingresosLastYear' => $ingresosLastYear,
+            'ingresosCheck' => $ingresos
         ];
         $router->render('dashboard/inicio', $datos_vista);
     }

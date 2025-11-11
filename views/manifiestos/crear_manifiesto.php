@@ -15,14 +15,15 @@
                             <div class="campos-cliente-ocasional">
                                 <div class="campo-formulario">
                                     <label for="cliente">Cliente : </label>
-                                    <select name="clientes" id="clientes" required>
+                                    <select name="clientes" id="clientes" required onchange="updateHiddenField()">
                                         <option value="">Seleccionar cliente...</option>
                                         <?php foreach ($clientes as $cliente): ?>
-                                            <option value="<?= $cliente->id ?>">
+                                            <option value="<?= $cliente->id ?>" data-razon="<?= htmlspecialchars($cliente->razon_social) ?>">
                                                 <?= $cliente->razon_social ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
+                                    <input type="hidden" name="razon_social" id="razon_social">
                                 </div>
 
                                 <div class="campo-formulario">
@@ -81,3 +82,10 @@
         </div>
     </div>
 </div>
+<script>
+    function updateHiddenField() {
+        const select = document.getElementById('clientes');
+        const selectedOption = select.options[select.selectedIndex];
+        document.getElementById('razon_social').value = selectedOption.getAttribute('data-razon') || '';
+    }
+</script>

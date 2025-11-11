@@ -15,11 +15,10 @@ from sklearn.preprocessing import RobustScaler
 warnings.filterwarnings("ignore")
 
 DB_USER = "root"
-DB_PASS = "hgVvISLFXzOyIALjHttvbipzQmSCPMAl"
-DB_HOST = "gondola.proxy.rlwy.net"
-DB_PORT = 59369
-DB_NAME = "constructora"
-
+DB_PASS = "veliz4$"
+DB_HOST = "127.0.0.1"
+DB_PORT = 3306
+DB_NAME = "constructora_1.0"
 url = URL.create(
     "mysql+pymysql",
     username=DB_USER,
@@ -38,20 +37,26 @@ engine = create_engine(
 
 QUERY = """
 SELECT 
-  fecha   AS fecha,
-  costo   AS costo
+  id   AS id,
+  fecha_pedido   AS fecha_pedido,
+  servicio AS servicio,
+  domicilio_cliente AS domicilio_cliente,
+  nombre_cliente AS nombre_cliente,
+  gastos  AS gastos,
+  costo   AS costo,
+  NULL AS cantidad
 FROM pedidos
-WHERE fecha IS NOT NULL AND costo IS NOT NULL;
+WHERE fecha_pedido IS NOT NULL AND servicio IS NOT NULL;
 """
 
 df = pd.read_sql(text(QUERY), engine)
 if df.empty:
-    raise ValueError("No hay filas en 'pedidos' con fecha/costo. Revisa la consulta o la tabla.")
+    raise ValueError("No hay filas en 'pedidos' con fecha_pedido/costo. Revisa la consulta o la tabla.")
 
-df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')
-df = df.dropna(subset=['fecha', 'costo'])
+df['fecha_pedido'] = pd.to_datetime(df['fecha_pedido'], errors='coerce')
+df = df.dropna(subset=['fecha_pedido', 'costo'])
 
-df['year_month'] = df['fecha'].dt.to_period('M').dt.to_timestamp()
+df['year_month'] = df['fecha_pedido'].dt.to_period('M').dt.to_timestamp()
 monthly = (df.groupby('year_month')['costo']
            .sum()
            .rename('y')  
@@ -192,7 +197,7 @@ print(f"{target_month.strftime('%Y-%m')}: ${y_blend:,.2f}")
 
 
 periodo = target_month.strftime('%Y-%m')
-fecha   = pd.to_datetime(target_month).date()
+fecha_pedido   = pd.to_datetime(target_month).date()
 
 with engine.begin() as conn:
     # evita duplicados del mismo periodo
@@ -202,9 +207,9 @@ with engine.begin() as conn:
         INSERT INTO pronosticos_ingresos
         (fecha, periodo, ingreso_pronosticado, modelo, mae, rmse, mape)
         VALUES
-        (:fecha, :periodo, :ingreso_pronosticado, :modelo, :mae, :rmse, :mape)
+        (:fecha_pedido, :periodo, :ingreso_pronosticado, :modelo, :mae, :rmse, :mape)
     """), {
-        "fecha": fecha,
+        "fecha_pedido": fecha_pedido,
         "periodo": periodo,
         "ingreso_pronosticado": y_blend,
         "modelo": "MLPRegressor",

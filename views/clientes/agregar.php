@@ -1,4 +1,4 @@
-<a href="/manifiestos" class="btn-regresar">⬅ Regresar</a>
+<a href="/clientes" class="btn-regresar">⬅ Regresar</a>
 <?php if (!empty($_SESSION['alerta'])): ?>
     <div class="alerta <?php echo $_SESSION['alerta']['tipo']; ?> mb-4">
         <p><?php echo $_SESSION['alerta']['mensaje']; ?></p>
@@ -28,7 +28,7 @@
                                     <div class="campo-formulario">
                                         <label for="nombre_cliente">Nombre del Cliente o Razon Social *</label>
                                         <input type="text" name="nombre_cliente" id="nombre_cliente"
-                                               value="<?php echo htmlspecialchars($cliente->razon_social ?? ''); ?>">
+                                               value="<?php echo htmlspecialchars($cliente->razon_social ?? ''); ?>" required>
                                     </div>
                                     
                                     <div class="campo-formulario">

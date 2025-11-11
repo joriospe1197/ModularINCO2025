@@ -67,9 +67,7 @@
                     <a href="/clientes/editar?id=<?= $cliente->id ?>" class="btn-warning">
                         <i class="fas fa-edit me-1"></i> Editar Cliente
                     </a>
-                    <a href="/clientes" class="btn-secondary">
-                        <i class="fas fa-list me-1"></i> Volver a Lista
-                    </a>
+
 
                     <?php if ($_SESSION['tipo_usuario'] == 1): ?>
                     <button type="button" class="btn btn-danger" 

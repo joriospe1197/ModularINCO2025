@@ -114,6 +114,19 @@ class Clientes extends ActiveRecord
             'affected_rows' => $stmt->affected_rows
         ];
     }
+    public static function actualizarNombreManifiestos($name,$comp){
+        $query = "UPDATE manifiestos 
+              SET cliente = ?
+              WHERE id_cliente = ?";
+        $stmt = self::$db->prepare($query);
+        $stmt->bind_param('ss', $name,$comp);
+        $resultado = $stmt->execute();
+
+        return [
+            'resultado' => $resultado,
+            'affected_rows' => $stmt->affected_rows
+        ];
+    }
     
 
 }
