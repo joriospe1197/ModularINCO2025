@@ -267,10 +267,10 @@ class UserController {
             $usuario = Usuario::where('idempleado', $idempleado);
     
             if ($usuario) {
-                // ✅ Conexión a la base de datos
+                // Conexión a la base de datos
                 $db = \Model\ActiveRecord::getConnection();
     
-                // Verificar si tiene pedidos activos (pendientes o en proceso)
+                // Verificar si tiene pedidos activos
                 $query = "
                     SELECT COUNT(*) AS total 
                     FROM pedidos 
@@ -283,24 +283,16 @@ class UserController {
                 $tienePedidosActivos = $row['total'] > 0;
     
                 if ($tienePedidosActivos) {
-                    // 🚫 No eliminar si tiene pedidos activos
-                    $_SESSION['alerta'] = [
-                        'tipo' => 'error',
-                        'mensaje' => '⚠️ No se puede eliminar al empleado "' . 
-                                     $usuario->nombre . 
-                                     '" porque tiene pedidos activos.'
-                    ];
+                    // No eliminar si tiene pedidos activos
+                    Usuario::setAlerta('error', '⚠️ No se puede eliminar al empleado "' . $usuario->nombre . '" porque tiene pedidos activos.');
                 } else {
-                    // ✅ Eliminar usuario si no tiene pedidos activos
+                    // Eliminar usuario si no tiene pedidos activos
                     $usuario->eliminar();
-                    $_SESSION['alerta'] = [
-                        'tipo' => 'exito',
-                        'mensaje' => 'Empleado "' . $usuario->nombre . '" eliminado correctamente.'
-                    ];
+                    Usuario::setAlerta('exito', 'Empleado "' . $usuario->nombre . '" eliminado correctamente.');
+                    
+                    // Volvemos a cargar la lista de empleados después de eliminar
+                    $empleados = Usuario::all();
                 }
-    
-                header('Location: /remove_user');
-                exit;
             } else {
                 Usuario::setAlerta('error', 'El usuario no existe');
             }
@@ -308,7 +300,7 @@ class UserController {
     
         // Obtener alertas
         $alertas = Usuario::getAlertas();
-        
+    
         // Renderizar la vista y pasar los empleados
         $router->render('auth/remove_user', [
             'titulo' => 'Eliminar empleado',
@@ -316,6 +308,7 @@ class UserController {
             'empleados' => $empleados,
         ]);
     }
+    
     
     
     
