@@ -218,7 +218,7 @@ class ProductsController {
                     $producto->eliminar();
                     $_SESSION['alerta'] = [
                         'tipo' => 'exito',
-                        'mensaje' => '✅ Producto "' . $producto->descripcion . '" eliminado correctamente.'
+                        'mensaje' => 'Producto "' . $producto->descripcion . '" eliminado correctamente.'
                     ];
                 }
     
