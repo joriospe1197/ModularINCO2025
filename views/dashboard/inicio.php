@@ -5,7 +5,6 @@
     </div>
     <?php unset($_SESSION['alerta']); ?>
 <?php endif; ?>
-
 <style>
     #main_container_s {
         display: grid;
@@ -13,50 +12,66 @@
         gap: 16px;
     }
 
-    #chart { grid-column: 1 / span 12; }
-    #ingresos { grid-column: 1 / span 4; }
-    #materiales { grid-column: 8 / span 4; }
-    #historico { grid-column: 8 / span 4; }
-    #prediccion_ingresos { grid-column: 1 / span 4; }
+    #chart {
+        grid-column: 1 / span 12;
+    }
 
-    @media screen and (max-width:1200px){
-        #historico, #prediccion_ingresos, #ingresos, #materiales { grid-column: 1 / span 12; }
-        #chart { width: 600px; }
+    #ingresos {
+        grid-column: 1 / span 4;
+    }
+
+    #materiales {
+        grid-column: 8 / span 4;
+    }
+
+    #historico {
+        grid-column: 8 / span 4;
+    }
+
+    #prediccion_ingresos {
+        grid-column: 1 / span 4;
+    }
+
+    @media screen and (max-width:1200px) {
+        #historico {
+            grid-column: 1 / span 12;
+        }
+
+        #prediccion_ingresos {
+            grid-column: 1 / span 12;
+        }
+
+        #ingresos {
+            grid-column: 1 / span 12;
+        }
+
+        #materiales {
+            grid-column: 1 / span 12;
+            /* ocupa todo el ancho */
+            grid-row: auto;
+            /* se acomoda en la siguiente fila debajo */
+        }
+        #chart{
+            width: 600px;
+        }
     }
 </style>
 
-<?php
-// Inicializar arrays para gráficos
-$datosVista = [];
-$materiales = [];
-$datosClientes = [];
-$datosPrediccionIngresos = [];
-$datosUltimoAnio = [];
+<?php foreach ($datos as $material): ?>
+    <?php $datosVista[] = ['x' => $material->servicio, 'y' => intval($material->num_pedidos)]; ?>
+<?php endforeach; ?>
 
-foreach ($datos as $material) {
-    $datosVista[] = ['x' => $material->servicio, 'y' => intval($material->num_pedidos)];
-}
+<?php foreach ($ultimoMes as $pedido): ?>
+    <?php $materiales[] = ['x' => $pedido->servicio, 'y' => intval($pedido->num_pedidos)]; ?>
+<?php endforeach; ?>
 
-foreach ($ultimoMes as $pedido) {
-    $materiales[] = ['x' => $pedido->servicio, 'y' => intval($pedido->num_pedidos)];
-}
+<?php foreach ($clientes as $cliente): ?>
+    <?php $datosClientes[] = ['x' => $cliente->nombre_cliente, 'y' => intval($cliente->ingresos)]; ?>
+<?php endforeach; ?>
 
-foreach ($clientes as $cliente) {
-    $datosClientes[] = ['x' => $cliente->nombre_cliente, 'y' => intval($cliente->ingresos)];
-}
-
-foreach ($ingresosMes as $pred) {
-    $datosPrediccionIngresos[] = floatval($pred->ingresos);
-}
-
-foreach ($prediccionMes as $in) {
-    $datosPrediccionIngresos[] = floatval($in->ingresos);
-}
-
-foreach ($ingresosLastYear as $casos) {
-    $datosUltimoAnio[] = floatval($casos->ingresos);
-}
-?>
+<?php foreach ($ingresosMes as $pred): ?>
+    <?php $datosPrediccionIngresos[] = floatval($pred->ingresos) ?>
+<?php endforeach; ?>
 
 <?php foreach ($prediccionMes as $in): ?>
     <?php $datosPrediccionIngresos[] = floatval($in->ingresos) ?>
@@ -66,11 +81,12 @@ foreach ($ingresosLastYear as $casos) {
 <?php endforeach; ?>
 
 <?php $test ?>
-<p><?php print_r($ingresosCheck); ?></p>
+
 <div id="main_container_s">
     <section id="chart"></section>
     <section id="prediccion_ingresos"></section>
     <section id="historico"></section>
+    
     <section id="ingresos">
         <h4 class="card-title mb-0"> Ingresos por clientes del ultimo mes </h4>
     </section>
@@ -78,23 +94,22 @@ foreach ($ingresosLastYear as $casos) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-function loadChart() {
-    const data = <?= json_encode($datosVista, JSON_UNESCAPED_UNICODE) ?>;
-    const data2 = <?= json_encode($materiales, JSON_UNESCAPED_UNICODE) ?>;
-    const data3 = <?= json_encode($datosClientes, JSON_UNESCAPED_UNICODE) ?>;
-    const data4 = <?= json_encode($datosPrediccionIngresos, JSON_UNESCAPED_UNICODE) ?>;
-    const data5 = <?= json_encode($datosUltimoAnio, JSON_UNESCAPED_UNICODE) ?>;
-    const currentyear = <?= $currentYear ?>;
-    const lastyear = <?= $lastYear ?>;
 
-    // Gráfico Treemap: Top materiales
-    new ApexCharts(document.querySelector("#chart"), {
-        series: [{ data }],
-        chart: { height: 350, width: 1200, type: 'treemap' },
-        legend: { show: false },
-        title: { text: 'Materiales más demandados para el siguiente periodo' }
-    }).render();
+<script>
+    function loadChart() {
+        const data = <?= json_encode($datosVista, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+        const data2 = <?= json_encode($materiales, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+        const data3 = <?= json_encode($datosClientes, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+        const data4 = <?= json_encode($datosPrediccionIngresos, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+        const currentyear = <?= $currentYear ?>;
+        const lastyear = <?= $lastYear ?>;
+        const data5 = <?= json_encode($datosUltimoAnio, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+
+        //Gráfico de los 3 materiales con mayor demanda para el siguiente periodo
+        var options = {
+            series: [{
+                data
+            }],
 
             legend: {
                 show: false
@@ -116,47 +131,20 @@ function loadChart() {
                 text: 'Materiales mas demandados para el siguiente periodo'
             }
 
-    // Gráfico Bar: materiales/servicios último mes
-    new ApexCharts(document.querySelector("#materiales"), {
-        series: [{ data: data2 }],
-        chart: { type: 'bar', height: 380 },
-        plotOptions: { bar: { barHeight: '100%', distributed: true, horizontal: true, dataLabels: { position: 'bottom' } } },
-        colors: ['#33b2df','#546E7A','#d4526e','#13d8aa','#A5978B','#2b908f','#f9a3a4','#90ee7e','#f48024','#69d2e7'],
-        dataLabels: { enabled: true, textAnchor: 'start', style: { colors: ['#fff'] }, formatter: (val,opt)=> opt.w.globals.labels[opt.dataPointIndex] + ":  " + val },
-        stroke: { width: 1, colors: ['#fff'] },
-        yaxis: { labels: false },
-        title: { text: 'Materiales/Servicios del último mes', align: 'center', floating: true },
-        responsive: [{ breakpoint: 1200, options: { chart: { width: 450 }, legend: { position: 'bottom' } } }]
-    }).render();
+        };
 
-    // Gráfico Line: Predicción ingresos siguiente periodo
-    new ApexCharts(document.querySelector("#prediccion_ingresos"), {
-        series: [{ name: "Ingresos $", data: data4 }],
-        chart: { height: 250, width: 500, type: 'line', zoom: { enabled: false } },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'Predicción de ingresos para el siguiente periodo', align: 'center' },
-        xaxis: { categories: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'] }
-    }).render();
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 
-    // Gráfico Line: comparación año anterior
-    new ApexCharts(document.querySelector("#historico"), {
-        series: [
-            { name: currentyear, data: data4 },
-            { name: lastyear, data: data5 }
-        ],
-        chart: { height: 300, width: 500, type: 'line', dropShadow: { enabled: true, color: '#000', top: 18, left: 7, blur: 10, opacity: 0.5 }, zoom: { enabled: false }, toolbar: { show: false } },
-        colors: ['#77B6EA','#545454'],
-        dataLabels: { enabled: true },
-        stroke: { curve: 'smooth' },
-        title: { text: 'Comparación año anterior al año en curso', align: 'left' },
-        grid: { borderColor: '#e7e7e7', row: { colors: ['#f3f3f3','transparent'], opacity: 0.5 } },
-        xaxis: { categories: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'] },
-        markers: { size: 1 },
-        yaxis: { title: { text: 'Ingresos' } },
-        legend: { position: 'top', horizontalAlign: 'right', floating: true, offsetY: -25, offsetX: -5 }
-    }).render();
-}
+        //Carga del gráfico para los ingresos
+        var options2 = {
+            series: [{
+                data: data3
+            }],
+            chart: {
+                width: 800,
+                type: 'pie',
+            },
 
             responsive: [{
                 breakpoint: 1200,

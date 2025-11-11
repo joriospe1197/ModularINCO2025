@@ -16,12 +16,7 @@ class ActiveRecord {
     public $ingresos;
     // Alertas y Mensajes
     protected static $alertas = [];
-
-    // Dentro de class ActiveRecord
-    public static function getConnection() {
-        return self::$db;
-    }
- 
+    
     // Definir la conexión a la BD - includes/database.php
     public static function setDB($database) {
         self::$db = $database;
