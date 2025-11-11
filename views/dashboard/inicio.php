@@ -66,7 +66,7 @@ foreach ($ingresosLastYear as $casos) {
 <?php endforeach; ?>
 
 <?php $test ?>
-<p><?php print_r($ingresosCheck); ?></p>
+
 <div id="main_container_s">
     <section id="chart"></section>
     <section id="prediccion_ingresos"></section>
