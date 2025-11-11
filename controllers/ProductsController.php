@@ -183,7 +183,6 @@ class ProductsController {
     
         $productos = Productos::all();
     
-        // Verificar permisos
         if ($_SESSION['tipo_usuario'] != 1) {
             $_SESSION['alerta'] = [
                 'tipo' => 'error',
@@ -193,16 +192,15 @@ class ProductsController {
             exit;
         }
     
-        // Si hay idproducto por GET
         if (isset($_GET['idproducto']) && $_GET['idproducto']) {
             $idproducto = intval($_GET['idproducto']);
             $producto = Productos::where('idproducto', $idproducto);
     
             if ($producto) {
-                // ✅ Obtener conexión desde el modelo (válido porque hereda de ActiveRecord)
-                $db = $producto->db;
+                // ✅ Obtener conexión de base de datos usando el nuevo método público
+                $db = \Model\ActiveRecord::getConnection();
     
-                // Verificar si el producto está en algún pedido
+                // Verificar si el producto está dentro de algún pedido
                 $query = "SELECT COUNT(*) AS total FROM pedido_productos WHERE idproducto = {$idproducto}";
                 $resultado = $db->query($query);
                 $row = $resultado->fetch_assoc();
@@ -212,11 +210,11 @@ class ProductsController {
                         'tipo' => 'error',
                         'mensaje' => '⚠️ No se puede eliminar el producto "' . 
                                      $producto->descripcion . 
-                                     '" porque se encuentra dentro de un pedido activo. ' .
-                                     'Primero elimina o actualiza el pedido asociado.'
+                                     '" porque está asociado a un pedido activo. ' .
+                                     'Elimina o actualiza los pedidos antes de continuar.'
                     ];
                 } else {
-                    // Eliminar si no está vinculado
+                    // Eliminar producto si no está vinculado
                     $producto->eliminar();
                     $_SESSION['alerta'] = [
                         'tipo' => 'exito',
@@ -239,6 +237,7 @@ class ProductsController {
             'productos' => $productos
         ]);
     }
+    
       
 }
 
