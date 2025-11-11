@@ -197,7 +197,7 @@ class ProductsController {
             $producto = Productos::where('idproducto', $idproducto);
     
             if ($producto) {
-                // ✅ Obtener conexión de base de datos usando el nuevo método público
+                // Obtener conexión de base de datos usando el nuevo método público
                 $db = \Model\ActiveRecord::getConnection();
     
                 // Verificar si el producto está dentro de algún pedido
@@ -208,7 +208,7 @@ class ProductsController {
                 if ($row['total'] > 0) {
                     $_SESSION['alerta'] = [
                         'tipo' => 'error',
-                        'mensaje' => '⚠️ No se puede eliminar el producto "' . 
+                        'mensaje' => 'No se puede eliminar el producto "' . 
                                      $producto->descripcion . 
                                      '" porque está asociado a un pedido activo. ' .
                                      'Elimina o actualiza los pedidos antes de continuar.'
