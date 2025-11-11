@@ -210,7 +210,7 @@ class ProductsController {
                         'tipo' => 'error',
                         'mensaje' => 'No se puede eliminar el producto "' . 
                                      $producto->descripcion . 
-                                     '" porque está asociado a un pedido activo. ' .
+                                     '" porque el ID está asociado a un pedido activo. ' .
                                      'Elimina o actualiza los pedidos antes de continuar.'
                     ];
                 } else {
